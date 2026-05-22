@@ -9,7 +9,7 @@ import ScoreLegend from "@/components/ScoreLegend";
 
 export const metadata: Metadata = {
   title: "全国防災偏差値ランキング | 全国防災偏差値",
-  description: "全国の市区町村を防災偏差値でランキング。都道府県別フィルターで絞り込み可能。",
+  description: "全国の市区町村を防災偏差値でランキング。都道府県別フィルター・感情回復力・社会回復力ランキングも。",
 };
 
 export default function RankingPage() {
@@ -35,6 +35,24 @@ export default function RankingPage() {
         </header>
 
         <AdPlaceholder label="広告" className="h-16" />
+
+        {/* カテゴリ別ランキングへのリンク */}
+        <div className="grid grid-cols-2 gap-2">
+          <Link
+            href="/ranking/emotional"
+            className="flex items-center gap-2 px-4 py-3 bg-purple-50 border border-purple-100 rounded-xl text-sm font-medium text-purple-800 hover:bg-purple-100 transition-colors"
+          >
+            <span>💚</span>
+            <span>感情回復力<br/><span className="text-xs font-normal text-purple-600">孤立・子育て・感情</span></span>
+          </Link>
+          <Link
+            href="/ranking/social"
+            className="flex items-center gap-2 px-4 py-3 bg-emerald-50 border border-emerald-100 rounded-xl text-sm font-medium text-emerald-800 hover:bg-emerald-100 transition-colors"
+          >
+            <span>🤝</span>
+            <span>社会回復力<br/><span className="text-xs font-normal text-emerald-600">避難所・支援・インフラ</span></span>
+          </Link>
+        </div>
 
         <section className="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm">
           <PrefectureFilter prefectures={prefectures} selected="" />

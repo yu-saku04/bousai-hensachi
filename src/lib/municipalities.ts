@@ -1,5 +1,7 @@
 import "server-only";
 import type { Municipality } from "@/types/municipality";
+import type { ScoreCategory, ScoreKey } from "@/lib/score";
+import { calcCategoryScore } from "@/lib/score";
 import rawData from "@/data/municipalities.json";
 
 const data = rawData as Municipality[];
@@ -48,6 +50,17 @@ export function getPrefectureRanking(prefecture: string): Municipality[] {
   return getMunicipalitiesByPrefecture(prefecture).sort(
     (a, b) => b.overallScore - a.overallScore
   );
+}
+
+export function getCategoryRanking(category: ScoreCategory): Municipality[] {
+  return [...data]
+    .map((m) => ({
+      m,
+      score: calcCategoryScore(m as Partial<Record<ScoreKey, number>>, category) ?? 0,
+    }))
+    .filter(({ score }) => score > 0)
+    .sort((a, b) => b.score - a.score)
+    .map(({ m }) => m);
 }
 
 export function buildResultPath(prefecture: string, municipality: string): string {

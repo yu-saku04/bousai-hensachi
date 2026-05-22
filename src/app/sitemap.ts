@@ -9,9 +9,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const prefectures = getAllPrefectures();
 
   const staticRoutes: MetadataRoute.Sitemap = [
-    { url: `${BASE_URL}/`,        lastModified: now, changeFrequency: "weekly",  priority: 1.0 },
-    { url: `${BASE_URL}/ranking`, lastModified: now, changeFrequency: "weekly",  priority: 0.9 },
-    { url: `${BASE_URL}/sources`, lastModified: now, changeFrequency: "monthly", priority: 0.4 },
+    { url: `${BASE_URL}/`,                   lastModified: now, changeFrequency: "weekly",  priority: 1.0 },
+    { url: `${BASE_URL}/ranking`,            lastModified: now, changeFrequency: "weekly",  priority: 0.9 },
+    { url: `${BASE_URL}/ranking/emotional`,  lastModified: now, changeFrequency: "weekly",  priority: 0.8 },
+    { url: `${BASE_URL}/ranking/social`,     lastModified: now, changeFrequency: "weekly",  priority: 0.8 },
+    { url: `${BASE_URL}/methodology`,        lastModified: now, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${BASE_URL}/sources`,            lastModified: now, changeFrequency: "monthly", priority: 0.4 },
   ];
 
   const prefectureRoutes: MetadataRoute.Sitemap = prefectures.map((pref) => ({

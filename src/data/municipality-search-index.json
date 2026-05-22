@@ -1,6 +1,9 @@
 [
   {"id":"tokyo-setagaya","prefecture":"東京都","municipality":"世田谷区","overallScore":48},
+  {"id":"tokyo-koto","prefecture":"東京都","municipality":"江東区","overallScore":43},
+  {"id":"tokyo-shibuya","prefecture":"東京都","municipality":"渋谷区","overallScore":55},
   {"id":"osaka-naniwa","prefecture":"大阪府","municipality":"浪速区","overallScore":41},
+  {"id":"osaka-kita","prefecture":"大阪府","municipality":"大阪市北区","overallScore":50},
   {"id":"hokkaido-sapporo-chuo","prefecture":"北海道","municipality":"札幌市中央区","overallScore":68},
   {"id":"aichi-nagoya-naka","prefecture":"愛知県","municipality":"名古屋市中区","overallScore":55},
   {"id":"fukuoka-sawara","prefecture":"福岡県","municipality":"福岡市早良区","overallScore":63},
@@ -8,5 +11,20 @@
   {"id":"kyoto-fushimi","prefecture":"京都府","municipality":"京都市伏見区","overallScore":52},
   {"id":"hiroshima-naka","prefecture":"広島県","municipality":"広島市中区","overallScore":57},
   {"id":"okinawa-naha","prefecture":"沖縄県","municipality":"那覇市","overallScore":60},
-  {"id":"niigata-chuo","prefecture":"新潟県","municipality":"新潟市中央区","overallScore":65}
+  {"id":"niigata-chuo","prefecture":"新潟県","municipality":"新潟市中央区","overallScore":65},
+  {"id":"kanagawa-yokohama-naka","prefecture":"神奈川県","municipality":"横浜市中区","overallScore":58},
+  {"id":"kanagawa-kawasaki-kawasaki","prefecture":"神奈川県","municipality":"川崎市川崎区","overallScore":44},
+  {"id":"saitama-urawa","prefecture":"埼玉県","municipality":"さいたま市浦和区","overallScore":62},
+  {"id":"chiba-chuo","prefecture":"千葉県","municipality":"千葉市中央区","overallScore":56},
+  {"id":"hyogo-kobe-chuo","prefecture":"兵庫県","municipality":"神戸市中央区","overallScore":61},
+  {"id":"shizuoka-aoi","prefecture":"静岡県","municipality":"静岡市葵区","overallScore":54},
+  {"id":"nagano-nagano","prefecture":"長野県","municipality":"長野市","overallScore":66},
+  {"id":"gifu-gifu","prefecture":"岐阜県","municipality":"岐阜市","overallScore":57},
+  {"id":"nara-nara","prefecture":"奈良県","municipality":"奈良市","overallScore":64},
+  {"id":"kumamoto-chuo","prefecture":"熊本県","municipality":"熊本市中央区","overallScore":59},
+  {"id":"kagoshima-kagoshima","prefecture":"鹿児島県","municipality":"鹿児島市","overallScore":50},
+  {"id":"yamaguchi-yamaguchi","prefecture":"山口県","municipality":"山口市","overallScore":67},
+  {"id":"akita-akita","prefecture":"秋田県","municipality":"秋田市","overallScore":70},
+  {"id":"nagasaki-nagasaki","prefecture":"長崎県","municipality":"長崎市","overallScore":53},
+  {"id":"iwate-morioka","prefecture":"岩手県","municipality":"盛岡市","overallScore":71}
 ]

@@ -8,6 +8,10 @@
  *   id, prefecture, municipality, overallScore, floodRisk,
  *   earthquakeRisk, fireRisk, agingRisk, shelterCapacity, comment, actionTips, sourceNote
  *
+ * Phase3 任意カラム（0〜100 の数値）:
+ *   isolationRisk, childcareStressRisk, emotionalRecoveryRisk,
+ *   socialSupportScore, infrastructureRecoveryScore, familyDisasterPreparedness
+ *
  * 推奨: id は自治体コード（JISコード）を使用すること
  *   例: "130011" (東京都特別区部) ではなく "13113" (世田谷区)
  *   ref: https://www.soumu.go.jp/denshijiti/code.html
@@ -49,6 +53,13 @@ interface Municipality {
   fireSource?: string;
   shelterSource?: string;
   dataUpdatedAt?: string;
+  // Phase3フィールド
+  isolationRisk?: number;
+  childcareStressRisk?: number;
+  emotionalRecoveryRisk?: number;
+  socialSupportScore?: number;
+  infrastructureRecoveryScore?: number;
+  familyDisasterPreparedness?: number;
 }
 
 interface SearchIndexItem {
@@ -167,6 +178,13 @@ function rowToMunicipality(row: Record<string, string>, rowNum: number): Municip
     fireSource:       parseOptionalString(row, "fireSource"),
     shelterSource:    parseOptionalString(row, "shelterSource"),
     dataUpdatedAt:    parseOptionalString(row, "dataUpdatedAt"),
+    // Phase3
+    isolationRisk:               parseOptionalNumber(row, "isolationRisk",               rowNum, { min: 0, max: 100 }),
+    childcareStressRisk:         parseOptionalNumber(row, "childcareStressRisk",         rowNum, { min: 0, max: 100 }),
+    emotionalRecoveryRisk:       parseOptionalNumber(row, "emotionalRecoveryRisk",       rowNum, { min: 0, max: 100 }),
+    socialSupportScore:          parseOptionalNumber(row, "socialSupportScore",          rowNum, { min: 0, max: 100 }),
+    infrastructureRecoveryScore: parseOptionalNumber(row, "infrastructureRecoveryScore", rowNum, { min: 0, max: 100 }),
+    familyDisasterPreparedness:  parseOptionalNumber(row, "familyDisasterPreparedness",  rowNum, { min: 0, max: 100 }),
   };
 }
 
