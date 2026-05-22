@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getMunicipalityByParams, getAllMunicipalities, buildResultPath } from "@/lib/municipalities";
+import { safeJsonLd } from "@/lib/json-ld";
 import {
   getScoreLevelLabel,
   clampScore,
@@ -136,7 +137,7 @@ export default async function ResultPage({ params }: PageProps) {
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }}
       />
       <div className="mx-auto max-w-md px-4 py-6 space-y-5">
         {/* ナビゲーション */}

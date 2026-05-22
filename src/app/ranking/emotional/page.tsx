@@ -5,6 +5,7 @@ import { calcCategoryScore, clampScore, getScoreLevelColor, SCORE_ITEMS } from "
 import type { ScoreKey } from "@/lib/score";
 import AdPlaceholder from "@/components/AdPlaceholder";
 import Disclaimer from "@/components/Disclaimer";
+import { safeJsonLd } from "@/lib/json-ld";
 
 export const metadata: Metadata = {
   title: "感情回復力ランキング | 全国防災偏差値",
@@ -31,7 +32,7 @@ export default function EmotionalRankingPage() {
     <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }}
       />
       <div className="mx-auto max-w-md px-4 py-6 space-y-5">
         <nav className="flex items-center justify-between text-sm">

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SCORE_ITEMS, CATEGORY_ICONS } from "@/lib/score";
 import type { ScoreCategory } from "@/lib/score";
+import { safeJsonLd } from "@/lib/json-ld";
 
 export const metadata: Metadata = {
   title: "スコア算出方法・TEMMEI防災哲学 | 全国防災偏差値",
@@ -63,7 +64,7 @@ export default function MethodologyPage() {
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }}
       />
       <div className="mx-auto max-w-md px-4 py-6 space-y-6">
         <nav className="flex items-center justify-between text-sm">
@@ -113,6 +114,20 @@ export default function MethodologyPage() {
               </div>
             );
           })}
+        </section>
+
+        {/* カテゴリスコアの算出方法 */}
+        <section className="bg-blue-50 border border-blue-100 rounded-2xl p-5 space-y-2">
+          <h2 className="font-bold text-gray-900 text-sm">カテゴリスコアの算出方法</h2>
+          <p className="text-xs text-gray-700 leading-relaxed">
+            各カテゴリのスコアは、<strong>そのカテゴリに属する指標の単純平均</strong>で算出されます。
+            例えば「物理的安全」は洪水・地震・火災リスクの3指標を単純平均した値です。
+            総合防災偏差値は全指標を重み（w）に従って加重平均して算出します。
+          </p>
+          <div className="text-xs text-gray-500 font-mono bg-white rounded-lg px-3 py-2 border border-blue-100">
+            カテゴリスコア = sum(指標スコア) / 指標数<br/>
+            総合スコア = sum(指標スコア × w) / sum(w)
+          </div>
         </section>
 
         {/* スコアの読み方 */}
