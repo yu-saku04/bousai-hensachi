@@ -1,165 +1,235 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import AdPlaceholder from "@/components/AdPlaceholder";
+import rawDataSources from "@/data/data-sources.json";
 
 export const metadata: Metadata = {
   title: "データ出典・免責事項 | 全国防災偏差値",
   description:
-    "全国防災偏差値で使用しているデータの出典と、サービスの免責事項についてご説明します。",
+    "全国防災偏差値で使用しているデータの出典一覧と、サービスの免責事項についてご説明します。",
 };
 
-const DATA_SOURCES = [
-  {
-    org: "国土交通省",
-    items: [
-      "洪水浸水想定区域図",
-      "土砂災害警戒区域・特別警戒区域",
-      "河川整備状況データ",
-    ],
-    url: "https://www.mlit.go.jp/",
-    status: "future",
-  },
-  {
-    org: "気象庁",
-    items: [
-      "地震動予測地図",
-      "活断層の位置情報",
-      "過去の地震・水害発生データ",
-    ],
-    url: "https://www.jma.go.jp/",
-    status: "future",
-  },
-  {
-    org: "消防庁",
-    items: [
-      "火災統計",
-      "消防力の整備指針",
-      "避難所整備状況",
-    ],
-    url: "https://www.fdma.go.jp/",
-    status: "future",
-  },
-  {
-    org: "総務省統計局",
-    items: [
-      "国勢調査（人口・高齢化率）",
-      "住民基本台帳人口移動報告",
-    ],
-    url: "https://www.stat.go.jp/",
-    status: "future",
-  },
-  {
-    org: "各自治体オープンデータ",
-    items: [
-      "避難所・避難場所一覧",
-      "地域防災計画",
-      "ハザードマップ",
-    ],
-    url: null,
-    status: "future",
-  },
-];
+type DataStatus = "planned" | "collected" | "converted" | "applied";
+
+interface DataSource {
+  id: string;
+  name: string;
+  agency: string;
+  url: string;
+  dataType: string;
+  targetScores: string[];
+  updateFrequency: string;
+  licenseNote: string;
+  status: DataStatus;
+  lastCheckedAt: string;
+  notes: string;
+}
+
+const DATA_SOURCES = rawDataSources as DataSource[];
+
+const STATUS_CONFIG: Record<DataStatus, { label: string; color: string; bg: string }> = {
+  planned:   { label: "導入予定",   color: "text-gray-500",   bg: "bg-gray-100" },
+  collected: { label: "収集済",     color: "text-blue-600",   bg: "bg-blue-50" },
+  converted: { label: "変換済",     color: "text-amber-600",  bg: "bg-amber-50" },
+  applied:   { label: "反映済",     color: "text-emerald-600", bg: "bg-emerald-50" },
+};
+
+const SCORE_LABELS: Record<string, string> = {
+  floodRisk:                    "洪水",
+  earthquakeRisk:               "地震",
+  fireRisk:                     "火災",
+  agingRisk:                    "高齢化",
+  shelterCapacity:              "避難所",
+  isolationRisk:                "孤立",
+  childcareStressRisk:          "子育て",
+  emotionalRecoveryRisk:        "感情回復",
+  socialSupportScore:           "社会支援",
+  infrastructureRecoveryScore:  "インフラ",
+  familyDisasterPreparedness:   "家族防災",
+};
+
+const STATUS_ORDER: DataStatus[] = ["applied", "converted", "collected", "planned"];
+
+function groupByStatus(sources: DataSource[]): Map<DataStatus, DataSource[]> {
+  const map = new Map<DataStatus, DataSource[]>();
+  for (const status of STATUS_ORDER) {
+    map.set(status, sources.filter((s) => s.status === status));
+  }
+  return map;
+}
 
 export default function SourcesPage() {
+  const grouped = groupByStatus(DATA_SOURCES);
+  const appliedCount   = grouped.get("applied")?.length   ?? 0;
+  const convertedCount = grouped.get("converted")?.length ?? 0;
+  const collectedCount = grouped.get("collected")?.length ?? 0;
+  const plannedCount   = grouped.get("planned")?.length   ?? 0;
+  const totalCount     = DATA_SOURCES.length;
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       <div className="mx-auto max-w-md px-4 py-6 space-y-6">
-        {/* ナビゲーション */}
         <nav className="flex items-center justify-between text-sm">
           <Link href="/" className="text-gray-500 hover:text-blue-600 transition-colors">
             ← トップへ戻る
           </Link>
-          <Link href="/ranking" className="text-xs text-gray-400 hover:text-blue-600 transition-colors">
-            ランキング
+          <Link href="/methodology" className="text-xs text-gray-400 hover:text-blue-600 transition-colors">
+            算出方法
           </Link>
         </nav>
 
-        {/* ヘッダー */}
         <header>
           <h1 className="text-xl font-extrabold text-gray-900 mb-1">📋 データ出典・免責事項</h1>
           <p className="text-xs text-gray-500">
-            本サービスで使用しているデータの出典と、ご利用にあたっての注意事項です。
+            本サービスで使用するデータの収集状況と、ご利用にあたっての注意事項です。
           </p>
         </header>
 
         {/* 現在のデータ状態 */}
-        <section className="bg-amber-50 border border-amber-200 rounded-2xl p-5 space-y-3">
+        <section className="bg-amber-50 border border-amber-200 rounded-2xl p-5 space-y-2">
           <h2 className="font-bold text-amber-800 text-sm">⚠️ 現在のデータについて</h2>
           <p className="text-sm text-amber-900 leading-relaxed">
-            現在表示されているすべてのスコアデータは、<strong>サービス開発・検証用の仮データ</strong>です。
-            実際の防災リスクを反映したものではありません。
-          </p>
-          <p className="text-sm text-amber-900 leading-relaxed">
-            今後、下記の公的機関が公開するオープンデータをもとに、実データへの更新を予定しています。
+            避難所データは<strong>GSI指定避難所CSV</strong>を反映済みです。
+            洪水・地震・火災・高齢化・孤立リスク等の一部指標は、現時点では初期値・設計値を含みます。
+            下記の公的機関のオープンデータをもとに順次更新します。
           </p>
         </section>
 
-        {/* 広告枠 */}
-        <AdPlaceholder label="広告" className="h-16" />
-
-        {/* 利用予定データ一覧 */}
-        <section className="space-y-3">
-          <h2 className="font-bold text-gray-800 text-sm">利用予定のデータ出典</h2>
-          <div className="space-y-3">
-            {DATA_SOURCES.map((source) => (
-              <div
-                key={source.org}
-                className="bg-white rounded-xl border border-gray-100 p-4 shadow-sm space-y-2"
-              >
-                <div className="flex items-center justify-between">
-                  <h3 className="font-semibold text-gray-800 text-sm">{source.org}</h3>
-                  <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
-                    導入予定
-                  </span>
-                </div>
-                <ul className="space-y-1">
-                  {source.items.map((item) => (
-                    <li key={item} className="text-xs text-gray-600 flex items-start gap-1.5">
-                      <span className="text-gray-300 mt-0.5">•</span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-                {source.url && (
-                  <a
-                    href={source.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-xs text-blue-500 hover:underline"
-                  >
-                    公式サイト →
-                  </a>
-                )}
-              </div>
-            ))}
+        <section className="bg-blue-50 border border-blue-100 rounded-2xl p-5 space-y-2">
+          <h2 className="font-bold text-blue-800 text-sm">GSI指定避難所CSVの扱い</h2>
+          <div className="space-y-1.5 text-xs text-blue-900 leading-relaxed">
+            <p>
+              現行 shelter-v1 はGSI指定避難所CSVを使った指定避難所数ベースの指標です。
+            </p>
+            <p>
+              GSI指定避難所CSVには収容人数と災害種別が含まれないため、
+              capacity=0 / disasterTypes=unknown はGSI仕様由来です。
+            </p>
+            <p>
+              政令市行政区では、GSIデータの粒度差により市単位データ、または未投入表示になる場合があります。
+              収容人数や災害種別は、将来の shelter-v2 以降または自治体オープンデータで補完予定です。
+            </p>
           </div>
         </section>
+
+        <AdPlaceholder label="広告" className="h-16" />
+
+        {/* データ収集状況サマリー */}
+        <section className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
+          <h2 className="font-bold text-gray-800 text-sm mb-3">データ収集状況（{totalCount}件）</h2>
+          <div className="grid grid-cols-2 gap-2">
+            {(["applied", "converted", "collected", "planned"] as DataStatus[]).map((status) => {
+              const cfg   = STATUS_CONFIG[status];
+              const count = grouped.get(status)?.length ?? 0;
+              return (
+                <div key={status} className={`rounded-xl border px-4 py-3 ${cfg.bg}`}>
+                  <div className={`text-xl font-bold tabular-nums ${cfg.color}`}>{count}</div>
+                  <div className={`text-xs mt-0.5 ${cfg.color}`}>{cfg.label}</div>
+                </div>
+              );
+            })}
+          </div>
+          <div className="mt-3 h-2 rounded-full bg-gray-100 overflow-hidden flex">
+            {appliedCount > 0 && (
+              <div className="bg-emerald-500 h-full" style={{ width: `${(appliedCount / totalCount) * 100}%` }} />
+            )}
+            {convertedCount > 0 && (
+              <div className="bg-amber-400 h-full" style={{ width: `${(convertedCount / totalCount) * 100}%` }} />
+            )}
+            {collectedCount > 0 && (
+              <div className="bg-blue-400 h-full" style={{ width: `${(collectedCount / totalCount) * 100}%` }} />
+            )}
+            {plannedCount > 0 && (
+              <div className="bg-gray-300 h-full" style={{ width: `${(plannedCount / totalCount) * 100}%` }} />
+            )}
+          </div>
+        </section>
+
+        {/* データカタログ */}
+        <section className="space-y-3">
+          <h2 className="font-bold text-gray-800 text-sm">データカタログ</h2>
+          {STATUS_ORDER.map((status) => {
+            const sources = grouped.get(status) ?? [];
+            if (sources.length === 0) return null;
+            const cfg = STATUS_CONFIG[status];
+            return (
+              <div key={status} className="space-y-2">
+                <div className={`flex items-center gap-2 px-3 py-1 rounded-lg ${cfg.bg} w-fit`}>
+                  <span className={`text-xs font-semibold ${cfg.color}`}>{cfg.label}</span>
+                  <span className={`text-xs ${cfg.color} opacity-70`}>{sources.length}件</span>
+                </div>
+                {sources.map((source) => (
+                  <div
+                    key={source.id}
+                    className="bg-white rounded-xl border border-gray-100 p-4 shadow-sm space-y-2"
+                  >
+                    <div className="flex items-start gap-2">
+                      <div className="flex-1">
+                        <p className="text-sm font-semibold text-gray-800 leading-tight">{source.name}</p>
+                        <p className="text-xs text-gray-500 mt-0.5">{source.agency}</p>
+                      </div>
+                      <span className={`flex-shrink-0 text-xs px-2 py-0.5 rounded-full font-medium ${cfg.color} ${cfg.bg}`}>
+                        {cfg.label}
+                      </span>
+                    </div>
+
+                    {/* 対応スコア */}
+                    <div className="flex flex-wrap gap-1">
+                      {source.targetScores.map((score) => (
+                        <span
+                          key={score}
+                          className="text-xs px-2 py-0.5 bg-blue-50 text-blue-600 border border-blue-100 rounded-full"
+                        >
+                          {SCORE_LABELS[score] ?? score}
+                        </span>
+                      ))}
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs text-gray-500">
+                      <span>形式: {source.dataType}</span>
+                      <span>更新: {source.updateFrequency}</span>
+                    </div>
+
+                    {source.notes && (
+                      <p className="text-xs text-gray-400 leading-relaxed">{source.notes}</p>
+                    )}
+
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs text-gray-300">確認: {source.lastCheckedAt}</span>
+                      <a
+                        href={source.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs text-blue-500 hover:underline"
+                      >
+                        公式サイト →
+                      </a>
+                    </div>
+                    <p className="text-xs text-gray-400">{source.licenseNote}</p>
+                  </div>
+                ))}
+              </div>
+            );
+          })}
+        </section>
+
+        <AdPlaceholder label="広告" className="h-16" />
 
         {/* スコアについて */}
         <section className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm space-y-3">
           <h2 className="font-bold text-gray-800 text-sm">スコアの算出方法について</h2>
           <div className="space-y-2 text-sm text-gray-600 leading-relaxed">
             <p>
-              「防災偏差値」は、当サービスが独自に設定した指標にもとづいて算出した
-              <strong>参考値</strong>です。
+              「防災偏差値」は、当サービスが独自に設定した指標にもとづいて算出した<strong>参考値</strong>です。
             </p>
             <p>
-              洪水リスク・地震リスク・火災リスク・高齢化リスク・避難所余裕度の5項目を
-              加重平均し、0〜100のスコアとして表示しています。
+              物理的安全・社会回復力・感情回復力の3カテゴリ・11指標を加重平均し、
+              0〜100のスコアとして表示しています。
+              詳細は<Link href="/methodology" className="text-blue-600 hover:underline">算出方法ページ</Link>をご覧ください。
             </p>
             <p>
               このスコアは、国または自治体による公式の防災評価・格付けではありません。
             </p>
-          </div>
-          <div className="rounded-xl bg-gray-50 p-3 text-xs text-gray-500 space-y-1">
-            <p>重み付け（参考・現在の仮設定）</p>
-            <ul className="space-y-0.5 pl-2">
-              <li>洪水リスク: 25%</li>
-              <li>地震リスク: 25%</li>
-              <li>火災リスク: 20%</li>
-              <li>高齢化リスク: 15%</li>
-              <li>避難所余裕度: 15%</li>
-            </ul>
           </div>
         </section>
 
@@ -199,10 +269,8 @@ export default function SourcesPage() {
           </div>
         </section>
 
-        {/* 広告枠 */}
         <AdPlaceholder label="広告" className="h-24" />
 
-        {/* フッター */}
         <footer className="text-center text-xs text-gray-400 space-y-1 pb-4">
           <p>© 2025 全国防災偏差値</p>
           <p>防災情報は必ず各自治体・公的機関の情報も合わせてご確認ください</p>

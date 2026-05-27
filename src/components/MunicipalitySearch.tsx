@@ -2,7 +2,7 @@
 
 import { useState, useId } from "react";
 import Link from "next/link";
-import { searchByKeyword } from "@/lib/search-index";
+import { buildResultPath, searchByKeyword } from "@/lib/search-index";
 import { getScoreLevelColor, clampScore } from "@/lib/score";
 import type { MunicipalityIndex } from "@/lib/search-index";
 
@@ -27,6 +27,11 @@ export default function MunicipalitySearch() {
       ? `「${keyword}」に一致する市区町村が見つかりませんでした`
       : `${results.length}件見つかりました`
     : "";
+  const resultNameCounts = results.reduce<Record<string, number>>((acc, m) => {
+    const key = `${m.prefecture}_${m.municipality}`;
+    acc[key] = (acc[key] ?? 0) + 1;
+    return acc;
+  }, {});
 
   return (
     <div className="space-y-3">
@@ -68,12 +73,15 @@ export default function MunicipalitySearch() {
           return (
             <li key={m.id}>
               <Link
-                href={`/result/${encodeURIComponent(m.prefecture)}/${encodeURIComponent(m.municipality)}`}
+                href={buildResultPath(m.jisCode)}
                 className="flex items-center justify-between px-4 py-3 hover:bg-blue-50 transition-colors"
               >
                 <div>
                   <p className="font-semibold text-gray-800 text-sm">{m.municipality}</p>
-                  <p className="text-xs text-gray-400">{m.prefecture}</p>
+                  <p className="text-xs text-gray-400">
+                    {m.prefecture}
+                    {resultNameCounts[`${m.prefecture}_${m.municipality}`] > 1 ? ` / ${m.jisCode}` : ""}
+                  </p>
                 </div>
                 <p className={`text-lg font-extrabold tabular-nums ${getScoreLevelColor(score)}`}>
                   {score}

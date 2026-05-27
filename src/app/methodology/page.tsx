@@ -37,7 +37,7 @@ const faqs = [
   },
   {
     q: "データはどこから取得していますか？",
-    a: "現在はMVP版のため仮データを使用しています。将来的には国土交通省のハザードマップ、消防庁の火災統計、地震調査研究推進本部のデータ、総務省の統計データをもとに更新する予定です。",
+    a: "避難所データは国土地理院の指定避難所CSVを使用しています。洪水・地震・火災・高齢化・孤立リスク等の一部指標は、現時点では初期値・設計値を含みます。",
   },
   {
     q: "偏差値と表示していますが、通常の偏差値と異なりますか？",
@@ -161,6 +161,81 @@ export default function MethodologyPage() {
           <blockquote className="border-l-4 border-purple-400 pl-4 text-sm text-purple-800 italic">
             「備えとは、物資だけでなく、人と人との繋がりである」
           </blockquote>
+        </section>
+
+        {/* 全国データ化に向けた注意事項 */}
+        <section className="bg-amber-50 border border-amber-100 rounded-2xl p-5 space-y-2">
+          <h2 className="font-bold text-amber-800 text-sm">⚠️ スコアの相対性について</h2>
+          <div className="space-y-1.5 text-xs text-amber-900 leading-relaxed">
+            <p>
+              <strong>全国データ投入に伴いスコアは再計算されます。</strong>
+              避難所データはGSI指定避難所CSVを反映済みです。
+              洪水・地震・火災・高齢化・孤立リスク等の一部指標は、現時点では初期値・設計値を含みます。
+              実データが追加されるたびに全自治体のスコアが更新されます。
+            </p>
+            <p>
+              <strong>jisCodeベースでデータを結合しています。</strong>
+              5桁のJISコードを第一主キーとして安定したデータ紐付けを行います。
+              jisCodeがない場合、都道府県名＋市区町村名によるフォールバック結合が発生します。
+              フォールバック結合は市区町村合併・改称時に誤結合のリスクがあるため、
+              実データ投入時は jisCode の整備が推奨されます。
+            </p>
+            <p>
+              <strong>検索インデックスは4フィールドに限定しています。</strong>
+              id・都道府県・市区町村名・総合スコアのみを持つ軽量インデックスを
+              検索UIに使用することで、詳細データの不必要なクライアント転送を防いでいます。
+            </p>
+            <p>
+              <strong>避難所余裕度は現行 shelter-v1 の算出です。</strong>
+              現行の shelterCapacity はGSI指定避難所CSVを使った指定避難所数ベースの指標です。
+              GSI指定避難所CSVには収容人数と災害種別が含まれないため、
+              capacity=0 / disasterTypes=unknown はGSI仕様由来です。
+              政令市行政区では、GSIデータの粒度差により市単位データ、または未投入表示になる場合があります。
+              収容人数や災害種別は、将来の shelter-v2 以降または自治体オープンデータで補完予定です。
+            </p>
+            <p>
+              スコア算出のバージョンは将来的にフィールドとして管理する予定です。
+              比較する際はスコアの算出時期をご確認ください。
+            </p>
+          </div>
+        </section>
+
+        {/* 実データ化方針 */}
+        <section className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm space-y-3">
+          <h2 className="font-bold text-gray-900 text-sm">📊 実データ化方針</h2>
+          <div className="space-y-2 text-sm text-gray-600 leading-relaxed">
+            <p>
+              <strong>政府公開データを使用</strong> — 国土交通省・消防庁・防災科研・総務省統計局など、
+              日本政府が公開するオープンデータを優先的に使用します。
+              独自調査データは使用しません。
+            </p>
+            <p>
+              <strong>出典を明記</strong> — 各スコアはデータソースごとに出典を記録し、
+              <Link href="/sources" className="text-blue-600 hover:underline">データ出典ページ</Link>
+              で公開します。スコアの根拠を誰でも確認できる透明性を重視します。
+            </p>
+            <p>
+              <strong>公式評価ではなく独自算出</strong> — 本サービスのスコアは国または自治体による
+              公式の防災評価・格付けではありません。参考値として防災意識向上に活用してください。
+            </p>
+            <p>
+              <strong>避難所データから全国反映を開始</strong> — GSI指定避難所CSVを全国反映済みです。
+              ほかのハザード・統計指標は、公的データを確認しながら段階的に実データへ置き換えます。
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2 pt-1">
+            {[
+              "国土交通省 ハザードマップ",
+              "消防庁 火災統計",
+              "防災科研 J-SHIS",
+              "総務省 国勢調査",
+              "国土地理院 指定避難所",
+            ].map((src) => (
+              <span key={src} className="text-xs px-2 py-0.5 bg-gray-50 border border-gray-200 rounded-full text-gray-600">
+                {src}
+              </span>
+            ))}
+          </div>
         </section>
 
         {/* FAQ */}

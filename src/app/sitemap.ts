@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { getAllMunicipalities, getAllPrefectures } from "@/lib/municipalities";
+import { buildResultPath, getAllMunicipalities, getAllPrefectures } from "@/lib/municipalities";
 
 const BASE_URL = "https://bousai-hensachi.vercel.app";
 
@@ -24,12 +24,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  const resultRoutes: MetadataRoute.Sitemap = municipalities.map((m) => ({
-    url: `${BASE_URL}/result/${encodeURIComponent(m.prefecture)}/${encodeURIComponent(m.municipality)}`,
-    lastModified: m.dataUpdatedAt ? new Date(m.dataUpdatedAt) : now,
-    changeFrequency: "monthly",
-    priority: 0.7,
-  }));
+  const resultRoutes: MetadataRoute.Sitemap = municipalities.map((m) => {
+    if (!m.jisCode) {
+      throw new Error(`sitemap生成エラー: jisCode未設定 (${m.id})`);
+    }
+    return {
+      url: `${BASE_URL}${buildResultPath(m.jisCode)}`,
+      lastModified: m.dataUpdatedAt ? new Date(m.dataUpdatedAt) : now,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    };
+  });
 
-  return [...staticRoutes, ...prefectureRoutes, ...resultRoutes];
+  const routes = [...staticRoutes, ...prefectureRoutes, ...resultRoutes];
+  const urls = routes.map((route) => route.url);
+  const duplicates = urls.filter((url, index) => urls.indexOf(url) !== index);
+  if (duplicates.length > 0) {
+    throw new Error(`sitemap URL重複: ${Array.from(new Set(duplicates)).join(", ")}`);
+  }
+
+  return routes;
 }

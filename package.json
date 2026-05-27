@@ -7,7 +7,17 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "convert:data": "tsx scripts/csv-to-json.ts"
+    "convert:data": "tsx scripts/csv-to-json.ts",
+    "convert:gsi-shelters": "tsx scripts/converters/convert-gsi-shelters.ts",
+    "master:generate": "tsx scripts/generate-national-master.ts --input data/raw/national/municipalities.csv --output data/master/municipalities-base.json --base data/master/municipalities-base.json",
+    "import:shelters": "tsx scripts/importers/import-shelters.ts",
+    "import:shelters:national": "tsx scripts/importers/import-shelters.ts --input data/raw/national/shelters.csv --output data/processed/shelters.json",
+    "merge:data": "tsx scripts/merge-datasets.ts",
+    "merge:data:strict": "tsx scripts/merge-datasets.ts --strict",
+    "validate:data": "tsx scripts/validate-datasets.ts",
+    "data:build": "npm run import:shelters && npm run merge:data:strict && npm run validate:data -- --strict",
+    "data:build:loose": "npm run import:shelters && npm run merge:data && npm run validate:data",
+    "data:build:national": "npm run master:generate && npm run import:shelters:national && npm run merge:data:strict && npm run validate:data -- --strict"
   },
   "dependencies": {
     "next": "16.2.6",

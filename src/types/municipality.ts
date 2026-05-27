@@ -16,6 +16,8 @@ export interface Municipality {
   comment: string;
   actionTips: string[];
   sourceNote: string;
+  /** 市区町村JISコード（5桁）。全国実データ投入での第一結合キー。 */
+  jisCode?: string;
   postalCode?: string;
   latitude?: number;
   longitude?: number;

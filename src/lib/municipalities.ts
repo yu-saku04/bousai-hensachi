@@ -34,6 +34,11 @@ export function getMunicipalityById(id: string): Municipality | null {
   return data.find((m) => m.id === id) ?? null;
 }
 
+export function getMunicipalityByJisCode(jisCode: string): Municipality | null {
+  const decoded = safeDecode(jisCode);
+  return data.find((m) => m.jisCode === decoded) ?? null;
+}
+
 export function getAllPrefectures(): string[] {
   return Array.from(new Set(data.map((m) => m.prefecture))).sort();
 }
@@ -63,8 +68,8 @@ export function getCategoryRanking(category: ScoreCategory): Municipality[] {
     .map(({ m }) => m);
 }
 
-export function buildResultPath(prefecture: string, municipality: string): string {
-  return `/result/${encodeURIComponent(prefecture)}/${encodeURIComponent(municipality)}`;
+export function buildResultPath(jisCode: string): string {
+  return `/result/${encodeURIComponent(jisCode)}`;
 }
 
 export function searchMunicipalities(keyword: string): Municipality[] {

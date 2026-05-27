@@ -201,3 +201,150 @@ src/
 - フィルターなし時も動的レンダリングになる点の代替案があるか
   - 例: フィルターUIをClient Componentに切り出し、SSGページとして維持する設計
 
+---
+
+## 実データ投入フェーズ 追加レビュー観点
+
+※ 上記のPhase1/2観点に加えて、以下もレビューしてください。
+
+### 24. data-sources.json の構造
+- `id` / `name` / `agency` / `url` / `dataType` / `targetScores` / `updateFrequency` / `licenseNote` / `status` / `lastCheckedAt` / `notes` の全フィールドが存在するか
+- `status` の値が `"planned" | "collected" | "converted" | "applied"` のいずれかであるか
+- `targetScores` の値が `score.ts` の `ScoreKey` と一致しているか
+- `url` が有効なURLの形式であるか（httpから始まるか）
+- 重複 `id` がないか
+
+### 25. インポーター設計（scripts/importers/*.ts）
+- 各インポーターに `--input` / `--output` CLI引数が実装されているか
+- ファイルが存在しない場合にクラッシュせず、適切なエラーメッセージを出力するか
+- CSVのBOM対応（`bom: true`）が実装されているか
+- `municipalityCode`（5桁JISコード）をキーとして使用しているか、または `prefecture_municipality` キーへのフォールバックがあるか
+- `_debug` フィールドで計算過程を確認できるか
+- `calcOverallScore` / `normalizeHigherIsBetter` / `normalizeLowerIsBetter` を正しくimportしているか
+
+### 26. raw/processed 分離
+- 生データは `data/raw/` 以下にのみ保存され、`src/` 以下には入らない設計か
+- 加工済みデータは `data/processed/` 以下で、`src/data/municipalities.json` への反映は `merge-datasets.ts` 経由のみか
+- `data/raw/` と `data/processed/` が `.gitignore` に含まれているか（または含めるべきか方針が決まっているか）
+
+### 27. normalize.ts の妥当性
+- `normalizeHigherIsBetter(value, min, max)` が `value === min` で 0、`value === max` で 100 を返すか
+- `normalizeLowerIsBetter(value, min, max)` が `value === min` で 100、`value === max` で 0 を返すか
+- `calculatePercentileScore` が空配列 / 全値同一 の場合にNaNやエラーを出さないか
+- `calculateDeviationScore` が `stdDev === 0` の場合にNaN / Infinityを出さないか
+- `weightedAverage` が全weightが0のときに 0 を返すか（またはNaNを出さないか）
+- 戻り値が常に 0〜100 に収まるようにclampされているか
+
+### 28. 実データ投入時の再現性
+- `merge-datasets.ts` を同じ入力で2回実行しても同じ出力になるか（冪等性）
+- `validate-datasets.ts` がCIステップとして使えるか（exit code 1 でエラー終了するか）
+- `data/raw/tokyo-23/README.md` に手順が十分に文書化されているか
+- スクリプト間の実行順序が明確に定義されているか
+
+---
+
+## 避難所データ投入 追加レビュー観点
+
+### 30. CSV必須カラム検証（import-shelters.ts）
+- `jisCode` / `prefecture` / `municipality` / `shelterName` / `capacity` / `disasterTypes` / `sourceUrl` / `updatedAt` の全カラムが存在しない場合に明示的なエラーで終了するか
+- ヘッダー行の欠落を事前に検出するか（列数ではなく列名で判定しているか）
+
+### 31. フィールド個別バリデーション（import-shelters.ts）
+- `capacity`: 正の整数でない場合（負数・小数・空文字）にエラーを出すか
+- `latitude` / `longitude`: 任意だが存在する場合に日本範囲外（lat: 20〜46, lon: 122〜154）でエラーを出すか
+- `updatedAt`: YYYY-MM-DD 形式でない場合にエラーを出すか
+- `sourceUrl`: http(s):// から始まらない場合にエラーを出すか
+- `jisCode`: 5桁数字でない場合にエラーを出すか
+- `disasterTypes`: 未知の種別（既定リスト外）の場合にエラーを出すか
+- バリデーションエラーがある場合に exit code 1 で終了するか
+
+### 32. municipality 単位集計ロジック（import-shelters.ts）
+- 同一 jisCode の複数行が正しく集計されるか（shelterCount / totalCapacity の加算）
+- `disasterTypes` は全施設の union（重複なし）として集計されるか
+- `updatedAt` は複数行中の最新値を採用するか
+- `sheltersPerTenThousand` は人口がない場合に null となり、スコア計算がフォールバックするか
+- `calcShelterCapacityScore` が空配列やすべて null のデータセットで NaN / エラーを出さないか
+
+### 33. JOINロジック（merge-datasets.ts）
+- shelters.json が存在しない場合はスキップされ、既存データを壊さないか
+- jisCode 優先、なければ `prefecture_municipality` でフォールバックするか
+- JOIN 失敗した自治体は warnings に出力されるか（エラーで止まらないか）
+- 既存の `socialSupportScore` / `infrastructureRecoveryScore` がない場合に avoid NaN処理がされているか
+
+### 34. shelterCapacity 算出妥当性（normalize.ts）
+- `calcShelterCapacityScore` は「高いほど良い」方向（sheltersPerTenThousand が多いほど高スコア）か
+- パーセンタイル計算が 1件のみの場合（自分だけ）に 50 を返すか
+- totalCapacity フォールバックが sheltersPerTenThousand がすべて null の場合にのみ適用されるか
+
+### 35. 実データ投入時の再現性（全体）
+- `npm run import:shelters` → `npm run merge:data` → `npm run validate:data` を同じ入力で繰り返し実行しても同じ結果になるか（冪等性）
+- shelters.template.csv の注記（template であることの明示）が data-sources.json の notes に含まれているか
+- 実データに置き換えるときに変更が必要なファイルが `data/raw/` 以下のみで済むか
+
+### 36. sourcesページとの整合性（sources/page.tsx）
+- data-sources.json の `status: "converted"` が sources ページに正しく表示されるか（badge 色が変わるか）
+- `targetScores` に `socialSupportScore` / `infrastructureRecoveryScore` が追加されていることが sources ページで確認できるか
+- `notes` に「template」と明記されていることが確認できるか
+
+### 29. 出典表示とライセンス記載
+- `/sources` ページの各データソースカードに `licenseNote` が表示されているか
+- `lastCheckedAt` が表示されているか（データの鮮度を示す）
+- 外部リンクに `rel="noopener noreferrer"` が付いているか
+- `status === "applied"` のデータについて、結果ページの `sourceNote` フィールドに出典が記載される設計か
+- CC BY 4.0 データに対して帰属表示（出典: ○○）が適切に行われているか
+
+---
+
+## 全国避難所CSV投入 追加レビュー観点
+
+### 37. 全国避難所CSV取り込み仕様（import-shelters.ts）
+- 必須カラムが `jisCode / prefecture / municipality / shelterName / sourceUrl / updatedAt` に限定されているか（capacity / disasterTypes は推奨に降格済み）
+- `capacity` 欠損時に 0 として集計し warning ログを出すか（エラーで止まらないか）
+- `disasterTypes` 欠損時に `["unknown"]` を設定し warning ログを出すか
+- `sourceUrl` 欠損時は error で終了するか
+- `updatedAt` 欠損時は error で終了するか
+- `latitude` / `longitude` は任意であり、欠損時も処理を継続するか
+- `"unknown"` が `KNOWN_DISASTER_TYPES` に含まれているか
+
+### 38. sourceUrls 保持（import-shelters.ts / shelters.json）
+- `sourceUrls: string[]` が `ShelterImportResult` に定義されているか
+- 同一jisCode内の全施設の sourceUrl を重複なしで収集しているか
+- `sourceUrl`（代表値: first.sourceUrl）と `sourceUrls`（全URL一覧）が両方出力されるか
+- shelters.json の各エントリに `sourceUrls` フィールドが存在するか（validate-datasets.ts で検証済みか）
+
+### 39. calculationVersion（import-shelters.ts / validate-datasets.ts）
+- `calculationVersion: "shelter-v1"` が `ShelterImportResult` 型に定義されているか（リテラル型）
+- 全エントリに `calculationVersion` が設定されていることを validate-datasets.ts が検証するか
+- スコア算出ロジック変更時のバージョニング方針が明確か
+
+### 40. shelters.json スキーマ検証（validate-datasets.ts）
+- `validateSheltersJson` 関数が `data/processed/shelters.json` を自動検証するか
+- 以下のフィールドを全エントリで検証するか:
+  - `sourceUrls` が配列であること
+  - `shelterCount >= 0`
+  - `totalCapacity >= 0`
+  - `sheltersPerTenThousand >= 0` または `null`
+  - `calculationVersion` が存在すること
+- shelters.json が存在しない場合は warning でスキップされるか（エラーで止まらないか）
+- `--shelters PATH` オプションで検証対象パスを変更できるか
+
+### 41. 全国CSV投入時の fail-fast（merge-datasets.ts strict mode）
+- strict モードで以下が全てエラーとなり、**municipalities.json 出力前**に throw するか:
+  - フォールバックJOIN（prefecture_municipality名寄せ）の発生
+  - 避難所データのJOIN失敗（shelters.csvにない自治体）
+  - shelters.json の未使用エントリ（base に存在しない jisCode）
+  - 各 processed ファイルの未使用エントリ
+- strict モードでエラーがなければ municipalities.json が正常出力されるか
+
+### 42. municipalities.json クライアント流出有無
+- `municipalities.json` が `src/data/` 以下に存在し、Next.js の Server Component からのみ読まれているか
+- `"use client"` 付きコンポーネントで `municipalities.json` を直接 import していないか
+- `server-only` パッケージが `src/lib/municipalities.ts` に import されているか
+- `generateStaticParams` で全ページを SSG 出力することで、クライアント側に municipalities.json が bundle されていないか（Dynamic pages = 0 を確認）
+- `municipality-search-index.json` は `id / prefecture / municipality / overallScore` のみを含む軽量版であり、フル JSON はクライアントに流出していないか
+
+### 43. 実CSV投入前チェックリスト（data/raw/national/README.md との整合）
+- `data/raw/national/README.md` に strict モード停止条件が正確に文書化されているか
+- shelters.csv の必須カラム・推奨カラムの欠損時の挙動が文書と実装で一致しているか
+- `npm run data:build:national` のコマンド順序（master:generate → import:shelters:national → merge:data:strict → validate:data --strict）が README と package.json で一致しているか
+

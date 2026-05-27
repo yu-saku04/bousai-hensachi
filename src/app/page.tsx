@@ -1,7 +1,7 @@
 import Link from "next/link";
 import SearchForm from "@/components/SearchForm";
 import AdPlaceholder from "@/components/AdPlaceholder";
-import { getRanking } from "@/lib/municipalities";
+import { buildResultPath, getRanking } from "@/lib/municipalities";
 import { getScoreLevelLabel, getScoreLevelColor } from "@/lib/score";
 
 export default function HomePage() {
@@ -48,7 +48,7 @@ export default function HomePage() {
             {topRanking.map((m, i) => (
               <li key={m.id}>
                 <Link
-                  href={`/result/${encodeURIComponent(m.prefecture)}/${encodeURIComponent(m.municipality)}`}
+                  href={buildResultPath(m.jisCode ?? "")}
                   className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors"
                 >
                   <span className="text-lg font-bold text-gray-400 w-6 text-center">
@@ -80,10 +80,10 @@ export default function HomePage() {
           </Link>
         </section>
 
-        {/* 仮データ注意 */}
+        {/* データ注意 */}
         <div className="flex items-center gap-2 bg-amber-50 border border-amber-200 rounded-xl px-4 py-2 text-xs text-amber-700">
           <span>⚠️</span>
-          <span>現在表示しているデータはMVP用の仮データです。</span>
+          <span>避難所データはGSI指定避難所CSVを反映済みです。一部指標は初期値・設計値を含みます。</span>
           <Link href="/sources" className="underline font-medium whitespace-nowrap">詳細</Link>
         </div>
 

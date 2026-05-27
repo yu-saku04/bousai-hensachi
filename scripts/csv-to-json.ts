@@ -32,6 +32,7 @@ const SEARCH_INDEX_OUTPUT_PATH = path.join(__dirname, "../src/data/municipality-
 // -------------------------------------------------------
 interface Municipality {
   id: string;
+  jisCode?: string;
   prefecture: string;
   municipality: string;
   overallScore: number;
@@ -64,6 +65,7 @@ interface Municipality {
 
 interface SearchIndexItem {
   id: string;
+  jisCode: string;
   prefecture: string;
   municipality: string;
   overallScore: number;
@@ -260,6 +262,7 @@ function main() {
   // 軽量検索インデックスを同時更新
   const searchIndex: SearchIndexItem[] = municipalities.map((m) => ({
     id: m.id,
+    jisCode: m.jisCode ?? "",
     prefecture: m.prefecture,
     municipality: m.municipality,
     overallScore: m.overallScore,

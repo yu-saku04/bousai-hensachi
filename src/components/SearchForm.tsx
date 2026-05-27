@@ -22,23 +22,27 @@ export default function SearchForm() {
   const prefectures = getAllPrefecturesFromIndex();
   const [tab, setTab] = useState<Tab>("select");
   const [selectedPref, setSelectedPref] = useState("");
-  const [selectedMuni, setSelectedMuni] = useState("");
+  const [selectedJisCode, setSelectedJisCode] = useState("");
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const tablistId = useId();
 
   const municipalities = selectedPref
     ? getMunicipalitiesByPrefectureFromIndex(selectedPref)
     : [];
+  const municipalityNameCounts = municipalities.reduce<Record<string, number>>((acc, m) => {
+    acc[m.municipality] = (acc[m.municipality] ?? 0) + 1;
+    return acc;
+  }, {});
 
   function handlePrefChange(e: React.ChangeEvent<HTMLSelectElement>) {
     setSelectedPref(e.target.value);
-    setSelectedMuni("");
+    setSelectedJisCode("");
   }
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!selectedPref || !selectedMuni) return;
-    router.push(buildResultPath(selectedPref, selectedMuni));
+    if (!selectedPref || !selectedJisCode) return;
+    router.push(buildResultPath(selectedJisCode));
   }
 
   // roving tabindex キーボードナビゲーション
@@ -125,8 +129,8 @@ export default function SearchForm() {
             </label>
             <select
               id="municipality"
-              value={selectedMuni}
-              onChange={(e) => setSelectedMuni(e.target.value)}
+              value={selectedJisCode}
+              onChange={(e) => setSelectedJisCode(e.target.value)}
               disabled={municipalities.length === 0}
               className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:opacity-50 disabled:cursor-not-allowed"
             >
@@ -134,14 +138,18 @@ export default function SearchForm() {
                 {municipalities.length === 0 ? "先に都道府県を選んでください" : "-- 市区町村を選択 --"}
               </option>
               {municipalities.map((m) => (
-                <option key={m.id} value={m.municipality}>{m.municipality}</option>
+                <option key={m.id} value={m.jisCode}>
+                  {municipalityNameCounts[m.municipality] > 1
+                    ? `${m.municipality}（${m.jisCode}）`
+                    : m.municipality}
+                </option>
               ))}
             </select>
           </div>
 
           <button
             type="submit"
-            disabled={!selectedPref || !selectedMuni}
+            disabled={!selectedPref || !selectedJisCode}
             className="w-full rounded-xl bg-blue-600 px-6 py-4 text-white font-bold text-lg shadow-md hover:bg-blue-700 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
             診断する

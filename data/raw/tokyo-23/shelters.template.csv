@@ -1,0 +1,6 @@
+jisCode,prefecture,municipality,shelterName,address,latitude,longitude,capacity,disasterTypes,sourceUrl,updatedAt
+13112,東京都,世田谷区,世田谷小学校,東京都世田谷区世田谷1-1-1,35.6464,139.6530,350,earthquake|flood,https://catalog.data.metro.tokyo.lg.jp/dataset/setagaya-hinanjo,2026-05-22
+13112,東京都,世田谷区,三軒茶屋小学校,東京都世田谷区太子堂1-1-1,35.6439,139.6673,280,earthquake|fire,https://catalog.data.metro.tokyo.lg.jp/dataset/setagaya-hinanjo,2026-05-22
+13108,東京都,江東区,東陽小学校,東京都江東区東陽2-1-1,35.6736,139.8166,420,earthquake|flood|fire,https://catalog.data.metro.tokyo.lg.jp/dataset/koto-hinanjo,2026-05-22
+13113,東京都,渋谷区,渋谷小学校,東京都渋谷区渋谷1-1-1,35.6617,139.7041,310,earthquake,https://catalog.data.metro.tokyo.lg.jp/dataset/shibuya-hinanjo,2026-05-22
+13113,東京都,渋谷区,恵比寿小学校,東京都渋谷区恵比寿2-1-1,35.6476,139.7136,260,earthquake|flood,https://catalog.data.metro.tokyo.lg.jp/dataset/shibuya-hinanjo,2026-05-22

@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import type { Municipality } from "@/types/municipality";
+import type { RadarDataPoint } from "@/components/DisasterRadarChart";
 
 const DisasterRadarChart = dynamic(
   () => import("@/components/DisasterRadarChart"),
@@ -16,9 +16,9 @@ const DisasterRadarChart = dynamic(
 );
 
 interface Props {
-  municipality: Municipality;
+  data: RadarDataPoint[];
 }
 
-export default function RadarChartWrapper({ municipality }: Props) {
-  return <DisasterRadarChart municipality={municipality} />;
+export default function RadarChartWrapper({ data }: Props) {
+  return <DisasterRadarChart data={data} />;
 }

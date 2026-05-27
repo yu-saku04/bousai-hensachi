@@ -7,23 +7,18 @@ import {
   PolarAngleAxis,
   ResponsiveContainer,
 } from "recharts";
-import { SCORE_ITEMS, clampScore } from "@/lib/score";
-import type { Municipality } from "@/types/municipality";
 
-interface Props {
-  municipality: Municipality;
+export interface RadarDataPoint {
+  subject: string;
+  score: number;
+  fullMark: number;
 }
 
-export default function DisasterRadarChart({ municipality }: Props) {
-  const data = SCORE_ITEMS.filter((item) => item.visible).map((item) => {
-    const raw = municipality[item.key as keyof Municipality];
-    return {
-      subject: item.shortLabel,
-      score: clampScore(typeof raw === "number" ? raw : 0),
-      fullMark: 100,
-    };
-  });
+interface Props {
+  data: RadarDataPoint[];
+}
 
+export default function DisasterRadarChart({ data }: Props) {
   return (
     <ResponsiveContainer width="100%" height={260}>
       <RadarChart cx="50%" cy="50%" outerRadius="75%" data={data}>

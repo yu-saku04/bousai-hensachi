@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getScoreLevelColor, getScoreLevelLabel, getScoreLevelBg, clampScore } from "@/lib/score";
+import { buildResultPath } from "@/lib/municipalities";
 import type { Municipality } from "@/types/municipality";
 
 interface RankingListProps {
@@ -34,7 +35,7 @@ export default function RankingList({ ranking }: RankingListProps) {
           return (
             <li key={m.id} className="border-b border-gray-50 last:border-none">
               <Link
-                href={`/result/${encodeURIComponent(m.prefecture)}/${encodeURIComponent(m.municipality)}`}
+                href={buildResultPath(m.jisCode ?? "")}
                 className="grid grid-cols-12 items-center px-4 py-4 hover:bg-gray-50 transition-colors"
               >
                 <span className="col-span-1 text-center text-sm font-bold text-gray-400">

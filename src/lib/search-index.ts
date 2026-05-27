@@ -2,6 +2,7 @@ import rawIndex from "@/data/municipality-search-index.json";
 
 export interface MunicipalityIndex {
   id: string;
+  jisCode: string;
   prefecture: string;
   municipality: string;
   overallScore: number;
@@ -29,6 +30,6 @@ export function getMunicipalitiesByPrefectureFromIndex(prefecture: string): Muni
   return index.filter((m) => m.prefecture === prefecture);
 }
 
-export function buildResultPath(prefecture: string, municipality: string): string {
-  return `/result/${encodeURIComponent(prefecture)}/${encodeURIComponent(municipality)}`;
+export function buildResultPath(jisCode: string): string {
+  return `/result/${encodeURIComponent(jisCode)}`;
 }

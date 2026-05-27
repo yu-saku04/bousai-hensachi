@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getCategoryRanking } from "@/lib/municipalities";
+import { buildResultPath, getCategoryRanking } from "@/lib/municipalities";
 import { calcCategoryScore, clampScore, getScoreLevelColor, SCORE_ITEMS } from "@/lib/score";
 import type { ScoreKey } from "@/lib/score";
 import AdPlaceholder from "@/components/AdPlaceholder";
@@ -68,7 +68,7 @@ export default function EmotionalRankingPage() {
 
         <div className="flex items-center gap-2 bg-amber-50 border border-amber-200 rounded-xl px-4 py-2 text-xs text-amber-700">
           <span>⚠️</span>
-          <span>現在表示しているデータはMVP用の仮データです。</span>
+          <span>避難所データはGSI指定避難所CSVを反映済みです。一部指標は初期値・設計値を含みます。</span>
           <Link href="/sources" className="underline font-medium whitespace-nowrap">詳細</Link>
         </div>
 
@@ -83,7 +83,7 @@ export default function EmotionalRankingPage() {
             return (
               <Link
                 key={m.id}
-                href={`/result/${encodeURIComponent(m.prefecture)}/${encodeURIComponent(m.municipality)}`}
+                href={buildResultPath(m.jisCode ?? "")}
                 className="flex items-center gap-3 bg-white rounded-xl border border-gray-100 px-4 py-3 shadow-sm hover:border-purple-200 transition-colors"
               >
                 <span className="text-sm font-bold text-gray-400 w-7 text-right tabular-nums">
