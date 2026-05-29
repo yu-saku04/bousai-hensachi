@@ -59,7 +59,15 @@ interface ValidationResult {
   stats: Record<string, number>;
 }
 
-const JIS_RE = /^\d{5}$/;
+const JIS_RE  = /^\d{5}$/;
+const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+
+function isValidDate(s: string): boolean {
+  if (!DATE_RE.test(s)) return false;
+  const [y, mo, d] = s.split("-").map(Number);
+  const dt = new Date(y, mo - 1, d);
+  return dt.getFullYear() === y && dt.getMonth() === mo - 1 && dt.getDate() === d;
+}
 
 const REQUIRED_FIELDS = [
   "id", "prefecture", "municipality", "overallScore",
@@ -77,6 +85,142 @@ function isHttpUrl(value: unknown): value is string {
   } catch {
     return false;
   }
+}
+
+function validatePopulationJson(
+  populationPath: string,
+  masterPath: string,
+  strictMode = false,
+): { errors: string[]; warnings: string[]; stats: Record<string, number> } {
+  const errors: string[] = [];
+  const warnings: string[] = [];
+  const stats: Record<string, number> = {};
+
+  if (!fs.existsSync(populationPath)) {
+    const msg = `population.json が存在しません（スキップ）: ${populationPath}`;
+    if (strictMode) {
+      errors.push(msg);
+    } else {
+      warnings.push(msg);
+    }
+    return { errors, warnings, stats };
+  }
+
+  let masterJisCodes: Set<string> | null = null;
+  if (!fs.existsSync(masterPath)) {
+    const msg = `masterファイルが存在しません（jisCode照合スキップ）: ${masterPath}`;
+    if (strictMode) {
+      errors.push(msg);
+      return { errors, warnings, stats };
+    }
+    warnings.push(msg);
+  } else {
+    try {
+      const master = JSON.parse(
+        fs.readFileSync(masterPath, "utf-8"),
+      ) as Array<{ jisCode?: string }>;
+      masterJisCodes = new Set(
+        master.map((m) => m.jisCode).filter((c): c is string => typeof c === "string"),
+      );
+    } catch {
+      const msg = `master JSON parse 失敗（jisCode照合スキップ）: ${masterPath}`;
+      if (strictMode) {
+        errors.push(msg);
+        return { errors, warnings, stats };
+      }
+      warnings.push(msg);
+    }
+  }
+
+  let population: Array<Record<string, unknown>>;
+  try {
+    population = JSON.parse(fs.readFileSync(populationPath, "utf-8"));
+  } catch {
+    return { errors: [`population.json JSON parse 失敗: ${populationPath}`], warnings: [], stats: {} };
+  }
+
+  if (!Array.isArray(population)) {
+    return { errors: [`population.json は配列である必要があります: ${populationPath}`], warnings: [], stats: {} };
+  }
+
+  stats["population件数"] = population.length;
+
+  // 0件チェック
+  if (population.length === 0) {
+    const msg = `population.json が空です (0件)。実データを投入してください`;
+    if (strictMode) {
+      errors.push(msg);
+    } else {
+      warnings.push(msg);
+    }
+    return { errors, warnings, stats };
+  }
+
+  // strict mode: master jisCode 件数との coverage チェック
+  if (strictMode && masterJisCodes && population.length < masterJisCodes.size) {
+    const missing = masterJisCodes.size - population.length;
+    errors.push(
+      `population.json の件数 (${population.length}件) が master jisCode 件数 (${masterJisCodes.size}件) 未満です` +
+      ` — ${missing}件欠損。全国master全件の人口データが必要です`,
+    );
+  }
+
+  // jisCode 重複検出（常に error）
+  const jisCodeCounts = new Map<string, number>();
+  for (const p of population) {
+    const jis = p["jisCode"];
+    if (typeof jis === "string" && JIS_RE.test(jis)) {
+      jisCodeCounts.set(jis, (jisCodeCounts.get(jis) ?? 0) + 1);
+    }
+  }
+  for (const [jis, count] of jisCodeCounts) {
+    if (count > 1) {
+      errors.push(`population.json jisCode重複: "${jis}" (${count}件)`);
+    }
+  }
+
+  for (const p of population) {
+    const jisCode = p["jisCode"];
+    const id = `${jisCode ?? "unknown"}`;
+
+    if (typeof jisCode !== "string" || !JIS_RE.test(jisCode)) {
+      errors.push(`[${id}] jisCode が無効 (5桁数字必須): ${jisCode}`);
+    } else if (masterJisCodes && !masterJisCodes.has(jisCode)) {
+      errors.push(`[${id}] jisCode がmasterに存在しません`);
+    }
+
+    // prefecture 必須
+    const pref = p["prefecture"];
+    if (typeof pref !== "string" || pref.trim() === "") {
+      errors.push(`[${id}] prefecture が空または未設定`);
+    }
+
+    // municipality 必須
+    const muni = p["municipality"];
+    if (typeof muni !== "string" || muni.trim() === "") {
+      errors.push(`[${id}] municipality が空または未設定`);
+    }
+
+    const pop = p["population"];
+    if (typeof pop !== "number" || !Number.isFinite(pop) || !Number.isInteger(pop) || pop <= 0) {
+      errors.push(`[${id}] population が無効 (正の整数必須): ${pop}`);
+    }
+
+    if (!isHttpUrl(p["sourceUrl"])) {
+      errors.push(`[${id}] sourceUrl が無効 (http(s) URL必須): ${p["sourceUrl"]}`);
+    }
+
+    const updatedAt = p["updatedAt"];
+    if (typeof updatedAt !== "string" || !isValidDate(updatedAt)) {
+      errors.push(`[${id}] updatedAt が無効 (実在するYYYY-MM-DD必須): ${updatedAt}`);
+    }
+
+    if (p["calculationVersion"] !== "population-v1") {
+      errors.push(`[${id}] calculationVersion は population-v1 である必要があります (${p["calculationVersion"]})`);
+    }
+  }
+
+  return { errors, warnings, stats };
 }
 
 function validateSheltersJson(
@@ -247,13 +391,13 @@ function validateDatasets(inputPath: string, strictMode = false, sheltersPath?: 
     }
   }
 
-  // 7. 避難所関連フィールドの検証
-  const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+  // 7. 避難所・人口関連フィールドの検証
   let shelterSourceCount = 0;
   let dataUpdatedAtCount = 0;
+  let populationCount = 0;
 
   for (const m of data) {
-    // shelterCapacity は 2. のスコア範囲チェックでカバー済み。追加で負数・0チェック
+    // shelterCapacity は 2. のスコア範囲チェックでカバー済み。追加で負数チェック
     const sc = m.shelterCapacity;
     if (typeof sc === "number" && sc < 0) {
       errors.push(`[${m.id}] shelterCapacity が負数 (${sc})`);
@@ -276,10 +420,40 @@ function validateDatasets(inputPath: string, strictMode = false, sheltersPath?: 
         errors.push(`[${m.id}] dataUpdatedAt の日付形式が不正 (${da})`);
       }
     }
+
+    // population: 存在する場合は正の整数
+    const popVal = m["population"];
+    if (popVal !== undefined) {
+      if (
+        typeof popVal !== "number" ||
+        !Number.isFinite(popVal) ||
+        !Number.isInteger(popVal) ||
+        popVal <= 0
+      ) {
+        errors.push(`[${m.id}] population が無効 (正の整数必須): ${popVal}`);
+      } else {
+        populationCount++;
+      }
+    }
+
+    // populationSource: 存在する場合は http(s) URL
+    const popSrc = m["populationSource"];
+    if (popSrc !== undefined && !isHttpUrl(popSrc)) {
+      errors.push(`[${m.id}] populationSource が無効 (http(s) URL必須): ${popSrc}`);
+    }
+
+    // populationUpdatedAt: 存在する場合は実在 YYYY-MM-DD
+    const popUpdAt = m["populationUpdatedAt"];
+    if (popUpdAt !== undefined) {
+      if (typeof popUpdAt !== "string" || !isValidDate(popUpdAt)) {
+        errors.push(`[${m.id}] populationUpdatedAt が無効 (実在するYYYY-MM-DD必須): ${popUpdAt}`);
+      }
+    }
   }
 
-  stats["shelterSource記入済み"] = shelterSourceCount;
-  stats["dataUpdatedAt記入済み"] = dataUpdatedAtCount;
+  stats["shelterSource記入済み"]    = shelterSourceCount;
+  stats["dataUpdatedAt記入済み"]    = dataUpdatedAtCount;
+  stats["population記入済み"]       = populationCount;
 
   // 8. jisCode カバレッジ（--strict 時は error、通常時は warning）
   let jisCodeCount = 0;
@@ -413,6 +587,16 @@ function validateDatasets(inputPath: string, strictMode = false, sheltersPath?: 
   errors.push(...shelterValidation.errors);
   warnings.push(...shelterValidation.warnings);
   Object.assign(stats, shelterValidation.stats);
+
+  // 13. population.json スキーマ検証
+  const populationValidation = validatePopulationJson(
+    "data/processed/population.json",
+    "data/master/municipalities-base.json",
+    strictMode,
+  );
+  errors.push(...populationValidation.errors);
+  warnings.push(...populationValidation.warnings);
+  Object.assign(stats, populationValidation.stats);
 
   return { errors, warnings, stats };
 }

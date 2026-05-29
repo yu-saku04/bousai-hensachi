@@ -188,15 +188,14 @@ interface Municipality {
 **データ投入フロー:**
 ```bash
 # 1. 各インポーター実行
-npx ts-node scripts/importers/import-shelters.ts --input data/raw/shelters.csv --output data/processed/shelter-scores.json
-npx ts-node scripts/importers/import-population.ts --input data/raw/census-2020.csv --output data/processed/population-scores.json
-# ... 他のインポーターも同様
+npm run import:shelters:national   # → data/processed/shelters.json
+npm run import:population          # → data/processed/population.json
 
-# 2. 統合
-npx ts-node scripts/merge-datasets.ts --base src/data/municipalities.json --processed data/processed/ --output src/data/municipalities.json
+# 2. 統合（processed/*.json を municipalities.json にマージ）
+npm run merge:data:strict
 
 # 3. 検証
-npx ts-node scripts/validate-datasets.ts --input src/data/municipalities.json
+npm run validate:data -- --strict
 
 # 4. ビルド確認
 npm run build
@@ -481,6 +480,81 @@ npm run data:build:national
 - [ ] 文字コードが UTF-8（BOM付き可）であること
 - [ ] `npm run data:build:national` が strict モードでエラーなし通過すること
 - [ ] `npm run build` が成功すること（Dynamic pages = 0 維持）
+
+---
+
+## 人口データ投入フェーズ（population-v1）
+
+### 概要
+
+市区町村別の総人口を `data/processed/population.json` として管理します。
+この人口データは以下の目的で使います：
+
+- 避難所充足率（`sheltersPerTenThousand`・`capacityPerPopulation`）の精度向上
+- 人口密度・高齢化率・単身世帯・子育て世帯・孤立リスクの基礎データ
+
+**現在: インフラ実装済み。実CSVは未投入（`data/raw/national/population.csv` にデータを追記すると有効化）。**
+
+### ファイル構成
+
+| ファイル | 役割 | 状態 |
+|---|---|---|
+| `data/raw/national/population.csv` | 入力CSV（ヘッダーのみ） | 投入予定 |
+| `data/processed/population.json` | importerの出力 | import:population 実行後に生成 |
+| `scripts/importers/import-population.ts` | CSVパーサー・バリデーター | 実装済み |
+
+### 推奨取得元
+
+| 優先度 | データソース | 備考 |
+|---|---|---|
+| ★★★ | e-Stat 国勢調査2020年（市区町村別人口） | `https://www.e-stat.go.jp/` |
+| ★★☆ | 住民基本台帳人口・世帯数調査（毎年3月末） | 最新年次データ |
+| ★☆☆ | 総務省統計局 統計データ | 補完用 |
+
+詳細: `data/raw/national/README.md` → population.csv 仕様セクション
+
+### 運用方針（strict validate について）
+
+> **重要**: `population.json` が空（0件）の状態では `npm run validate:data -- --strict` は **失敗**します。
+
+| 状態 | 推奨コマンド |
+|---|---|
+| 実人口CSV **未投入**（現在） | `npm run validate:data`（loose mode） |
+| 実人口CSV **投入後** | `npm run validate:data -- --strict` |
+
+実人口CSV 未投入時に strict validate が必要な場合は、`population.json` を生成しない（`import:population` を実行しない）か、loose mode を使用してください。
+
+### 実行方法（実人口CSV 未投入時）
+
+```bash
+# loose mode で検証（population.json 空は warning のみ）
+npm run validate:data
+npm run build
+```
+
+### 実行方法（実人口CSV 投入後）
+
+```bash
+# 1. population.csv に実データを追記後、インポート
+npm run import:population
+# → data/processed/population.json を生成（population-v1）
+
+# 2. マージ（municipalities.json に population / populationSource / populationUpdatedAt を反映）
+npm run merge:data:strict
+
+# 3. strict バリデーション（population 0件・master coverage 不足でエラー）
+npm run validate:data -- --strict
+
+# 4. ビルド確認
+npm run build
+```
+
+### data:build:national への組み込みについて
+
+`import:population` は現時点では `data:build:national` に含めていません。理由:
+- `population.csv` に実データが未投入の状態では 0件出力となり、strict validate で失敗する
+- 実データ投入後は上記「投入後」フローを手動実行で反映可能
+- `population.csv` が全国 1,918件分安定した後に `data:build:national` へ組み込む予定
 
 ---
 

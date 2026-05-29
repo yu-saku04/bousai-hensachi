@@ -91,6 +91,19 @@
     "notes": "2020年国勢調査データ使用。高齢化率・1人暮らし高齢者世帯比率・子育て世帯数を抽出"
   },
   {
+    "id": "stat-population-v1",
+    "name": "市区町村別総人口データ基盤（population-v1）",
+    "agency": "総務省統計局 / 住民基本台帳",
+    "url": "https://www.stat.go.jp/data/kokusei/2020/",
+    "dataType": "CSV",
+    "targetScores": ["shelterCapacity"],
+    "updateFrequency": "5年ごと（国勢調査）/ 年1回（住民基本台帳）",
+    "licenseNote": "統計法第32条に基づく二次利用可（CC BY 4.0相当）",
+    "status": "planned",
+    "lastCheckedAt": "2026-05-27",
+    "notes": "投入予定。市区町村別の総人口のみを管理（population-v1）。高齢化率・単身世帯・子育て世帯などは stat-census（国勢調査フルデータ）で別途処理。用途: 避難所充足率（sheltersPerTenThousand・capacityPerPopulation）の分母として使用。取得元候補: (1) e-Stat 国勢調査2020年 市区町村別人口 https://www.e-stat.go.jp/ (2) 住民基本台帳人口・世帯数調査（毎年3月末公表） (3) 総務省統計局 CSV一括ダウンロード。投入手順: data/raw/national/population.csv に追記 → npm run import:population"
+  },
+  {
     "id": "stat-住民基本台帳",
     "name": "住民基本台帳人口・世帯数",
     "agency": "総務省",

@@ -1,149 +1,184 @@
 /**
- * 人口・高齢化データインポーター
+ * 人口データインポーター (population-v1)
  *
- * データソース: 総務省統計局 国勢調査（2020年）
- * URL: https://www.stat.go.jp/data/kokusei/2020/
- * 形式: CSV
+ * データソース候補:
+ *   - 総務省統計局 国勢調査（2020年）
+ *     https://www.stat.go.jp/data/kokusei/2020/
+ *   - 住民基本台帳人口・世帯数調査（毎年3月末時点）
+ *     https://www.soumu.go.jp/main_sosiki/jichi_gyousei/daityo/jinkou_jichi.html
  *
- * 利用ライセンス: CC BY 4.0（統計法第32条に基づく二次利用可）
+ * 入力CSV: data/raw/national/population.csv
+ *   カラム: jisCode,prefecture,municipality,population,sourceUrl,updatedAt
  *
- * 取得データ:
- *   - 市区町村別人口・高齢化率
- *   - 1人暮らし高齢者世帯比率（孤立リスク用）
- *   - 15歳未満人口比率（子育てストレスリスク用）
+ * 出力: data/processed/population.json
+ *   形式: PopulationEntry[]（calculationVersion: "population-v1"）
  *
  * 使い方:
- *   npx ts-node scripts/importers/import-population.ts \
- *     --input data/raw/census-2020.csv \
- *     --output data/processed/population-scores.json
+ *   npm run import:population
+ *   tsx scripts/importers/import-population.ts [--input PATH] [--output PATH] [--master PATH]
  */
 
 import fs from "fs";
 import path from "path";
 import { parse } from "csv-parse/sync";
-import { normalizeLowerIsBetter, normalizeHigherIsBetter, calculatePercentileScore } from "@/lib/normalize";
 
-export interface PopulationRawRow {
-  municipalityCode: string;
+const JIS_RE  = /^\d{5}$/;
+const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+
+function isValidDate(s: string): boolean {
+  if (!DATE_RE.test(s)) return false;
+  const [y, mo, d] = s.split("-").map(Number);
+  const dt = new Date(y, mo - 1, d);
+  return dt.getFullYear() === y && dt.getMonth() === mo - 1 && dt.getDate() === d;
+}
+
+export interface PopulationEntry {
+  jisCode: string;
   prefecture: string;
   municipality: string;
-  /** 総人口 */
-  totalPopulation: number;
-  /** 65歳以上人口 */
-  elderlyPopulation: number;
-  /** 65歳以上1人暮らし世帯数 */
-  elderlyAloneHouseholds?: number;
-  /** 15歳未満人口 */
-  childPopulation?: number;
-  /** 総世帯数 */
-  totalHouseholds?: number;
+  population: number;
+  sourceUrl: string;
+  updatedAt: string;
+  calculationVersion: "population-v1";
 }
 
-export interface PopulationImportResult {
-  municipalityCode: string;
-  prefecture: string;
-  municipality: string;
-  /** 高齢化リスクスコア（0〜100、高いほど余裕あり） */
-  agingRisk: number;
-  /** 孤立リスクへの貢献スコア（高いほど孤立しにくい） */
-  isolationRiskFromAging: number;
-  /** 子育てストレスリスクへの貢献スコア */
-  childcareStressFromDemography: number;
-  _debug: {
-    agingRate: number;
-    elderlyAloneRate: number;
-    childRate: number;
-  };
-}
-
-function parseRawRow(row: Record<string, string>, rowNum: number): PopulationRawRow {
-  function num(key: string): number {
-    const v = Number((row[key] ?? "").trim());
-    if (isNaN(v)) throw new Error(`[行${rowNum}] ${key}: 数値でない値 "${row[key]}"`);
-    return v;
+function isHttpUrl(s: string): boolean {
+  try {
+    const u = new URL(s);
+    return u.protocol === "http:" || u.protocol === "https:";
+  } catch {
+    return false;
   }
-  function optNum(key: string): number | undefined {
-    const raw = (row[key] ?? "").trim();
-    if (!raw) return undefined;
-    const v = Number(raw);
-    return isNaN(v) ? undefined : v;
-  }
-  return {
-    municipalityCode: (row["municipalityCode"] ?? "").trim(),
-    prefecture:       (row["prefecture"]       ?? "").trim(),
-    municipality:     (row["municipality"]     ?? "").trim(),
-    totalPopulation:    num("totalPopulation"),
-    elderlyPopulation:  num("elderlyPopulation"),
-    elderlyAloneHouseholds: optNum("elderlyAloneHouseholds"),
-    childPopulation:        optNum("childPopulation"),
-    totalHouseholds:        optNum("totalHouseholds"),
-  };
 }
 
-export function importPopulation(inputPath: string): PopulationImportResult[] {
+export function importPopulationCsv(
+  inputPath: string,
+  masterPath?: string,
+): PopulationEntry[] {
   if (!fs.existsSync(inputPath)) {
     throw new Error(`入力ファイルが見つかりません: ${inputPath}`);
   }
+
+  let masterJisCodes: Set<string> | null = null;
+  if (masterPath) {
+    if (!fs.existsSync(masterPath)) {
+      throw new Error(`masterファイルが見つかりません: ${masterPath}`);
+    }
+    const master = JSON.parse(
+      fs.readFileSync(masterPath, "utf-8"),
+    ) as Array<{ jisCode?: string }>;
+    masterJisCodes = new Set(
+      master.map((m) => m.jisCode).filter((c): c is string => typeof c === "string"),
+    );
+  }
+
   const content = fs.readFileSync(inputPath, "utf-8");
-  const rawRows: Record<string, string>[] = parse(content, {
+  const rows: Record<string, string>[] = parse(content, {
     columns: true,
     skip_empty_lines: true,
     trim: true,
     bom: true,
   });
-  const rows = rawRows.map((r, i) => parseRawRow(r, i + 2));
 
-  const agingRates        = rows.map((r) => r.totalPopulation > 0 ? (r.elderlyPopulation / r.totalPopulation) * 100 : 0);
-  const elderlyAloneRates = rows.map((r) =>
-    r.totalHouseholds && r.elderlyAloneHouseholds !== undefined && r.totalHouseholds > 0
-      ? (r.elderlyAloneHouseholds / r.totalHouseholds) * 100
-      : 0
-  );
-  const childRates = rows.map((r) =>
-    r.childPopulation !== undefined && r.totalPopulation > 0
-      ? (r.childPopulation / r.totalPopulation) * 100
-      : 0
-  );
+  const errors: string[] = [];
+  const results: PopulationEntry[] = [];
 
-  return rows.map((row, i) => {
-    const agingRate      = agingRates[i];
-    const elderlyAloneRate = elderlyAloneRates[i];
-    const childRate      = childRates[i];
+  for (let i = 0; i < rows.length; i++) {
+    const row = rows[i];
+    const rowNum = i + 2;
 
-    // 高齢化率が低いほど避難困難度が低い → スコア高
-    const agingPct  = calculatePercentileScore(agingRate, agingRates);
-    const agingRisk = normalizeLowerIsBetter(agingPct, 0, 100);
+    const jisCode      = (row["jisCode"]      ?? "").trim();
+    const prefecture   = (row["prefecture"]   ?? "").trim();
+    const municipality = (row["municipality"] ?? "").trim();
+    const populationRaw = (row["population"]  ?? "").trim();
+    const sourceUrl    = (row["sourceUrl"]    ?? "").trim();
+    const updatedAt    = (row["updatedAt"]    ?? "").trim();
 
-    // 一人暮らし高齢者比率が低いほど孤立リスク低 → スコア高
-    const alonePct             = calculatePercentileScore(elderlyAloneRate, elderlyAloneRates);
-    const isolationRiskFromAging = normalizeLowerIsBetter(alonePct, 0, 100);
+    let hasError = false;
 
-    // 子育て人口比率（適度にある方が地域活力あり）→ 中程度でスコア高
-    // ここでは単純に子育て率が全国比較で中間程度 = 良いとする（暫定実装）
-    const childPct = calculatePercentileScore(childRate, childRates);
-    const childcareStressFromDemography = normalizeHigherIsBetter(childPct, 0, 100);
+    if (!JIS_RE.test(jisCode)) {
+      errors.push(`[行${rowNum}] jisCode: 5桁数字必須 "${jisCode}"`);
+      hasError = true;
+    } else if (masterJisCodes && !masterJisCodes.has(jisCode)) {
+      errors.push(`[行${rowNum}] jisCode: masterに存在しないコード "${jisCode}" (${prefecture} ${municipality})`);
+      hasError = true;
+    }
 
-    return {
-      municipalityCode: row.municipalityCode,
-      prefecture:       row.prefecture,
-      municipality:     row.municipality,
-      agingRisk,
-      isolationRiskFromAging,
-      childcareStressFromDemography,
-      _debug: { agingRate, elderlyAloneRate, childRate },
-    };
-  });
+    if (!prefecture) {
+      errors.push(`[行${rowNum}] prefecture: 必須`);
+      hasError = true;
+    }
+
+    if (!municipality) {
+      errors.push(`[行${rowNum}] municipality: 必須`);
+      hasError = true;
+    }
+
+    const population = Number(populationRaw);
+    if (!populationRaw || isNaN(population) || !Number.isInteger(population) || population <= 0) {
+      errors.push(`[行${rowNum}] population: 正の整数必須 "${populationRaw}"`);
+      hasError = true;
+    }
+
+    if (!isHttpUrl(sourceUrl)) {
+      errors.push(`[行${rowNum}] sourceUrl: http(s) URL必須 "${sourceUrl}"`);
+      hasError = true;
+    }
+
+    if (!isValidDate(updatedAt)) {
+      errors.push(`[行${rowNum}] updatedAt: 実在するYYYY-MM-DD必須 "${updatedAt}"`);
+      hasError = true;
+    }
+
+    if (!hasError) {
+      results.push({
+        jisCode,
+        prefecture,
+        municipality,
+        population,
+        sourceUrl,
+        updatedAt,
+        calculationVersion: "population-v1",
+      });
+    }
+  }
+
+  // jisCode 重複スキャン（形式が正しい行のみ対象）
+  const jisCodeRows = new Map<string, number[]>();
+  for (let i = 0; i < rows.length; i++) {
+    const jisCode = (rows[i]["jisCode"] ?? "").trim();
+    if (!JIS_RE.test(jisCode)) continue;
+    const existing = jisCodeRows.get(jisCode) ?? [];
+    existing.push(i + 2);
+    jisCodeRows.set(jisCode, existing);
+  }
+  for (const [jisCode, rowNums] of jisCodeRows) {
+    if (rowNums.length > 1) {
+      errors.push(`jisCode重複: "${jisCode}" 行 ${rowNums.join(", ")}`);
+    }
+  }
+
+  if (errors.length > 0) {
+    throw new Error(`バリデーションエラー (${errors.length}件):\n${errors.join("\n")}`);
+  }
+
+  return results;
 }
 
 if (require.main === module) {
   const args = process.argv.slice(2);
-  const inputIdx  = args.indexOf("--input");
-  const outputIdx = args.indexOf("--output");
-  const inputPath  = inputIdx  >= 0 ? args[inputIdx  + 1] : "data/raw/census-2020.csv";
-  const outputPath = outputIdx >= 0 ? args[outputIdx + 1] : "data/processed/population-scores.json";
+  const get = (flag: string) => { const i = args.indexOf(flag); return i >= 0 ? args[i + 1] : undefined; };
+
+  const inputPath  = get("--input")  ?? "data/raw/national/population.csv";
+  const outputPath = get("--output") ?? "data/processed/population.json";
+  const masterPath = get("--master") ?? "data/master/municipalities-base.json";
 
   try {
-    const results = importPopulation(inputPath);
+    const results = importPopulationCsv(inputPath, masterPath);
+    if (results.length === 0) {
+      console.warn(`⚠️  0件: ${inputPath} にデータ行がありません（ヘッダーのみ）`);
+      console.warn(`    data/raw/national/population.csv に実データを追加してください`);
+    }
     fs.mkdirSync(path.dirname(outputPath), { recursive: true });
     fs.writeFileSync(outputPath, JSON.stringify(results, null, 2), "utf-8");
     console.log(`OK: ${results.length}件 -> ${outputPath}`);

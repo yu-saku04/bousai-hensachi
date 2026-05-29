@@ -56,6 +56,16 @@ interface ShelterEntry {
   shelterCapacity: number;
 }
 
+interface PopulationEntry {
+  jisCode: string;
+  prefecture: string;
+  municipality: string;
+  population: number;
+  sourceUrl: string;
+  updatedAt: string;
+  calculationVersion: string;
+}
+
 interface MunicipalityBase {
   id: string;
   jisCode?: string;
@@ -162,9 +172,9 @@ function applyShelterEntry(
   m: MunicipalityBase,
   shelter: ShelterEntry
 ): void {
-  result["shelterCapacity"] = shelter.shelterCapacity;
-  result["shelterSource"]   = shelter.sourceUrl;
-  result["dataUpdatedAt"]   = shelter.updatedAt;
+  result["shelterCapacity"]  = shelter.shelterCapacity;
+  result["shelterSource"]    = shelter.sourceUrl;
+  result["shelterUpdatedAt"] = shelter.updatedAt;
 
   // socialSupportScore: 既存70% + 避難所スコア30%
   const existingSocial = typeof m.socialSupportScore === "number" ? m.socialSupportScore as number : null;
@@ -310,6 +320,23 @@ function mergeDatasets(
     console.warn(`スキップ (未生成): ${sheltersPath}`);
   }
 
+  // -------------------------------------------------------
+  // population.json を読み込み（専用フォーマット）
+  // -------------------------------------------------------
+
+  const populationPath     = path.join(processedDir, "population.json");
+  const populationData     = loadJsonIfExists<PopulationEntry>(populationPath);
+  const populationByJisCode = new Map<string, PopulationEntry>();
+
+  if (populationData.length > 0) {
+    console.log(`読み込み: ${populationPath} (${populationData.length}件)`);
+    for (const p of populationData) {
+      populationByJisCode.set(p.jisCode, p);
+    }
+  } else {
+    console.warn(`スキップ (未生成): ${populationPath}`);
+  }
+
   const joinFailureWarnings: string[] = [];
   const missingShelterBaseKeys: string[] = [];
   const usedShelterKeys = new Set<string>();
@@ -322,6 +349,12 @@ function mergeDatasets(
   const merged = base.map((m) => {
     const muniKey = `${m.prefecture}_${m.municipality}`;
     const result: Record<string, unknown> = { ...m };
+
+    // base 由来の人口系フィールドをクリア（population.json JOIN 成功時のみ再設定）
+    // population.json が空・欠損時に古い値が残らないようにする
+    delete result["population"];
+    delete result["populationSource"];
+    delete result["populationUpdatedAt"];
 
     // 汎用スコアファイルから JOIN
     for (const pair of scoreFilePairs) {
@@ -349,6 +382,23 @@ function mergeDatasets(
       usedShelterKeys.add(shelter.jisCode);
     } else if (shelterData.length > 0) {
       missingShelterBaseKeys.push(muniKey);
+    }
+
+    // 人口データを JOIN（jisCode のみ）
+    const pop = m.jisCode ? populationByJisCode.get(m.jisCode) : undefined;
+    if (pop) {
+      result["population"]          = pop.population;
+      result["populationSource"]    = pop.sourceUrl;
+      result["populationUpdatedAt"] = pop.updatedAt;
+    }
+
+    // dataUpdatedAt = max(shelterUpdatedAt, populationUpdatedAt)
+    // 最新データ更新日を全体の dataUpdatedAt として保持
+    const sDate = result["shelterUpdatedAt"];
+    const pDate = result["populationUpdatedAt"];
+    const dateCandidates = [sDate, pDate].filter((d): d is string => typeof d === "string");
+    if (dateCandidates.length > 0) {
+      result["dataUpdatedAt"] = dateCandidates.sort().at(-1)!;
     }
 
     // overallScore 再計算
