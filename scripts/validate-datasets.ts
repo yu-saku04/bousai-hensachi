@@ -106,7 +106,18 @@ function validatePopulationJson(
     return { errors, warnings, stats };
   }
 
+  // e-Stat 2020年国勢調査に含まれない正当な欠損 jisCode（strict validation で許容）
+  // - 北方領土6村: ロシア実効支配・国勢調査対象外
+  // - 双葉町(07546): 原発避難・常住人口なし
+  // - 浜松市新3区(22138-22140): 2024年1月新設（2020年調査後）
+  const KNOWN_MISSING_POPULATION = new Set([
+    "01695", "01696", "01697", "01698", "01699", "01700", // 北方領土6村
+    "07546",                                               // 双葉町
+    "22138", "22139", "22140",                            // 浜松市新3区
+  ]);
+
   let masterJisCodes: Set<string> | null = null;
+  let masterNameMap: Map<string, string> | null = null;
   if (!fs.existsSync(masterPath)) {
     const msg = `masterファイルが存在しません（jisCode照合スキップ）: ${masterPath}`;
     if (strictMode) {
@@ -118,9 +129,16 @@ function validatePopulationJson(
     try {
       const master = JSON.parse(
         fs.readFileSync(masterPath, "utf-8"),
-      ) as Array<{ jisCode?: string }>;
+      ) as Array<{ jisCode?: string; prefecture?: string; municipality?: string }>;
       masterJisCodes = new Set(
         master.map((m) => m.jisCode).filter((c): c is string => typeof c === "string"),
+      );
+      masterNameMap = new Map(
+        master
+          .filter((m): m is { jisCode: string; prefecture?: string; municipality?: string } =>
+            typeof m.jisCode === "string",
+          )
+          .map((m) => [m.jisCode, `${m.prefecture ?? ""} ${m.municipality ?? ""}`.trim()]),
       );
     } catch {
       const msg = `master JSON parse 失敗（jisCode照合スキップ）: ${masterPath}`;
@@ -156,17 +174,27 @@ function validatePopulationJson(
     return { errors, warnings, stats };
   }
 
-  // strict mode: master jisCode 件数との coverage チェック
-  // 北方領土6村(01695-01700)・双葉町(07546)・浜松市新3区(22138-22140) は
-  // e-Stat 2020年国勢調査に含まれない正当な欠損のため最大10件を許容する
-  const POPULATION_KNOWN_GAP = 10;
-  if (strictMode && masterJisCodes && population.length < masterJisCodes.size - POPULATION_KNOWN_GAP) {
-    const missing = masterJisCodes.size - population.length;
-    errors.push(
-      `population.json の件数 (${population.length}件) が master jisCode 件数 (${masterJisCodes.size}件) を` +
-      `${POPULATION_KNOWN_GAP}件超えて下回っています — ${missing}件欠損。` +
-      `北方領土・避難自治体・2020年以降新設区を除く全市区町村の人口データが必要です`,
+  // strict mode: allowlist 方式の coverage チェック
+  // KNOWN_MISSING_POPULATION に含まれる jisCode の欠損のみ許容する
+  if (strictMode && masterJisCodes) {
+    const populationJisCodes = new Set(
+      population
+        .map((p) => p["jisCode"])
+        .filter((c): c is string => typeof c === "string"),
     );
+    const unexpectedMissing = [...masterJisCodes].filter(
+      (c) => !populationJisCodes.has(c) && !KNOWN_MISSING_POPULATION.has(c),
+    );
+    if (unexpectedMissing.length > 0) {
+      const detail = unexpectedMissing
+        .slice(0, 20)
+        .map((c) => `${c} (${masterNameMap?.get(c) ?? "?"})`)
+        .join(", ");
+      errors.push(
+        `population.json に想定外の欠損 ${unexpectedMissing.length}件: ${detail}` +
+        (unexpectedMissing.length > 20 ? ` ...他${unexpectedMissing.length - 20}件` : ""),
+      );
+    }
   }
 
   // jisCode 重複検出（常に error）
