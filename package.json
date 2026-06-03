@@ -9,6 +9,7 @@
     "lint": "eslint",
     "convert:data": "tsx scripts/csv-to-json.ts",
     "convert:gsi-shelters": "tsx scripts/converters/convert-gsi-shelters.ts",
+    "fetch:estat-population-2020": "tsx scripts/fetchers/fetch-estat-population-2020.ts",
     "convert:estat-population-2020": "tsx scripts/converters/convert-estat-population-2020.ts",
     "master:generate": "tsx scripts/generate-national-master.ts --input data/raw/national/municipalities.csv --output data/master/municipalities-base.json --base data/master/municipalities-base.json",
     "import:shelters": "tsx scripts/importers/import-shelters.ts",

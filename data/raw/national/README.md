@@ -124,14 +124,26 @@ GSIの指定避難所CSVには災害種別列や収容人数がないため、`d
 | 取得先 URL | https://www.e-stat.go.jp/stat-search/files?statdisp_id=0003445078 |
 | 利用規約 | 統計法第32条に基づく二次利用可（CC BY 4.0相当） |
 
+### e-Stat API キーの準備
+
+`statdisp_id=0003445078` はデータベース形式のデータセットです。CSV取得には e-Stat APIアプリケーションIDが必要です。
+
+1. `https://www.e-stat.go.jp/mypage/user/preregister` でアカウント登録（無料）
+2. マイページ → 「アプリケーションIDの発行」
+3. プロジェクトルートに `.env.local` を作成：
+
+```
+ESTAT_APP_ID=your_app_id_here
+```
+
+`.env.local` は `.gitignore` で除外済みです。**絶対にGitにコミットしないでください。**
+
 ### 取得・変換手順
 
 ```bash
-# 1. e-Stat から CSV を取得
-#    https://www.e-stat.go.jp/stat-search/files?statdisp_id=0003445078
-#    → 「ファイルダウンロード」→ CSV形式でダウンロード
-#    → UTF-8 で保存し、以下に配置:
-#       data/raw/estat/population-2020.csv
+# 1. e-Stat API で CSV を自動取得（ESTAT_APP_ID 要設定）
+npm run fetch:estat-population-2020
+#    → data/raw/estat/population-2020.csv が保存される
 
 # 2. 標準 population.csv に変換
 npm run convert:estat-population-2020
@@ -150,8 +162,22 @@ npm run merge:data:strict
 # 5. strict バリデーション（全1,918件coverage必須）
 npm run validate:data -- --strict
 
-# 6. ビルド確認
+# 6. lint / tsc / ビルド確認
+npm run lint
+npx tsc --noEmit
 npm run build
+```
+
+#### ESTAT_APP_ID 未設定時
+
+```
+ERROR: ESTAT_APP_ID が設定されていません。
+【設定手順】
+  1. https://www.e-stat.go.jp/mypage/user/preregister でアカウント登録（無料）
+  2. マイページ → アプリケーションID を発行
+  3. プロジェクトルートに .env.local を作成し、以下を記載:
+       ESTAT_APP_ID=your_app_id_here
+  4. 再度このコマンドを実行: npm run fetch:estat-population-2020
 ```
 
 ### converter 仕様（convert-estat-population-2020.ts）
