@@ -70,6 +70,10 @@ const VALUE_COLS = [
 const SEX_TOTAL_VALUES = new Set(["総数", "total", "T", "000", "001", "0"]);
 /** 表章事項=人口 と判断する値 */
 const ITEM_POP_VALUES  = new Set(["人口", "population", "P", "001", "T100000000"]);
+/** 時間軸列の候補（2000年境界行を除外するために使用） */
+const TIME_COLS = ["時間軸（年次）", "time_code", "TIME_CODE", "時間軸", "年次"];
+/** 2020年として認識する値 */
+const TIME_2020_VALUES = new Set(["2020年", "2020000000", "2020"]);
 
 // -------------------------------------------------------
 // 型定義
@@ -104,9 +108,11 @@ function getArg(flag: string): string | undefined {
  * 例: "1100" → "01100", "01100" → "01100"
  */
 function normalizeAreaCode(raw: string): string {
-  const digits = raw.replace(/[^0-9]/g, "");
-  if (!digits) return "";
-  const n = parseInt(digits, 10);
+  const trimmed = raw.trim();
+  if (!trimmed) return "";
+  // 英字サフィックス付きコード（例: "1220B", "0120C"）は旧2000年境界参照コードのため除外
+  if (/[^0-9]/.test(trimmed)) return "";
+  const n = parseInt(trimmed, 10);
   if (isNaN(n)) return "";
   const padded = String(n).padStart(5, "0");
   // 5桁超 (人口集中地区コード等) は除外
@@ -148,9 +154,10 @@ function readEstatCsv(filePath: string): Array<Record<string, string>> {
 
   if (rawRows.length === 0) throw new Error("CSVが空です");
 
-  // ヘッダー行を探す：AREA_CODE_COLS と VALUE_COLS を同時に含む行（先頭25行以内）
+  // ヘッダー行を探す：AREA_CODE_COLS と VALUE_COLS を同時に含む行（先頭50行以内）
+  // e-Stat API形式はメタデータブロック（RESULT/TABLE_INF等）が先頭30行前後に続くため50行まで探索する
   let headerIdx = -1;
-  for (let i = 0; i < Math.min(rawRows.length, 25); i++) {
+  for (let i = 0; i < Math.min(rawRows.length, 50); i++) {
     const cells = rawRows[i].map((h) => h.trim());
     const hasAreaCode = AREA_CODE_COLS.some((c) => cells.includes(c));
     const hasValueCol = VALUE_COLS.some((c) => cells.includes(c));
@@ -163,7 +170,7 @@ function readEstatCsv(filePath: string): Array<Record<string, string>> {
   if (headerIdx < 0) {
     const preview = rawRows.slice(0, 5).map((r) => r.slice(0, 6).join(" | ")).join("\n  ");
     throw new Error(
-      `地域コード列と人口値列を同時に含むヘッダー行が見つかりません（先頭25行を検索）。\n` +
+      `地域コード列と人口値列を同時に含むヘッダー行が見つかりません（先頭50行を検索）。\n` +
       `  地域コード候補: ${AREA_CODE_COLS.join(", ")}\n` +
       `  人口値候補:     ${VALUE_COLS.join(", ")}\n` +
       `  先頭5行プレビュー:\n  ${preview}`,
@@ -196,6 +203,7 @@ function convertEstatPopulation(
   inputPath: string,
   outputPath: string,
   masterPath: string,
+  allowMissing: boolean = false,
 ): void {
   // 入力ファイル確認
   if (!fs.existsSync(inputPath)) {
@@ -247,6 +255,7 @@ function convertEstatPopulation(
 
   const sexCol  = pick(SEX_COLS,  headers);
   const itemCol = pick(ITEM_COLS, headers);
+  const timeCol = pick(TIME_COLS, headers);
   const isLongFormat = sexCol !== null;
 
   const valueCol = pick(VALUE_COLS, headers);
@@ -261,6 +270,7 @@ function convertEstatPopulation(
   console.log(`\n--- 列検出 ---`);
   console.log(`地域コード列: "${areaCodeCol}"`);
   console.log(`人口値列:     "${valueCol}"`);
+  console.log(`時間軸列:     "${timeCol ?? "なし（全行採用）"}"`);
   console.log(
     `フォーマット: ${isLongFormat
       ? `長形式 (男女列="${sexCol}"${itemCol ? ` 表章列="${itemCol}"` : " 表章列=なし"})`
@@ -277,6 +287,7 @@ function convertEstatPopulation(
   let skippedBadCode     = 0;
   let skippedSex         = 0;
   let skippedItem        = 0;
+  let skippedTime        = 0;
   let skippedInvalidPop  = 0;
   const duplicateErrors: string[] = [];
 
@@ -304,6 +315,15 @@ function convertEstatPopulation(
       const itemVal = (row[itemCol] ?? "").trim();
       if (!ITEM_POP_VALUES.has(itemVal)) {
         skippedItem++;
+        continue;
+      }
+    }
+
+    // 時間軸=2020年 のみ採用（2000年境界行・旧市町村行を除外）
+    if (timeCol) {
+      const timeVal = (row[timeCol] ?? "").trim();
+      if (!TIME_2020_VALUES.has(timeVal)) {
+        skippedTime++;
         continue;
       }
     }
@@ -377,6 +397,9 @@ function convertEstatPopulation(
   if (isLongFormat) {
     console.log(`             : 男女フィルタ=${skippedSex}, 表章事項フィルタ=${skippedItem}`);
   }
+  if (skippedTime > 0) {
+    console.log(`             : 時間軸フィルタ(非2020年)=${skippedTime}`);
+  }
   console.log(`             : 人口値無効=${skippedInvalidPop}`);
   console.log(`duplicate    : ${duplicateErrors.length}件`);
   console.log(`missing      : ${missing}件 (masterにあるが人口データなし)`);
@@ -388,22 +411,33 @@ function convertEstatPopulation(
     throw new Error(`jisCode重複が ${duplicateErrors.length}件あります。CSVを確認してください`);
   }
 
-  // Coverage チェック（masterと完全一致が必要）
+  // Coverage チェック
   if (missing > 0) {
     const missingCodes = [...masterMap.keys()].filter((c) => !outputMap.has(c));
-    console.error(`\nmissing jisCode 一覧 (先頭30件):`);
+    const logFn = allowMissing ? console.warn : console.error;
+    logFn(`\nmissing jisCode 一覧 (先頭30件):`);
     for (const code of missingCodes.slice(0, 30)) {
       const m = masterMap.get(code)!;
-      console.error(`  ${code}  ${m.prefecture} ${m.municipality}`);
+      logFn(`  ${code}  ${m.prefecture} ${m.municipality}`);
     }
     if (missingCodes.length > 30) {
-      console.error(`  ...ほか ${missingCodes.length - 30}件`);
+      logFn(`  ...ほか ${missingCodes.length - 30}件`);
     }
-    throw new Error(
-      `coverage不足: ${matched}件 / master ${masterMap.size}件 (${missing}件欠損)\n` +
-      `全国master全件の人口データが揃っている必要があります。\n` +
-      `e-Stat CSV が全市区町村を含んでいるか確認してください。`,
-    );
+    if (allowMissing) {
+      console.warn(
+        `\n⚠️  WARNING: coverage不足 ${matched}件 / master ${masterMap.size}件 (${missing}件欠損)` +
+        ` — --allow-missing により続行します。` +
+        `\n   ※ 北方領土・避難自治体・2020年以降新設区は欠損が想定されます。`,
+      );
+    } else {
+      throw new Error(
+        `coverage不足: ${matched}件 / master ${masterMap.size}件 (${missing}件欠損)\n` +
+        `全国master全件の人口データが揃っている必要があります。\n` +
+        `e-Stat CSV が全市区町村を含んでいるか確認してください。\n` +
+        `北方領土・避難自治体・2020年以降新設区などは欠損が想定されます。その場合は:\n` +
+        `  npm run convert:estat-population-2020 -- --allow-missing`,
+      );
+    }
   }
 
   // -------------------------------------------------------
@@ -442,12 +476,13 @@ function convertEstatPopulation(
 // -------------------------------------------------------
 
 if (require.main === module) {
-  const inputPath  = getArg("--input")  ?? DEFAULT_INPUT;
-  const outputPath = getArg("--output") ?? DEFAULT_OUTPUT;
-  const masterPath = getArg("--master") ?? DEFAULT_MASTER;
+  const inputPath   = getArg("--input")  ?? DEFAULT_INPUT;
+  const outputPath  = getArg("--output") ?? DEFAULT_OUTPUT;
+  const masterPath  = getArg("--master") ?? DEFAULT_MASTER;
+  const allowMissing = process.argv.includes("--allow-missing");
 
   try {
-    convertEstatPopulation(inputPath, outputPath, masterPath);
+    convertEstatPopulation(inputPath, outputPath, masterPath, allowMissing);
   } catch (e) {
     console.error(`\nERROR: ${(e as Error).message}`);
     process.exit(1);

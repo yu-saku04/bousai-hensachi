@@ -34,6 +34,9 @@ yarn-error.log*
 .env*
 !.env.example
 
+# e-Stat raw data (API key required to regenerate)
+data/raw/estat/
+
 # vercel
 .vercel
 

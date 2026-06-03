@@ -493,14 +493,18 @@ npm run data:build:national
 - 避難所充足率（`sheltersPerTenThousand`・`capacityPerPopulation`）の精度向上
 - 人口密度・高齢化率・単身世帯・子育て世帯・孤立リスクの基礎データ
 
-**現在: インフラ実装済み。実CSVは未投入（`data/raw/national/population.csv` にデータを追記すると有効化）。**
+**現在: e-Stat 令和2年国勢調査より1,908件投入済み（municipalities.json全体は1,918件）。**
+欠損10件（北方領土6村・双葉町・浜松市新3区）はe-Stat 2020年データに存在しない正当な欠損であり、strict validateで許容済み。
 
 ### ファイル構成
 
 | ファイル | 役割 | 状態 |
 |---|---|---|
-| `data/raw/national/population.csv` | 入力CSV（ヘッダーのみ） | 投入予定 |
-| `data/processed/population.json` | importerの出力 | import:population 実行後に生成 |
+| `data/raw/national/population.csv` | 変換後CSV | 1,908件投入済み |
+| `data/raw/estat/population-2020.csv` | e-Stat取得生データ（.gitignore対象） | API再取得で再現可能 |
+| `data/processed/population.json` | importerの出力 | 1,908件生成済み |
+| `scripts/fetchers/fetch-estat-population-2020.ts` | e-Stat APIフェッチャー（ESTAT_APP_ID要） | 実装済み |
+| `scripts/converters/convert-estat-population-2020.ts` | e-Stat CSV→標準CSVコンバーター | 実装済み |
 | `scripts/importers/import-population.ts` | CSVパーサー・バリデーター | 実装済み |
 
 ### 推奨取得元
@@ -515,46 +519,51 @@ npm run data:build:national
 
 ### 運用方針（strict validate について）
 
-> **重要**: `population.json` が空（0件）の状態では `npm run validate:data -- --strict` は **失敗**します。
-
 | 状態 | 推奨コマンド |
 |---|---|
-| 実人口CSV **未投入**（現在） | `npm run validate:data`（loose mode） |
-| 実人口CSV **投入後** | `npm run validate:data -- --strict` |
+| population **投入済み**（現在） | `npm run validate:data -- --strict` |
+| population **未投入**（再構築時） | `npm run validate:data`（loose mode） |
 
-実人口CSV 未投入時に strict validate が必要な場合は、`population.json` を生成しない（`import:population` を実行しない）か、loose mode を使用してください。
+strict validate は population.json が1,908件以上あれば通過します（既知欠損10件を許容）。
 
-### 実行方法（実人口CSV 未投入時）
+### 再取得・再投入フロー
 
-```bash
-# loose mode で検証（population.json 空は warning のみ）
-npm run validate:data
-npm run build
-```
-
-### 実行方法（実人口CSV 投入後）
+e-Stat API キー（ESTAT_APP_ID）を `.env.local` に設定後：
 
 ```bash
-# 1. population.csv に実データを追記後、インポート
+# 1. e-Stat API から生データ取得
+npm run fetch:estat-population-2020
+# → data/raw/estat/population-2020.csv（.gitignore対象）
+
+# 2. 標準CSVへ変換（既知欠損10件を許容）
+npm run convert:estat-population-2020 -- --allow-missing
+# → data/raw/national/population.csv（1,908件）
+
+# 3. インポート
 npm run import:population
-# → data/processed/population.json を生成（population-v1）
+# → data/processed/population.json（1,908件）
 
-# 2. マージ（municipalities.json に population / populationSource / populationUpdatedAt を反映）
+# 4. マージ
 npm run merge:data:strict
 
-# 3. strict バリデーション（population 0件・master coverage 不足でエラー）
+# 5. strict バリデーション（1,908件以上で通過）
 npm run validate:data -- --strict
 
-# 4. ビルド確認
+# 6. ビルド
 npm run build
 ```
+
+### 既知の欠損10件（正当な欠損）
+
+| jisCode | 自治体 | 理由 |
+|---|---|---|
+| 01695〜01700 | 北方領土6村 | ロシア実効支配・国勢調査対象外 |
+| 07546 | 双葉町 | 原発避難・常住人口なし |
+| 22138〜22140 | 浜松市新3区 | 2024年1月新設（2020年調査後） |
 
 ### data:build:national への組み込みについて
 
-`import:population` は現時点では `data:build:national` に含めていません。理由:
-- `population.csv` に実データが未投入の状態では 0件出力となり、strict validate で失敗する
-- 実データ投入後は上記「投入後」フローを手動実行で反映可能
-- `population.csv` が全国 1,918件分安定した後に `data:build:national` へ組み込む予定
+`import:population` は `data:build:national` に含めていません。e-Stat API キーが必要なため、別フローとして手動実行します。
 
 ---
 

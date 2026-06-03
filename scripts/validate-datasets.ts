@@ -157,11 +157,15 @@ function validatePopulationJson(
   }
 
   // strict mode: master jisCode 件数との coverage チェック
-  if (strictMode && masterJisCodes && population.length < masterJisCodes.size) {
+  // 北方領土6村(01695-01700)・双葉町(07546)・浜松市新3区(22138-22140) は
+  // e-Stat 2020年国勢調査に含まれない正当な欠損のため最大10件を許容する
+  const POPULATION_KNOWN_GAP = 10;
+  if (strictMode && masterJisCodes && population.length < masterJisCodes.size - POPULATION_KNOWN_GAP) {
     const missing = masterJisCodes.size - population.length;
     errors.push(
-      `population.json の件数 (${population.length}件) が master jisCode 件数 (${masterJisCodes.size}件) 未満です` +
-      ` — ${missing}件欠損。全国master全件の人口データが必要です`,
+      `population.json の件数 (${population.length}件) が master jisCode 件数 (${masterJisCodes.size}件) を` +
+      `${POPULATION_KNOWN_GAP}件超えて下回っています — ${missing}件欠損。` +
+      `北方領土・避難自治体・2020年以降新設区を除く全市区町村の人口データが必要です`,
     );
   }
 

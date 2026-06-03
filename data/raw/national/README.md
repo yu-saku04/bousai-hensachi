@@ -146,8 +146,9 @@ npm run fetch:estat-population-2020
 #    → data/raw/estat/population-2020.csv が保存される
 
 # 2. 標準 population.csv に変換
-npm run convert:estat-population-2020
-#    → data/raw/national/population.csv が生成される（1,918件）
+npm run convert:estat-population-2020 -- --allow-missing
+#    → data/raw/national/population.csv が生成される（1,908件）
+#    → --allow-missing: 既知の欠損10件（北方領土6村・双葉町・浜松市新3区）を許容して続行
 #    → 列: jisCode,prefecture,municipality,population,sourceUrl,updatedAt
 #    → sourceUrl: https://www.e-stat.go.jp/stat-search/files?statdisp_id=0003445078
 #    → updatedAt: 2021-11-30
@@ -159,7 +160,8 @@ npm run import:population
 # 4. マージ（municipalities.json に population / populationSource / populationUpdatedAt を反映）
 npm run merge:data:strict
 
-# 5. strict バリデーション（全1,918件coverage必須）
+# 5. strict バリデーション（1,908件以上を確認）
+#    ※ 既知欠損10件（北方領土6村・双葉町・浜松市新3区）は許容済み
 npm run validate:data -- --strict
 
 # 6. lint / tsc / ビルド確認
@@ -192,7 +194,7 @@ ERROR: ESTAT_APP_ID が設定されていません。
 | 表章事項フィルタ | 表章事項=人口 のみ採用 |
 | 除外対象 | 全国行・都道府県行・旧市町村・人口集中地区（master照合で自動除外） |
 | jisCode重複 | error |
-| coverage | master件数（1,918件）と一致しなければ error |
+| coverage | 1,908件以上で正常（既知欠損10件を許容）。`--allow-missing` フラグ必須 |
 | 出力順 | master順（jisCode昇順）で安定 |
 | prefecture/municipality | CSV側の表記ゆれを吸収するため master の値を使用 |
 
