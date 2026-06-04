@@ -68,8 +68,11 @@ export function getCategoryRanking(category: ScoreCategory): Municipality[] {
     .map(({ m }) => m);
 }
 
-export function buildResultPath(jisCode: string): string {
-  return `/result/${encodeURIComponent(jisCode)}`;
+const JIS_CODE_RE = /^[0-9]{5}$/;
+
+export function buildResultPath(jisCode: string): string | null {
+  if (!JIS_CODE_RE.test(jisCode)) return null;
+  return `/result/${jisCode}`;
 }
 
 export function searchMunicipalities(keyword: string): Municipality[] {

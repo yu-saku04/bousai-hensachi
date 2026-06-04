@@ -42,7 +42,9 @@ export default function SearchForm() {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!selectedPref || !selectedJisCode) return;
-    router.push(buildResultPath(selectedJisCode));
+    const path = buildResultPath(selectedJisCode);
+    if (!path) return;
+    router.push(path);
   }
 
   // roving tabindex キーボードナビゲーション

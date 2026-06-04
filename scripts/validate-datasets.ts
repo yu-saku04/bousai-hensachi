@@ -763,26 +763,20 @@ function validateDatasets(inputPath: string, strictMode = false, sheltersPath?: 
   stats["dataUpdatedAt記入済み"]    = dataUpdatedAtCount;
   stats["population記入済み"]       = populationCount;
 
-  // 8. jisCode カバレッジ（--strict 時は error、通常時は warning）
+  // 8. jisCode 完全性チェック（常に error）
   let jisCodeCount = 0;
   for (const m of data) {
     const jis = m["jisCode"];
-    if (jis !== undefined) {
+    if (typeof jis === "string" && JIS_RE.test(jis)) {
       jisCodeCount++;
-      if (typeof jis !== "string" || !JIS_RE.test(jis)) {
-        errors.push(`[${m.id}] jisCode の形式が不正 (5桁数字である必要があります): ${jis}`);
-      }
+    } else if (typeof jis === "string") {
+      errors.push(`[${m.id}] jisCode の形式が不正 (5桁数字必須): "${jis}"`);
     } else {
-      const msg = `[${m.id}] jisCode 未設定 (全国データ投入時に結合精度が低下します)`;
-      if (strictMode) {
-        errors.push(msg);
-      } else {
-        warnings.push(msg);
-      }
+      errors.push(`[${m.id}] jisCode 未設定 (必須フィールド)`);
     }
   }
   stats["jisCode設定済み"] = jisCodeCount;
-  stats["jisCode未設定"] = data.length - jisCodeCount;
+  stats["jisCode未設定・不正"] = data.length - jisCodeCount;
 
   // 9. jisCode 重複検出（常に error）
   const jisCodeCounts = new Map<string, string[]>();
@@ -875,6 +869,37 @@ function validateDatasets(inputPath: string, strictMode = false, sheltersPath?: 
       }
     } catch {
       errors.push(`municipality-search-index.json の JSON parse 失敗`);
+    }
+  }
+
+  // 11b. jisCode 集合一致検証（municipalities vs search-index）
+  if (fs.existsSync(searchIndexPath)) {
+    try {
+      const searchIndex = JSON.parse(fs.readFileSync(searchIndexPath, "utf-8")) as Array<{ jisCode?: string }>;
+      const muniJisCodes = new Set(
+        data.map((m) => m["jisCode"]).filter((c): c is string => typeof c === "string" && JIS_RE.test(c as string)),
+      );
+      const idxJisCodes = new Set(
+        searchIndex.map((e) => e.jisCode).filter((c): c is string => typeof c === "string" && JIS_RE.test(c)),
+      );
+      const onlyInMuni = [...muniJisCodes].filter((c) => !idxJisCodes.has(c));
+      const onlyInIdx  = [...idxJisCodes].filter((c) => !muniJisCodes.has(c));
+      if (onlyInMuni.length > 0) {
+        errors.push(
+          `search-index に存在しない jisCode が municipalities.json にあります (${onlyInMuni.length}件): ` +
+          onlyInMuni.slice(0, 10).join(", ") +
+          (onlyInMuni.length > 10 ? " ..." : ""),
+        );
+      }
+      if (onlyInIdx.length > 0) {
+        errors.push(
+          `municipalities.json に存在しない jisCode が search-index にあります (${onlyInIdx.length}件): ` +
+          onlyInIdx.slice(0, 10).join(", ") +
+          (onlyInIdx.length > 10 ? " ..." : ""),
+        );
+      }
+    } catch {
+      // parse 失敗は check #11 で報告済み
     }
   }
 

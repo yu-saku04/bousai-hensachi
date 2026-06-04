@@ -16,8 +16,8 @@ export interface Municipality {
   comment: string;
   actionTips: string[];
   sourceNote: string;
-  /** 市区町村JISコード（5桁）。全国実データ投入での第一結合キー。 */
-  jisCode?: string;
+  /** 市区町村JISコード（5桁数字文字列）。全国実データ投入での第一結合キー。 */
+  jisCode: string;
   postalCode?: string;
   latitude?: number;
   longitude?: number;
@@ -36,6 +36,16 @@ export interface Municipality {
   socialSupportScore?: number;
   infrastructureRecoveryScore?: number;
   familyDisasterPreparedness?: number;
+  // shelter-sufficiency-v1
+  shelterCount?: number | null;
+  shelterCountPer10k?: number | null;
+  shelterScore?: number | null;
+  nationalRank?: number | null;
+  prefectureRank?: number | null;
+  dataCompleteness?: { hasPopulation: boolean; hasShelterData: boolean };
+  scoreConfidence?: "high" | "no-shelter-data" | "no-data";
+  scoreVersion?: "shelter-sufficiency-v1";
+  calculationNotes?: string;
 }
 
 export interface RiskItem {

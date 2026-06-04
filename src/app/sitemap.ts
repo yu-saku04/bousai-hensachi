@@ -24,17 +24,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  const resultRoutes: MetadataRoute.Sitemap = municipalities.map((m) => {
-    if (!m.jisCode) {
-      throw new Error(`sitemap生成エラー: jisCode未設定 (${m.id})`);
-    }
-    return {
-      url: `${BASE_URL}${buildResultPath(m.jisCode)}`,
-      lastModified: m.dataUpdatedAt ? new Date(m.dataUpdatedAt) : now,
-      changeFrequency: "monthly",
-      priority: 0.7,
-    };
-  });
+  const resultRoutes: MetadataRoute.Sitemap = municipalities
+    .map((m) => {
+      const path = buildResultPath(m.jisCode);
+      if (!path) {
+        console.warn(`sitemap: 不正jisCodeをスキップ (id=${m.id}, jisCode=${m.jisCode})`);
+        return null;
+      }
+      return {
+        url: `${BASE_URL}${path}`,
+        lastModified: m.dataUpdatedAt ? new Date(m.dataUpdatedAt) : now,
+        changeFrequency: "monthly" as const,
+        priority: 0.7,
+      };
+    })
+    .filter((r): r is NonNullable<typeof r> => r !== null);
 
   const routes = [...staticRoutes, ...prefectureRoutes, ...resultRoutes];
   const urls = routes.map((route) => route.url);

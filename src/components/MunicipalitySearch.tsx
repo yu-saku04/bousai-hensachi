@@ -69,11 +69,13 @@ export default function MunicipalitySearch() {
 
       <ul id={resultsId} className={results.length > 0 ? "divide-y divide-gray-50 rounded-xl border border-gray-100 bg-white overflow-hidden shadow-sm" : ""}>
         {results.map((m) => {
+          const path = buildResultPath(m.jisCode);
+          if (!path) return null;
           const score = clampScore(m.overallScore);
           return (
             <li key={m.id}>
               <Link
-                href={buildResultPath(m.jisCode)}
+                href={path}
                 className="flex items-center justify-between px-4 py-3 hover:bg-blue-50 transition-colors"
               >
                 <div>

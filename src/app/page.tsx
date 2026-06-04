@@ -45,32 +45,36 @@ export default function HomePage() {
             </Link>
           </div>
           <ol className="space-y-2">
-            {topRanking.map((m, i) => (
-              <li key={m.id}>
-                <Link
-                  href={buildResultPath(m.jisCode ?? "")}
-                  className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors"
-                >
-                  <span className="text-lg font-bold text-gray-400 w-6 text-center">
-                    {i + 1}
-                  </span>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-semibold text-gray-800 text-sm truncate">
-                      {m.municipality}
-                    </p>
-                    <p className="text-xs text-gray-400">{m.prefecture}</p>
-                  </div>
-                  <div className="text-right">
-                    <p className={`text-xl font-extrabold tabular-nums ${getScoreLevelColor(m.overallScore)}`}>
-                      {m.overallScore}
-                    </p>
-                    <p className={`text-xs ${getScoreLevelColor(m.overallScore)}`}>
-                      {getScoreLevelLabel(m.overallScore)}
-                    </p>
-                  </div>
-                </Link>
-              </li>
-            ))}
+            {topRanking.map((m, i) => {
+              const path = buildResultPath(m.jisCode);
+              if (!path) return null;
+              return (
+                <li key={m.id}>
+                  <Link
+                    href={path}
+                    className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors"
+                  >
+                    <span className="text-lg font-bold text-gray-400 w-6 text-center">
+                      {i + 1}
+                    </span>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-gray-800 text-sm truncate">
+                        {m.municipality}
+                      </p>
+                      <p className="text-xs text-gray-400">{m.prefecture}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className={`text-xl font-extrabold tabular-nums ${getScoreLevelColor(m.overallScore)}`}>
+                        {m.overallScore}
+                      </p>
+                      <p className={`text-xs ${getScoreLevelColor(m.overallScore)}`}>
+                        {getScoreLevelLabel(m.overallScore)}
+                      </p>
+                    </div>
+                  </Link>
+                </li>
+              );
+            })}
           </ol>
           <Link
             href="/ranking"

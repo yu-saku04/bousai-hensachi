@@ -80,10 +80,12 @@ export default function SocialRankingPage() {
               "social"
             ) ?? 0;
             const color = getScoreLevelColor(score);
+            const path = buildResultPath(m.jisCode);
+            if (!path) return null;
             return (
               <Link
                 key={m.id}
-                href={buildResultPath(m.jisCode ?? "")}
+                href={path}
                 className="flex items-center gap-3 bg-white rounded-xl border border-gray-100 px-4 py-3 shadow-sm hover:border-emerald-200 transition-colors"
               >
                 <span className="text-sm font-bold text-gray-400 w-7 text-right tabular-nums">

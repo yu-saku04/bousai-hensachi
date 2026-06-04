@@ -32,10 +32,12 @@ export default function RankingList({ ranking }: RankingListProps) {
           const rank = i + 1;
           const rankEmoji = rank === 1 ? "🥇" : rank === 2 ? "🥈" : rank === 3 ? "🥉" : null;
 
+          const path = buildResultPath(m.jisCode);
+          if (!path) return null;
           return (
             <li key={m.id} className="border-b border-gray-50 last:border-none">
               <Link
-                href={buildResultPath(m.jisCode ?? "")}
+                href={path}
                 className="grid grid-cols-12 items-center px-4 py-4 hover:bg-gray-50 transition-colors"
               >
                 <span className="col-span-1 text-center text-sm font-bold text-gray-400">
