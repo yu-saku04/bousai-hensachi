@@ -66,6 +66,16 @@ interface PopulationEntry {
   calculationVersion: string;
 }
 
+interface AgingEntry {
+  jisCode: string;
+  elderlyPopulation: number;
+  agingRate?: number;
+  agingRisk?: number;
+  agingSource?: string;
+  agingUpdatedAt?: string;
+  calculationVersion: "aging-v1";
+}
+
 interface MunicipalityBase {
   id: string;
   jisCode?: string;
@@ -337,6 +347,26 @@ function mergeDatasets(
     console.warn(`スキップ (未生成): ${populationPath}`);
   }
 
+  // -------------------------------------------------------
+  // aging.json を読み込み（高齢化率・agingRisk 実データ）
+  // -------------------------------------------------------
+
+  const agingPath      = path.join(processedDir, "aging.json");
+  const agingData      = loadJsonIfExists<AgingEntry>(agingPath);
+  const agingByJisCode = new Map<string, AgingEntry>();
+
+  if (agingData.length > 0) {
+    console.log(`読み込み: ${agingPath} (${agingData.length}件)`);
+    for (const a of agingData) {
+      agingByJisCode.set(a.jisCode, a);
+    }
+  } else {
+    console.warn(`スキップ (未生成): ${agingPath}`);
+  }
+
+  let agingJoinCount    = 0;
+  let agingMissingCount = 0;
+
   const joinFailureWarnings: string[] = [];
   const missingShelterBaseKeys: string[] = [];
   const usedShelterKeys = new Set<string>();
@@ -355,6 +385,14 @@ function mergeDatasets(
     delete result["population"];
     delete result["populationSource"];
     delete result["populationUpdatedAt"];
+
+    // 手動 aging 系フィールドをすべてクリア（aging.json JOIN 成功時のみ再設定）
+    // base に残った初期値・手動入力値を必ず上書きするため削除してから付与する
+    delete result["elderlyPopulation"];
+    delete result["agingRate"];
+    delete result["agingSource"];
+    delete result["agingUpdatedAt"];
+    delete result["agingRisk"];
 
     // 汎用スコアファイルから JOIN
     for (const pair of scoreFilePairs) {
@@ -390,6 +428,26 @@ function mergeDatasets(
       result["population"]          = pop.population;
       result["populationSource"]    = pop.sourceUrl;
       result["populationUpdatedAt"] = pop.updatedAt;
+    }
+
+    // aging データを JOIN（jisCode のみ）
+    // aging.json がある場合は実データで上書き。
+    // aging 欠損10件（北方領土・双葉町・浜松市新3区）は population もないため
+    // agingRisk を 50（初期設計値）に設定して overallScore 計算を維持する。
+    if (agingData.length > 0) {
+      const aging = m.jisCode ? agingByJisCode.get(m.jisCode) : undefined;
+      if (aging && aging.agingRisk !== undefined) {
+        result["elderlyPopulation"] = aging.elderlyPopulation;
+        result["agingRate"]         = aging.agingRate;
+        result["agingRisk"]         = aging.agingRisk;
+        result["agingSource"]       = aging.agingSource;
+        result["agingUpdatedAt"]    = aging.agingUpdatedAt;
+        agingJoinCount++;
+      } else {
+        // aging データなし → agingRisk は中立値 50 を維持
+        result["agingRisk"] = 50;
+        agingMissingCount++;
+      }
     }
 
     // dataUpdatedAt = max(shelterUpdatedAt, populationUpdatedAt)
@@ -491,6 +549,21 @@ function mergeDatasets(
         console.warn(`  ⚠️  ${msg}`);
       }
     }
+  }
+
+  // aging.json 統合結果ログ
+  if (agingData.length > 0) {
+    console.log(
+      `\naging.json 使用状況: ${agingJoinCount}/${agingData.length}件 JOIN済` +
+      ` / 未反映 ${agingMissingCount}件（agingRisk=50 維持）`,
+    );
+    const agingRiskVals = merged
+      .map((m) => m["agingRisk"])
+      .filter((v): v is number => typeof v === "number");
+    const arMin  = Math.min(...agingRiskVals);
+    const arMax  = Math.max(...agingRiskVals);
+    const arMean = agingRiskVals.reduce((s, v) => s + v, 0) / agingRiskVals.length;
+    console.log(`  agingRisk range: ${arMin} 〜 ${arMax} (mean: ${arMean.toFixed(2)})`);
   }
 
   // strict モード: エラーがあれば出力前に終了

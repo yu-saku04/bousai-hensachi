@@ -625,6 +625,172 @@ function validateShelterSufficiencyV1(
   return { errors, warnings, stats };
 }
 
+// -------------------------------------------------------
+// aging-v1 フィールド検証
+// -------------------------------------------------------
+
+const KNOWN_AGING_MISSING = new Set([
+  "01695", "01696", "01697", "01698", "01699", "01700", // 北方領土
+  "07546",                                               // 双葉町
+  "22138", "22139", "22140",                             // 浜松市新3区
+]);
+
+function validateAgingV1(
+  data: Municipality[],
+): { errors: string[]; warnings: string[]; stats: Record<string, number | string> } {
+  const errors:   string[] = [];
+  const warnings: string[] = [];
+  const stats: Record<string, number | string> = {};
+
+  let agingReflected  = 0;
+  let agingMissing    = 0;
+  let unknownMissing  = 0;
+
+  for (const m of data) {
+    const id        = String(m["jisCode"] ?? m["id"] ?? "unknown");
+    const hasPopulation = typeof m["population"] === "number" && (m["population"] as number) > 0;
+    const isKnownMissing = KNOWN_AGING_MISSING.has(id);
+
+    const elderlyPop   = m["elderlyPopulation"];
+    const agingRate    = m["agingRate"];
+    const agingRisk    = m["agingRisk"];
+    const agingSource  = m["agingSource"];
+    const agingUpdAt   = m["agingUpdatedAt"];
+
+    // -------------------------------------------------------
+    // agingRisk: 全自治体で必須（10〜90 整数）
+    // -------------------------------------------------------
+    if (agingRisk === undefined || agingRisk === null) {
+      errors.push(`[${id}] agingRisk が未設定 (全自治体必須)`);
+    } else if (
+      typeof agingRisk !== "number" ||
+      !Number.isInteger(agingRisk) ||
+      agingRisk < 10 || agingRisk > 90
+    ) {
+      errors.push(`[${id}] agingRisk が無効 (10〜90 整数必須): ${agingRisk}`);
+    } else if (isKnownMissing && agingRisk !== 50) {
+      errors.push(`[${id}] population 欠損自治体の agingRisk は 50 必須: ${agingRisk}`);
+    }
+
+    // -------------------------------------------------------
+    // population なし / 既知欠損 → aging フィールド未設定許容
+    // -------------------------------------------------------
+    if (!hasPopulation) {
+      if (elderlyPop !== undefined && elderlyPop !== null) {
+        errors.push(`[${id}] population なしで elderlyPopulation が設定されています: ${elderlyPop}`);
+      }
+      agingMissing++;
+      if (!isKnownMissing) unknownMissing++;
+      continue;
+    }
+
+    // -------------------------------------------------------
+    // population あり → 以下フィールドは必須
+    // -------------------------------------------------------
+
+    const population = m["population"] as number;
+
+    // elderlyPopulation
+    if (elderlyPop === undefined || elderlyPop === null) {
+      errors.push(`[${id}] elderlyPopulation が未設定 (population あり自治体は必須)`);
+    } else if (
+      typeof elderlyPop !== "number" ||
+      !Number.isInteger(elderlyPop) ||
+      elderlyPop < 0
+    ) {
+      errors.push(`[${id}] elderlyPopulation が無効 (0以上整数必須): ${elderlyPop}`);
+    } else if (elderlyPop > population) {
+      errors.push(
+        `[${id}] elderlyPopulation (${elderlyPop}) > population (${population})`,
+      );
+    }
+
+    // agingRate
+    if (agingRate === undefined || agingRate === null) {
+      errors.push(`[${id}] agingRate が未設定 (population あり自治体は必須)`);
+    } else if (typeof agingRate !== "number" || agingRate < 0 || agingRate > 100) {
+      errors.push(`[${id}] agingRate が無効 (0〜100 必須): ${agingRate}`);
+    } else if (
+      typeof elderlyPop === "number" &&
+      typeof population === "number" &&
+      population > 0
+    ) {
+      const expected = (elderlyPop / population) * 100;
+      if (Math.abs((agingRate as number) - expected) > 0.1) {
+        errors.push(
+          `[${id}] agingRate 不一致: 格納値=${agingRate}, 算出値=${expected.toFixed(4)}` +
+          ` (elderlyPopulation=${elderlyPop}, population=${population})`,
+        );
+      }
+    }
+
+    // 手動データ残留チェック: agingRate があるが agingSource がない
+    if (
+      agingRate !== undefined && agingRate !== null &&
+      (agingSource === undefined || agingSource === null)
+    ) {
+      errors.push(
+        `[${id}] agingRate が設定されているが agingSource がありません (手動データ残留の可能性)`,
+      );
+    }
+
+    // agingSource
+    if (agingSource === undefined || agingSource === null) {
+      errors.push(`[${id}] agingSource が未設定 (population あり自治体は必須)`);
+    } else if (!isHttpUrl(agingSource)) {
+      errors.push(`[${id}] agingSource が http(s) URL ではありません: ${agingSource}`);
+    }
+
+    // agingUpdatedAt
+    if (agingUpdAt === undefined || agingUpdAt === null) {
+      errors.push(`[${id}] agingUpdatedAt が未設定 (population あり自治体は必須)`);
+    } else if (typeof agingUpdAt !== "string" || !isValidDate(agingUpdAt)) {
+      errors.push(`[${id}] agingUpdatedAt が無効 (実在 YYYY-MM-DD 必須): ${agingUpdAt}`);
+    }
+
+    agingReflected++;
+  }
+
+  // -------------------------------------------------------
+  // coverage チェック
+  // -------------------------------------------------------
+  stats["aging反映件数"]     = agingReflected;
+  stats["aging欠損件数"]     = agingMissing;
+  stats["aging未知欠損件数"] = unknownMissing;
+
+  if (agingReflected !== 1908) {
+    errors.push(
+      `aging 反映件数が期待値と異なります: ${agingReflected}件 (期待: 1908件)`,
+    );
+  }
+
+  if (agingMissing !== 10) {
+    errors.push(
+      `aging 欠損件数が期待値と異なります: ${agingMissing}件 (期待: 10件)`,
+    );
+  }
+
+  if (unknownMissing > 0) {
+    errors.push(
+      `aging 未知欠損が ${unknownMissing}件あります (既知欠損 10件に含まれない自治体)`,
+    );
+  }
+
+  // agingRisk 統計
+  const agingRiskVals = data
+    .map((m) => m["agingRisk"])
+    .filter((v): v is number => typeof v === "number");
+  if (agingRiskVals.length > 0) {
+    stats["agingRisk最小"] = Math.min(...agingRiskVals);
+    stats["agingRisk最大"] = Math.max(...agingRiskVals);
+    stats["agingRisk平均"] = Math.round(
+      agingRiskVals.reduce((s, v) => s + v, 0) / agingRiskVals.length,
+    );
+  }
+
+  return { errors, warnings, stats };
+}
+
 function validateDatasets(inputPath: string, strictMode = false, sheltersPath?: string): ValidationResult {
   const errors: string[] = [];
   const warnings: string[] = [];
@@ -936,6 +1102,12 @@ function validateDatasets(inputPath: string, strictMode = false, sheltersPath?: 
   errors.push(...v1Validation.errors);
   warnings.push(...v1Validation.warnings);
   Object.assign(stats, v1Validation.stats);
+
+  // 15. aging-v1 フィールド検証
+  const agingValidation = validateAgingV1(data);
+  errors.push(...agingValidation.errors);
+  warnings.push(...agingValidation.warnings);
+  Object.assign(stats, agingValidation.stats);
 
   return { errors, warnings, stats };
 }
