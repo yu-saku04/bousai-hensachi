@@ -270,7 +270,7 @@ export default async function ResultPage({ params }: PageProps) {
               <p className={`text-5xl font-extrabold tabular-nums leading-none ${getScoreLevelColor(data.shelterScore)}`}>
                 {data.shelterScore}
               </p>
-              <p className="text-sm text-gray-400 pb-1">/ 100点満点換算</p>
+              <p className="text-sm text-gray-400 pb-1">全国比較スコア（偏差値）</p>
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div className="bg-gray-50 rounded-xl p-3 text-center">
