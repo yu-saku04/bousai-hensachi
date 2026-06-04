@@ -13,7 +13,8 @@ export const metadata: Metadata = {
 };
 
 export default function ShelterRankingPage() {
-  const ranking = getShelterRanking().slice(0, 100);
+  const allShelterRanking = getShelterRanking();
+  const ranking = allShelterRanking.slice(0, 100);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -42,7 +43,7 @@ export default function ShelterRankingPage() {
         <header className="space-y-1">
           <h1 className="text-xl font-extrabold text-gray-900">🏠 避難所充足偏差値ランキング</h1>
           <p className="text-xs text-gray-500">
-            上位100件を表示（GSI避難所データあり {ranking.length}件中）
+            上位100件を表示（算出対象 {allShelterRanking.length.toLocaleString("ja-JP")}件中）。同点は同順位として表示しています。
           </p>
         </header>
 

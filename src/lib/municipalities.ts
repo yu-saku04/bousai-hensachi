@@ -60,7 +60,13 @@ export function getPrefectureRanking(prefecture: string): Municipality[] {
 export function getShelterRanking(): Municipality[] {
   return [...data]
     .filter((m) => m.scoreConfidence === "high" && typeof m.shelterScore === "number")
-    .sort((a, b) => (b.shelterScore ?? 0) - (a.shelterScore ?? 0));
+    .sort((a, b) => {
+      const scoreDiff = (b.shelterScore ?? 0) - (a.shelterScore ?? 0);
+      if (scoreDiff !== 0) return scoreDiff;
+      const rankDiff = (a.nationalRank ?? 0) - (b.nationalRank ?? 0);
+      if (rankDiff !== 0) return rankDiff;
+      return a.jisCode.localeCompare(b.jisCode);
+    });
 }
 
 export function getCategoryRanking(category: ScoreCategory): Municipality[] {
