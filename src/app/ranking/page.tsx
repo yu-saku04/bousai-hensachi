@@ -52,6 +52,13 @@ export default function RankingPage() {
             <span>🤝</span>
             <span>社会回復力<br/><span className="text-xs font-normal text-emerald-600">避難所・支援・インフラ</span></span>
           </Link>
+          <Link
+            href="/ranking/shelter"
+            className="col-span-2 flex items-center gap-2 px-4 py-3 bg-cyan-50 border border-cyan-100 rounded-xl text-sm font-medium text-cyan-800 hover:bg-cyan-100 transition-colors"
+          >
+            <span>🏠</span>
+            <span>避難所充足偏差値ランキング<br/><span className="text-xs font-normal text-cyan-600">人口1万人あたり指定避難所数・全国比較</span></span>
+          </Link>
         </div>
 
         <section className="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm">

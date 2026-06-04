@@ -57,6 +57,12 @@ export function getPrefectureRanking(prefecture: string): Municipality[] {
   );
 }
 
+export function getShelterRanking(): Municipality[] {
+  return [...data]
+    .filter((m) => m.scoreConfidence === "high" && typeof m.shelterScore === "number")
+    .sort((a, b) => (b.shelterScore ?? 0) - (a.shelterScore ?? 0));
+}
+
 export function getCategoryRanking(category: ScoreCategory): Municipality[] {
   return [...data]
     .map((m) => ({

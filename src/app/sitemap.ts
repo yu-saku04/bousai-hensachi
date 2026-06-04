@@ -13,6 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/ranking`,            lastModified: now, changeFrequency: "weekly",  priority: 0.9 },
     { url: `${BASE_URL}/ranking/emotional`,  lastModified: now, changeFrequency: "weekly",  priority: 0.8 },
     { url: `${BASE_URL}/ranking/social`,     lastModified: now, changeFrequency: "weekly",  priority: 0.8 },
+    { url: `${BASE_URL}/ranking/shelter`,    lastModified: now, changeFrequency: "weekly",  priority: 0.8 },
     { url: `${BASE_URL}/methodology`,        lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     { url: `${BASE_URL}/sources`,            lastModified: now, changeFrequency: "monthly", priority: 0.4 },
   ];
