@@ -39,6 +39,15 @@ export interface Municipality {
   socialSupportScore?: number;
   infrastructureRecoveryScore?: number;
   familyDisasterPreparedness?: number;
+  // household-v1
+  totalGeneralHouseholds?: number;
+  elderlySingleHouseholds?: number;
+  elderlyCoupleHouseholds?: number;
+  elderlySingleRate?: number;
+  elderlyCoupleRate?: number;
+  householdRisk?: number;
+  householdSource?: string;
+  householdUpdatedAt?: string;
   // shelter-sufficiency-v1
   shelterCount?: number | null;
   shelterCountPer10k?: number | null;
