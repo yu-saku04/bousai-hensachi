@@ -27,13 +27,18 @@ interface PageProps {
   params: Promise<{ jisCode: string }>;
 }
 
+const JIS_CODE_RE = /^[0-9]{5}$/;
+
 export async function generateStaticParams() {
-  return getAllMunicipalities().map((m) => {
-    if (!m.jisCode) {
-      throw new Error(`result SSG生成エラー: jisCode未設定 (${m.id})`);
-    }
-    return { jisCode: m.jisCode };
-  });
+  return getAllMunicipalities()
+    .filter((m) => {
+      if (!JIS_CODE_RE.test(m.jisCode)) {
+        console.warn(`result SSG: 不正jisCodeのエントリを除外 (id=${m.id}, jisCode=${m.jisCode})`);
+        return false;
+      }
+      return true;
+    })
+    .map((m) => ({ jisCode: m.jisCode }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -256,6 +261,54 @@ export default async function ResultPage({ params }: PageProps) {
             </section>
           );
         })}
+
+        {/* 避難所充足偏差値 v1 */}
+        {data.scoreConfidence === "high" && typeof data.shelterScore === "number" ? (
+          <section className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm space-y-4">
+            <h2 className="font-bold text-gray-800 text-sm">🏠 避難所充足偏差値</h2>
+            <div className="flex items-end gap-3">
+              <p className={`text-5xl font-extrabold tabular-nums leading-none ${getScoreLevelColor(data.shelterScore)}`}>
+                {data.shelterScore}
+              </p>
+              <p className="text-sm text-gray-400 pb-1">/ 100点満点換算</p>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="bg-gray-50 rounded-xl p-3 text-center">
+                <p className="text-xs text-gray-400 mb-1">全国順位</p>
+                <p className="text-xl font-bold text-gray-800 tabular-nums">
+                  {data.nationalRank}<span className="text-sm font-normal text-gray-500"> 位</span>
+                </p>
+              </div>
+              <div className="bg-gray-50 rounded-xl p-3 text-center">
+                <p className="text-xs text-gray-400 mb-1">都道府県内順位</p>
+                <p className="text-xl font-bold text-gray-800 tabular-nums">
+                  {data.prefectureRank}<span className="text-sm font-normal text-gray-500"> 位</span>
+                </p>
+              </div>
+            </div>
+            {typeof data.shelterCountPer10k === "number" && (
+              <div className="flex items-center justify-between bg-gray-50 rounded-xl px-4 py-3">
+                <p className="text-xs text-gray-500">人口1万人あたり避難所数</p>
+                <p className="text-sm font-bold text-gray-800 tabular-nums">
+                  {data.shelterCountPer10k.toFixed(2)} <span className="font-normal text-gray-400">か所</span>
+                </p>
+              </div>
+            )}
+            <p className="text-xs text-gray-400 leading-relaxed">
+              出典: 国土地理院 指定避難所CSV・e-Stat 2020年国勢調査（暫定版）。人口規模を補正した全国比較指標です。
+            </p>
+          </section>
+        ) : data.scoreConfidence === "no-shelter-data" ? (
+          <section className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm space-y-2">
+            <h2 className="font-bold text-gray-800 text-sm">🏠 避難所充足偏差値</h2>
+            <p className="text-sm text-gray-500">GSI避難所データ未提出/未確認のため算出対象外です。</p>
+          </section>
+        ) : data.scoreConfidence === "no-data" ? (
+          <section className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm space-y-2">
+            <h2 className="font-bold text-gray-800 text-sm">🏠 避難所充足偏差値</h2>
+            <p className="text-sm text-gray-500">人口データ未取得のため算出対象外です。</p>
+          </section>
+        ) : null}
 
         {/* 行動提案 */}
         <section className="bg-blue-50 rounded-2xl border border-blue-100 p-5 space-y-3">
