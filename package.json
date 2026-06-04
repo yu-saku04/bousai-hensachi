@@ -20,7 +20,8 @@
     "validate:data": "tsx scripts/validate-datasets.ts",
     "data:build": "npm run import:shelters && npm run merge:data:strict && npm run validate:data -- --strict",
     "data:build:loose": "npm run import:shelters && npm run merge:data && npm run validate:data",
-    "data:build:national": "npm run master:generate && npm run import:shelters:national && npm run merge:data:strict && npm run validate:data -- --strict"
+    "data:build:national": "npm run master:generate && npm run import:shelters:national && npm run merge:data:strict && npm run validate:data -- --strict",
+    "score:shelter-v1": "tsx scripts/scoring/score-shelter-sufficiency-v1.ts --dry-run"
   },
   "dependencies": {
     "next": "16.2.6",

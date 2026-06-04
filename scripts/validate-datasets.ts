@@ -20,6 +20,10 @@
  *   9. jisCode 重複検出（常に error）
  *  10. search-index 完全一致検証（件数 + id/prefecture/municipality/overallScore が municipalities.json と一致しない場合 error）
  *  11. shelters.json スキーマ検証（jisCode/sourceUrl/sourceUrls/shelterCount/totalCapacity/sheltersPerTenThousand/capacityPerPopulation/calculationVersion）
+ *  12. shelter-sufficiency-v1 フィールド検証（scoreVersion が存在する場合のみ実施）
+ *      - フィールドスキーマ検証
+ *      - scoreConfidence 別の整合性チェック
+ *      - nationalRank / prefectureRank の dense rank 再計算照合
  *
  * オプション:
  *   --strict        jisCode 未設定 / processed 未使用 を warning ではなく error として報告
@@ -349,6 +353,278 @@ function validateSheltersJson(
   return { errors, warnings, stats };
 }
 
+// -------------------------------------------------------
+// shelter-sufficiency-v1 検証
+// -------------------------------------------------------
+
+function computeDenseRank(
+  entries: Array<{ jisCode: string; score: number }>,
+): Map<string, number> {
+  const sorted = [...entries].sort(
+    (a, b) => b.score - a.score || a.jisCode.localeCompare(b.jisCode),
+  );
+  const rankMap = new Map<string, number>();
+  let rank = 0;
+  let prevScore: number | null = null;
+  for (const e of sorted) {
+    if (e.score !== prevScore) {
+      rank++;
+      prevScore = e.score;
+    }
+    rankMap.set(e.jisCode, rank);
+  }
+  return rankMap;
+}
+
+function validateShelterSufficiencyV1(
+  data: Municipality[],
+): { errors: string[]; warnings: string[]; stats: Record<string, number> } {
+  const errors: string[] = [];
+  const warnings: string[] = [];
+  const stats: Record<string, number> = {};
+
+  const v1Entries = data.filter((m) => m["scoreVersion"] === "shelter-sufficiency-v1");
+
+  if (v1Entries.length === 0) {
+    warnings.push(
+      "shelter-sufficiency-v1 フィールド未投入 (npm run score:shelter-v1 -- --output src/data/municipalities.json を実行してください)",
+    );
+    return { errors, warnings, stats };
+  }
+
+  if (v1Entries.length !== data.length) {
+    errors.push(
+      `shelter-sufficiency-v1 フィールドが一部エントリのみに設定されています (${v1Entries.length}/${data.length}件)`,
+    );
+  }
+
+  stats["v1フィールド件数"] = v1Entries.length;
+
+  const VALID_CONFIDENCE = new Set(["high", "no-shelter-data", "no-data"]);
+  let highCount = 0;
+  let noShelterCount = 0;
+  let noDataCount = 0;
+
+  for (const m of v1Entries) {
+    const id = String(m["id"] ?? m["jisCode"] ?? "unknown");
+
+    // --- フィールドスキーマ ---
+
+    const shelterCount = m["shelterCount"];
+    if (
+      shelterCount !== null &&
+      (typeof shelterCount !== "number" ||
+        !Number.isInteger(shelterCount) ||
+        shelterCount < 0)
+    ) {
+      errors.push(`[${id}] shelterCount が無効 (>=0 の整数または null): ${shelterCount}`);
+    }
+
+    const per10k = m["shelterCountPer10k"];
+    if (per10k !== null && (typeof per10k !== "number" || per10k < 0)) {
+      errors.push(`[${id}] shelterCountPer10k が無効 (>=0 の数値または null): ${per10k}`);
+    }
+
+    const shelterScore = m["shelterScore"];
+    if (shelterScore !== null) {
+      if (
+        typeof shelterScore !== "number" ||
+        !Number.isInteger(shelterScore) ||
+        shelterScore < 10 ||
+        shelterScore > 90
+      ) {
+        errors.push(`[${id}] shelterScore が無効 (10〜90 の整数または null): ${shelterScore}`);
+      }
+    }
+
+    const nationalRank = m["nationalRank"];
+    if (
+      nationalRank !== null &&
+      (typeof nationalRank !== "number" ||
+        !Number.isInteger(nationalRank) ||
+        nationalRank < 1)
+    ) {
+      errors.push(`[${id}] nationalRank が無効 (正の整数または null): ${nationalRank}`);
+    }
+
+    const prefectureRank = m["prefectureRank"];
+    if (
+      prefectureRank !== null &&
+      (typeof prefectureRank !== "number" ||
+        !Number.isInteger(prefectureRank) ||
+        prefectureRank < 1)
+    ) {
+      errors.push(`[${id}] prefectureRank が無効 (正の整数または null): ${prefectureRank}`);
+    }
+
+    const dc = m["dataCompleteness"];
+    let hasPopulation: unknown;
+    let hasShelterData: unknown;
+    if (!dc || typeof dc !== "object" || Array.isArray(dc)) {
+      errors.push(`[${id}] dataCompleteness が欠損または無効型`);
+    } else {
+      const dcObj = dc as Record<string, unknown>;
+      hasPopulation = dcObj["hasPopulation"];
+      hasShelterData = dcObj["hasShelterData"];
+      if (typeof hasPopulation !== "boolean") {
+        errors.push(`[${id}] dataCompleteness.hasPopulation が boolean でありません: ${hasPopulation}`);
+      }
+      if (typeof hasShelterData !== "boolean") {
+        errors.push(`[${id}] dataCompleteness.hasShelterData が boolean でありません: ${hasShelterData}`);
+      }
+    }
+
+    const conf = m["scoreConfidence"];
+    if (typeof conf !== "string" || !VALID_CONFIDENCE.has(conf)) {
+      errors.push(`[${id}] scoreConfidence が無効 (high/no-shelter-data/no-data のいずれか): ${conf}`);
+      continue;
+    }
+
+    // --- 整合性チェック ---
+
+    if (conf === "high") {
+      highCount++;
+      if (hasPopulation !== true)
+        errors.push(`[${id}] scoreConfidence=high だが dataCompleteness.hasPopulation が true でありません`);
+      if (hasShelterData !== true)
+        errors.push(`[${id}] scoreConfidence=high だが dataCompleteness.hasShelterData が true でありません`);
+      if (shelterCount === null)
+        errors.push(`[${id}] scoreConfidence=high だが shelterCount が null`);
+      if (per10k === null)
+        errors.push(`[${id}] scoreConfidence=high だが shelterCountPer10k が null`);
+      if (shelterScore === null)
+        errors.push(`[${id}] scoreConfidence=high だが shelterScore が null`);
+      if (nationalRank === null)
+        errors.push(`[${id}] scoreConfidence=high だが nationalRank が null`);
+      if (prefectureRank === null)
+        errors.push(`[${id}] scoreConfidence=high だが prefectureRank が null`);
+    } else if (conf === "no-shelter-data") {
+      noShelterCount++;
+      if (hasPopulation !== true)
+        errors.push(`[${id}] scoreConfidence=no-shelter-data だが dataCompleteness.hasPopulation が true でありません`);
+      if (hasShelterData !== false)
+        errors.push(`[${id}] scoreConfidence=no-shelter-data だが dataCompleteness.hasShelterData が false でありません`);
+      if (shelterCount !== null)
+        errors.push(`[${id}] scoreConfidence=no-shelter-data だが shelterCount が null でありません (${shelterCount})`);
+      if (per10k !== null)
+        errors.push(`[${id}] scoreConfidence=no-shelter-data だが shelterCountPer10k が null でありません`);
+      if (shelterScore !== null)
+        errors.push(`[${id}] scoreConfidence=no-shelter-data だが shelterScore が null でありません`);
+      if (nationalRank !== null)
+        errors.push(`[${id}] scoreConfidence=no-shelter-data だが nationalRank が null でありません`);
+      if (prefectureRank !== null)
+        errors.push(`[${id}] scoreConfidence=no-shelter-data だが prefectureRank が null でありません`);
+    } else {
+      // no-data
+      noDataCount++;
+      if (hasPopulation !== false)
+        errors.push(`[${id}] scoreConfidence=no-data だが dataCompleteness.hasPopulation が false でありません`);
+      if (per10k !== null)
+        errors.push(`[${id}] scoreConfidence=no-data だが shelterCountPer10k が null でありません`);
+      if (shelterScore !== null)
+        errors.push(`[${id}] scoreConfidence=no-data だが shelterScore が null でありません`);
+      if (nationalRank !== null)
+        errors.push(`[${id}] scoreConfidence=no-data だが nationalRank が null でありません`);
+      if (prefectureRank !== null)
+        errors.push(`[${id}] scoreConfidence=no-data だが prefectureRank が null でありません`);
+    }
+  }
+
+  stats["v1スコア対象(high)"] = highCount;
+  stats["v1 no-shelter-data"] = noShelterCount;
+  stats["v1 no-data"] = noDataCount;
+
+  // --- ランキング検証 ---
+
+  // high 件数 == nationalRank !== null 件数
+  const rankedByNational = v1Entries.filter((m) => m["nationalRank"] !== null);
+  if (rankedByNational.length !== highCount) {
+    errors.push(
+      `nationalRank 設定件数 (${rankedByNational.length}) が scoreConfidence=high 件数 (${highCount}) と不一致`,
+    );
+  }
+
+  // no-shelter-data / no-data がランキングに混入していないか
+  const leakedRanks = v1Entries.filter(
+    (m) =>
+      m["nationalRank"] !== null &&
+      (m["scoreConfidence"] === "no-shelter-data" || m["scoreConfidence"] === "no-data"),
+  );
+  if (leakedRanks.length > 0) {
+    errors.push(
+      `no-shelter-data / no-data エントリに nationalRank が設定されています (${leakedRanks.length}件)`,
+    );
+  }
+
+  // nationalRank の dense rank 再計算照合
+  const scorable = v1Entries
+    .filter((m) => m["shelterScore"] !== null && m["jisCode"])
+    .map((m) => ({
+      jisCode: String(m["jisCode"]),
+      id: String(m["id"] ?? m["jisCode"]),
+      score: m["shelterScore"] as number,
+      storedNationalRank: m["nationalRank"] as number,
+      prefecture: String(m["prefecture"]),
+      storedPrefectureRank: m["prefectureRank"] as number,
+    }));
+
+  const expectedNationalRank = computeDenseRank(
+    scorable.map((e) => ({ jisCode: e.jisCode, score: e.score })),
+  );
+
+  let nationalRankMismatch = 0;
+  for (const e of scorable) {
+    const expected = expectedNationalRank.get(e.jisCode);
+    if (expected !== e.storedNationalRank) {
+      nationalRankMismatch++;
+      if (nationalRankMismatch <= 10) {
+        errors.push(
+          `[${e.id}] nationalRank 不一致: 期待=${expected}, 実際=${e.storedNationalRank} (score=${e.score})`,
+        );
+      }
+    }
+  }
+  if (nationalRankMismatch > 10) {
+    errors.push(`...nationalRank 不一致 他 ${nationalRankMismatch - 10}件`);
+  }
+  stats["nationalRank不一致件数"] = nationalRankMismatch;
+
+  // prefectureRank の dense rank 再計算照合
+  const byPref = new Map<string, Array<{ jisCode: string; score: number }>>();
+  for (const e of scorable) {
+    if (!byPref.has(e.prefecture)) byPref.set(e.prefecture, []);
+    byPref.get(e.prefecture)!.push({ jisCode: e.jisCode, score: e.score });
+  }
+
+  const expectedPrefRankMap = new Map<string, number>();
+  for (const [pref, entries] of byPref) {
+    const prefRank = computeDenseRank(entries);
+    for (const [jisCode, rank] of prefRank) {
+      expectedPrefRankMap.set(jisCode, rank);
+    }
+    void pref;
+  }
+
+  let prefRankMismatch = 0;
+  for (const e of scorable) {
+    const expected = expectedPrefRankMap.get(e.jisCode);
+    if (expected !== e.storedPrefectureRank) {
+      prefRankMismatch++;
+      if (prefRankMismatch <= 10) {
+        errors.push(
+          `[${e.id}] prefectureRank 不一致: 期待=${expected}, 実際=${e.storedPrefectureRank} (${e.prefecture}, score=${e.score})`,
+        );
+      }
+    }
+  }
+  if (prefRankMismatch > 10) {
+    errors.push(`...prefectureRank 不一致 他 ${prefRankMismatch - 10}件`);
+  }
+  stats["prefectureRank不一致件数"] = prefRankMismatch;
+
+  return { errors, warnings, stats };
+}
+
 function validateDatasets(inputPath: string, strictMode = false, sheltersPath?: string): ValidationResult {
   const errors: string[] = [];
   const warnings: string[] = [];
@@ -629,6 +905,12 @@ function validateDatasets(inputPath: string, strictMode = false, sheltersPath?: 
   errors.push(...populationValidation.errors);
   warnings.push(...populationValidation.warnings);
   Object.assign(stats, populationValidation.stats);
+
+  // 14. shelter-sufficiency-v1 フィールド検証
+  const v1Validation = validateShelterSufficiencyV1(data);
+  errors.push(...v1Validation.errors);
+  warnings.push(...v1Validation.warnings);
+  Object.assign(stats, v1Validation.stats);
 
   return { errors, warnings, stats };
 }
