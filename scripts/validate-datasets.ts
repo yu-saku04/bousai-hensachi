@@ -21,6 +21,7 @@
  *  10. search-index 完全一致検証（件数 + id/prefecture/municipality/overallScore が municipalities.json と一致しない場合 error）
  *  11. shelters.json スキーマ検証（jisCode/sourceUrl/sourceUrls/shelterCount/totalCapacity/sheltersPerTenThousand/capacityPerPopulation/calculationVersion）
  *  12. shelter-sufficiency-v1 フィールド検証（scoreVersion が存在する場合のみ実施）
+ *  16. household-v1 フィールド検証（householdRisk / 世帯フィールド / isolationRisk 非破壊 / overallScore 非反映）
  *      - フィールドスキーマ検証
  *      - scoreConfidence 別の整合性チェック
  *      - nationalRank / prefectureRank の dense rank 再計算照合
@@ -791,6 +792,224 @@ function validateAgingV1(
   return { errors, warnings, stats };
 }
 
+// -------------------------------------------------------
+// household-v1 フィールド検証
+// -------------------------------------------------------
+
+const KNOWN_HOUSEHOLD_MISSING = new Set([
+  "01695", "01696", "01697", "01698", "01699", "01700", // 北方領土
+  "07546",                                               // 双葉町
+  "22138", "22139", "22140",                             // 浜松市新3区
+]);
+
+const EXPECTED_HOUSEHOLD_UPDATED_AT = "2021-11-30";
+
+function validateHouseholdV1(
+  data: Municipality[],
+): { errors: string[]; warnings: string[]; stats: Record<string, number | string> } {
+  const errors:   string[] = [];
+  const warnings: string[] = [];
+  const stats: Record<string, number | string> = {};
+
+  let householdReflected = 0;
+  let householdMissing   = 0;
+  let unknownMissing     = 0;
+
+  // -------------------------------------------------------
+  // (11) overallScore 非反映確認
+  // householdRisk が SCORE_ITEMS に含まれていないことを検証
+  // -------------------------------------------------------
+  const scoreItemKeys = SCORE_ITEMS.map((i) => i.key as string);
+  if (scoreItemKeys.includes("householdRisk")) {
+    errors.push(
+      "householdRisk が SCORE_ITEMS に含まれています。overallScore に反映されてしまいます（意図しない変更）",
+    );
+  }
+
+  for (const m of data) {
+    const id             = String(m["jisCode"] ?? m["id"] ?? "unknown");
+    const isKnownMissing = KNOWN_HOUSEHOLD_MISSING.has(id);
+
+    const total     = m["totalGeneralHouseholds"];
+    const single    = m["elderlySingleHouseholds"];
+    const couple    = m["elderlyCoupleHouseholds"];
+    const singleRate = m["elderlySingleRate"];
+    const coupleRate = m["elderlyCoupleRate"];
+    const hRisk      = m["householdRisk"];
+    const hSource    = m["householdSource"];
+    const hUpdAt     = m["householdUpdatedAt"];
+
+    // -------------------------------------------------------
+    // (7) householdRisk: 全自治体で必須（10〜90 整数）
+    // -------------------------------------------------------
+    if (hRisk === undefined || hRisk === null) {
+      errors.push(`[${id}] householdRisk が未設定 (全自治体必須)`);
+    } else if (
+      typeof hRisk !== "number" ||
+      !Number.isInteger(hRisk) ||
+      hRisk < 10 || hRisk > 90
+    ) {
+      errors.push(`[${id}] householdRisk が無効 (10〜90 整数必須): ${hRisk}`);
+    } else if (isKnownMissing && hRisk !== 50) {
+      errors.push(`[${id}] household 欠損自治体の householdRisk は 50 必須: ${hRisk}`);
+    }
+
+    // -------------------------------------------------------
+    // (10) isolationRisk 非破壊確認（10〜90 整数）
+    // -------------------------------------------------------
+    const isoRisk = m["isolationRisk"];
+    if (isoRisk !== undefined && isoRisk !== null) {
+      if (
+        typeof isoRisk !== "number" ||
+        !Number.isInteger(isoRisk) ||
+        isoRisk < 10 || isoRisk > 90
+      ) {
+        errors.push(`[${id}] isolationRisk が無効 (10〜90 整数必須): ${isoRisk}`);
+      }
+    }
+
+    // -------------------------------------------------------
+    // 既知欠損 → 世帯フィールド未設定許容
+    // -------------------------------------------------------
+    if (isKnownMissing) {
+      // 欠損自治体に世帯フィールドが残っていたらエラー
+      if (total !== undefined && total !== null)
+        errors.push(`[${id}] household 欠損自治体に totalGeneralHouseholds が設定されています`);
+      householdMissing++;
+      continue;
+    }
+
+    // -------------------------------------------------------
+    // household 反映自治体 → 以下フィールドは必須
+    // -------------------------------------------------------
+
+    // (2) totalGeneralHouseholds
+    if (total === undefined || total === null) {
+      errors.push(`[${id}] totalGeneralHouseholds が未設定 (household 反映自治体は必須)`);
+      unknownMissing++;
+      continue; // 以後の整合性チェックはスキップ
+    }
+    if (typeof total !== "number" || !Number.isInteger(total) || total <= 0) {
+      errors.push(`[${id}] totalGeneralHouseholds が無効 (正整数必須): ${total}`);
+    }
+
+    // (3) elderlySingleHouseholds
+    if (single === undefined || single === null) {
+      errors.push(`[${id}] elderlySingleHouseholds が未設定 (household 反映自治体は必須)`);
+    } else if (typeof single !== "number" || !Number.isInteger(single) || single < 0) {
+      errors.push(`[${id}] elderlySingleHouseholds が無効 (0以上整数必須): ${single}`);
+    } else if (typeof total === "number" && single > total) {
+      errors.push(`[${id}] elderlySingleHouseholds (${single}) > totalGeneralHouseholds (${total})`);
+    }
+
+    // (4) elderlyCoupleHouseholds
+    if (couple === undefined || couple === null) {
+      errors.push(`[${id}] elderlyCoupleHouseholds が未設定 (household 反映自治体は必須)`);
+    } else if (typeof couple !== "number" || !Number.isInteger(couple) || couple < 0) {
+      errors.push(`[${id}] elderlyCoupleHouseholds が無効 (0以上整数必須): ${couple}`);
+    } else if (typeof total === "number" && couple > total) {
+      errors.push(`[${id}] elderlyCoupleHouseholds (${couple}) > totalGeneralHouseholds (${total})`);
+    }
+
+    // (5) elderlySingleRate
+    if (singleRate === undefined || singleRate === null) {
+      errors.push(`[${id}] elderlySingleRate が未設定 (household 反映自治体は必須)`);
+    } else if (typeof singleRate !== "number" || singleRate < 0 || singleRate > 100) {
+      errors.push(`[${id}] elderlySingleRate が無効 (0〜100 必須): ${singleRate}`);
+    } else if (
+      typeof single === "number" &&
+      typeof total === "number" &&
+      total > 0
+    ) {
+      const expected = (single / total) * 100;
+      if (Math.abs(singleRate - expected) > 0.1) {
+        errors.push(
+          `[${id}] elderlySingleRate 不一致: 格納値=${singleRate}, 算出値=${expected.toFixed(4)}` +
+          ` (elderlySingleHouseholds=${single}, total=${total})`,
+        );
+      }
+    }
+
+    // (6) elderlyCoupleRate
+    if (coupleRate === undefined || coupleRate === null) {
+      errors.push(`[${id}] elderlyCoupleRate が未設定 (household 反映自治体は必須)`);
+    } else if (typeof coupleRate !== "number" || coupleRate < 0 || coupleRate > 100) {
+      errors.push(`[${id}] elderlyCoupleRate が無効 (0〜100 必須): ${coupleRate}`);
+    } else if (
+      typeof couple === "number" &&
+      typeof total === "number" &&
+      total > 0
+    ) {
+      const expected = (couple / total) * 100;
+      if (Math.abs(coupleRate - expected) > 0.1) {
+        errors.push(
+          `[${id}] elderlyCoupleRate 不一致: 格納値=${coupleRate}, 算出値=${expected.toFixed(4)}` +
+          ` (elderlyCoupleHouseholds=${couple}, total=${total})`,
+        );
+      }
+    }
+
+    // (8) householdSource
+    if (hSource === undefined || hSource === null) {
+      errors.push(`[${id}] householdSource が未設定 (household 反映自治体は必須)`);
+    } else if (!isHttpUrl(hSource)) {
+      errors.push(`[${id}] householdSource が http(s) URL ではありません: ${hSource}`);
+    }
+
+    // (9) householdUpdatedAt
+    if (hUpdAt === undefined || hUpdAt === null) {
+      errors.push(`[${id}] householdUpdatedAt が未設定 (household 反映自治体は必須)`);
+    } else if (typeof hUpdAt !== "string" || !isValidDate(hUpdAt)) {
+      errors.push(`[${id}] householdUpdatedAt が無効 (実在 YYYY-MM-DD 必須): ${hUpdAt}`);
+    } else if (hUpdAt !== EXPECTED_HOUSEHOLD_UPDATED_AT) {
+      errors.push(
+        `[${id}] householdUpdatedAt が期待値と異なります: ${hUpdAt} (期待: ${EXPECTED_HOUSEHOLD_UPDATED_AT})`,
+      );
+    }
+
+    householdReflected++;
+  }
+
+  // -------------------------------------------------------
+  // (1) coverage チェック
+  // -------------------------------------------------------
+  stats["household反映件数"]     = householdReflected;
+  stats["household欠損件数"]     = householdMissing;
+  stats["household未知欠損件数"] = unknownMissing;
+
+  if (householdReflected !== 1908) {
+    errors.push(
+      `household 反映件数が期待値と異なります: ${householdReflected}件 (期待: 1908件)`,
+    );
+  }
+
+  if (householdMissing !== 10) {
+    errors.push(
+      `household 欠損件数が期待値と異なります: ${householdMissing}件 (期待: 10件)`,
+    );
+  }
+
+  if (unknownMissing > 0) {
+    errors.push(
+      `household 未知欠損が ${unknownMissing}件あります (既知欠損 10件に含まれない自治体)`,
+    );
+  }
+
+  // householdRisk 統計
+  const hrVals = data
+    .map((m) => m["householdRisk"])
+    .filter((v): v is number => typeof v === "number");
+  if (hrVals.length > 0) {
+    stats["householdRisk最小"] = Math.min(...hrVals);
+    stats["householdRisk最大"] = Math.max(...hrVals);
+    stats["householdRisk平均"] = Math.round(
+      hrVals.reduce((s, v) => s + v, 0) / hrVals.length,
+    );
+  }
+
+  return { errors, warnings, stats };
+}
+
 function validateDatasets(inputPath: string, strictMode = false, sheltersPath?: string): ValidationResult {
   const errors: string[] = [];
   const warnings: string[] = [];
@@ -1108,6 +1327,12 @@ function validateDatasets(inputPath: string, strictMode = false, sheltersPath?: 
   errors.push(...agingValidation.errors);
   warnings.push(...agingValidation.warnings);
   Object.assign(stats, agingValidation.stats);
+
+  // 16. household-v1 フィールド検証
+  const householdValidation = validateHouseholdV1(data);
+  errors.push(...householdValidation.errors);
+  warnings.push(...householdValidation.warnings);
+  Object.assign(stats, householdValidation.stats);
 
   return { errors, warnings, stats };
 }

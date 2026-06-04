@@ -76,6 +76,19 @@ interface AgingEntry {
   calculationVersion: "aging-v1";
 }
 
+interface HouseholdEntry {
+  jisCode: string;
+  totalGeneralHouseholds: number;
+  elderlySingleHouseholds: number;
+  elderlyCoupleHouseholds: number;
+  elderlySingleRate?: number;
+  elderlyCoupleRate?: number;
+  householdRisk?: number;
+  householdSource?: string;
+  householdUpdatedAt?: string;
+  calculationVersion: "household-v1";
+}
+
 interface MunicipalityBase {
   id: string;
   jisCode?: string;
@@ -364,6 +377,26 @@ function mergeDatasets(
     console.warn(`スキップ (未生成): ${agingPath}`);
   }
 
+  // -------------------------------------------------------
+  // household.json を読み込み（世帯構成・householdRisk standalone 指標）
+  // -------------------------------------------------------
+
+  const householdPath      = path.join(processedDir, "household.json");
+  const householdData      = loadJsonIfExists<HouseholdEntry>(householdPath);
+  const householdByJisCode = new Map<string, HouseholdEntry>();
+
+  if (householdData.length > 0) {
+    console.log(`読み込み: ${householdPath} (${householdData.length}件)`);
+    for (const h of householdData) {
+      householdByJisCode.set(h.jisCode, h);
+    }
+  } else {
+    console.warn(`スキップ (未生成): ${householdPath}`);
+  }
+
+  let householdJoinCount    = 0;
+  let householdMissingCount = 0;
+
   let agingJoinCount    = 0;
   let agingMissingCount = 0;
 
@@ -393,6 +426,16 @@ function mergeDatasets(
     delete result["agingSource"];
     delete result["agingUpdatedAt"];
     delete result["agingRisk"];
+
+    // household 系フィールドをすべてクリア（household.json JOIN 成功時のみ再設定）
+    delete result["totalGeneralHouseholds"];
+    delete result["elderlySingleHouseholds"];
+    delete result["elderlyCoupleHouseholds"];
+    delete result["elderlySingleRate"];
+    delete result["elderlyCoupleRate"];
+    delete result["householdSource"];
+    delete result["householdUpdatedAt"];
+    delete result["householdRisk"];
 
     // 汎用スコアファイルから JOIN
     for (const pair of scoreFilePairs) {
@@ -450,12 +493,35 @@ function mergeDatasets(
       }
     }
 
-    // dataUpdatedAt = max(shelterUpdatedAt, populationUpdatedAt, agingUpdatedAt)
+    // household データを JOIN（jisCode のみ）
+    // householdRisk は overallScore に含めない standalone 指標。
+    // 欠損10件（北方領土・双葉町・浜松市新3区）は householdRisk=50（中立値）のみ設定。
+    if (householdData.length > 0) {
+      const household = m.jisCode ? householdByJisCode.get(m.jisCode) : undefined;
+      if (household && household.householdRisk !== undefined) {
+        result["totalGeneralHouseholds"]  = household.totalGeneralHouseholds;
+        result["elderlySingleHouseholds"] = household.elderlySingleHouseholds;
+        result["elderlyCoupleHouseholds"] = household.elderlyCoupleHouseholds;
+        result["elderlySingleRate"]       = household.elderlySingleRate;
+        result["elderlyCoupleRate"]       = household.elderlyCoupleRate;
+        result["householdRisk"]           = household.householdRisk;
+        result["householdSource"]         = household.householdSource;
+        result["householdUpdatedAt"]      = household.householdUpdatedAt;
+        householdJoinCount++;
+      } else {
+        // household データなし → householdRisk は中立値 50 を維持
+        result["householdRisk"] = 50;
+        householdMissingCount++;
+      }
+    }
+
+    // dataUpdatedAt = max(shelterUpdatedAt, populationUpdatedAt, agingUpdatedAt, householdUpdatedAt)
     // 最新データ更新日を全体の dataUpdatedAt として保持
     const sDate = result["shelterUpdatedAt"];
     const pDate = result["populationUpdatedAt"];
     const aDate = result["agingUpdatedAt"];
-    const dateCandidates = [sDate, pDate, aDate].filter((d): d is string => typeof d === "string");
+    const hDate = result["householdUpdatedAt"];
+    const dateCandidates = [sDate, pDate, aDate, hDate].filter((d): d is string => typeof d === "string");
     if (dateCandidates.length > 0) {
       result["dataUpdatedAt"] = dateCandidates.sort().at(-1)!;
     }
@@ -565,6 +631,21 @@ function mergeDatasets(
     const arMax  = Math.max(...agingRiskVals);
     const arMean = agingRiskVals.reduce((s, v) => s + v, 0) / agingRiskVals.length;
     console.log(`  agingRisk range: ${arMin} 〜 ${arMax} (mean: ${arMean.toFixed(2)})`);
+  }
+
+  // household.json 統合結果ログ
+  if (householdData.length > 0) {
+    console.log(
+      `\nhousehold.json 使用状況: ${householdJoinCount}/${householdData.length}件 JOIN済` +
+      ` / 未反映 ${householdMissingCount}件（householdRisk=50 維持）`,
+    );
+    const hrVals = merged
+      .map((m) => m["householdRisk"])
+      .filter((v): v is number => typeof v === "number");
+    const hrMin  = Math.min(...hrVals);
+    const hrMax  = Math.max(...hrVals);
+    const hrMean = hrVals.reduce((s, v) => s + v, 0) / hrVals.length;
+    console.log(`  householdRisk range: ${hrMin} 〜 ${hrMax} (mean: ${hrMean.toFixed(2)})`);
   }
 
   // strict モード: エラーがあれば出力前に終了

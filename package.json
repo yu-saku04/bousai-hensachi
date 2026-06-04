@@ -25,7 +25,11 @@
     "fetch:estat-aging-2020": "tsx scripts/fetchers/fetch-estat-aging-2020.ts",
     "convert:estat-aging-2020": "tsx scripts/converters/convert-estat-aging-2020.ts",
     "import:aging": "tsx scripts/importers/import-aging.ts",
-    "score:aging-v1": "tsx scripts/scoring/score-aging-v1.ts --dry-run"
+    "score:aging-v1": "tsx scripts/scoring/score-aging-v1.ts --dry-run",
+    "fetch:estat-household-2020": "tsx scripts/fetchers/fetch-estat-household-2020.ts",
+    "convert:estat-household-2020": "tsx scripts/converters/convert-estat-household-2020.ts",
+    "import:household": "tsx scripts/importers/import-household.ts",
+    "score:household-v1": "tsx scripts/scoring/score-household-v1.ts --dry-run"
   },
   "dependencies": {
     "next": "16.2.6",
