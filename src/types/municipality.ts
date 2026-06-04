@@ -23,6 +23,9 @@ export interface Municipality {
   longitude?: number;
   population?: number;
   agingRate?: number;
+  elderlyPopulation?: number;
+  agingSource?: string;
+  agingUpdatedAt?: string;
   floodSource?: string;
   earthquakeSource?: string;
   fireSource?: string;

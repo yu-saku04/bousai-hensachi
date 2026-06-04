@@ -450,11 +450,12 @@ function mergeDatasets(
       }
     }
 
-    // dataUpdatedAt = max(shelterUpdatedAt, populationUpdatedAt)
+    // dataUpdatedAt = max(shelterUpdatedAt, populationUpdatedAt, agingUpdatedAt)
     // 最新データ更新日を全体の dataUpdatedAt として保持
     const sDate = result["shelterUpdatedAt"];
     const pDate = result["populationUpdatedAt"];
-    const dateCandidates = [sDate, pDate].filter((d): d is string => typeof d === "string");
+    const aDate = result["agingUpdatedAt"];
+    const dateCandidates = [sDate, pDate, aDate].filter((d): d is string => typeof d === "string");
     if (dateCandidates.length > 0) {
       result["dataUpdatedAt"] = dateCandidates.sort().at(-1)!;
     }

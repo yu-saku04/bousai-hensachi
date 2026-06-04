@@ -52,7 +52,8 @@ const AGING_PATH      = path.join(ROOT, "data/processed/aging.json");
 const POPULATION_PATH = path.join(ROOT, "data/processed/population.json");
 
 const AGING_SOURCE_URL = "https://www.e-stat.go.jp/stat-search/files?statdisp_id=0003445162";
-const AGING_UPDATED_AT = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+// e-Stat 表2-7-1 の公表日（固定）。aging.json の updatedAt から流す設計とする。
+const AGING_UPDATED_AT_FALLBACK = "2021-11-30";
 
 // ---------------------------------------------------------------------------
 // Arg parsing
@@ -138,8 +139,15 @@ function main() {
   const agingData      = JSON.parse(fs.readFileSync(AGING_PATH,      "utf-8")) as AgingEntry[];
   const populationData = JSON.parse(fs.readFileSync(POPULATION_PATH, "utf-8")) as PopulationEntry[];
 
+  // aging.json の updatedAt（import-aging 由来 = e-Stat 表2-7-1 公表日）を使用
+  // 取得できない場合はフォールバック定数を使う
+  const agingUpdatedAtFromData =
+    (agingData[0]?.updatedAt) ?? AGING_UPDATED_AT_FALLBACK;
+  const AGING_UPDATED_AT = agingUpdatedAtFromData;
+
   console.log(`aging.json:      ${agingData.length}件`);
   console.log(`population.json: ${populationData.length}件`);
+  console.log(`agingUpdatedAt:  ${AGING_UPDATED_AT}`);
 
   // population を jisCode → population の Map に
   const popMap = new Map<string, number>();
