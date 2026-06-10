@@ -37,6 +37,9 @@ yarn-error.log*
 # e-Stat raw data (API key required to regenerate)
 data/raw/estat/
 
+# J-SHIS raw data
+data/raw/jshis/
+
 # vercel
 .vercel
 

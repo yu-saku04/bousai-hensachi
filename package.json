@@ -29,7 +29,10 @@
     "fetch:estat-household-2020": "tsx scripts/fetchers/fetch-estat-household-2020.ts",
     "convert:estat-household-2020": "tsx scripts/converters/convert-estat-household-2020.ts",
     "import:household": "tsx scripts/importers/import-household.ts",
-    "score:household-v1": "tsx scripts/scoring/score-household-v1.ts --dry-run"
+    "score:household-v1": "tsx scripts/scoring/score-household-v1.ts --dry-run",
+    "fetch:jshis-earthquake-2020": "tsx scripts/fetchers/fetch-jshis-earthquake-2020.ts",
+    "convert:jshis-earthquake-2020": "tsx scripts/converters/convert-jshis-earthquake-2020.ts",
+    "import:earthquake": "tsx scripts/importers/import-earthquake.ts"
   },
   "dependencies": {
     "next": "16.2.6",

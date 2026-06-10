@@ -25,6 +25,11 @@
  *      - フィールドスキーマ検証
  *      - scoreConfidence 別の整合性チェック
  *      - nationalRank / prefectureRank の dense rank 再計算照合
+ *  17. earthquake-v1 フィールド検証（earthquakeRisk / 地震確率 / dataStatus 別整合性）
+ *      - earthquakeRisk 10〜90 整数（全自治体必須）
+ *      - earthquakeDataStatus 別フィールド整合性チェック
+ *      - 件数: direct=1762 / aggregated=19 / known-missing=10 / not-found=127
+ *      - earthquakeRisk が overallScore に反映されていないこと（SCORE_FIELDS 除外確認）
  *
  * オプション:
  *   --strict        jisCode 未設定 / processed 未使用 を warning ではなく error として報告
@@ -1010,6 +1015,314 @@ function validateHouseholdV1(
   return { errors, warnings, stats };
 }
 
+// -------------------------------------------------------
+// earthquake-v1 フィールド検証
+// -------------------------------------------------------
+
+const KNOWN_EARTHQUAKE_MISSING = new Set([
+  "01695", "01696", "01697", "01698", "01699", "01700", // 北方領土
+  "07546",                                               // 双葉町
+  "22138", "22139", "22140",                             // 浜松市新3区
+]);
+
+const VALID_EARTHQUAKE_STATUSES = new Set([
+  "direct", "aggregated-from-wards", "known-missing", "not-found",
+]);
+
+const VALID_EARTHQUAKE_METHODS = new Set([
+  "direct", "ward-average", "neutral-fallback",
+]);
+
+const EXPECTED_EARTHQUAKE_COUNTS = {
+  direct:             1762,
+  "aggregated-from-wards": 19,
+  "known-missing":    10,
+  "not-found":        127,
+  total:              1918,
+} as const;
+
+function validateEarthquakeV1(
+  data: Municipality[],
+): { errors: string[]; warnings: string[]; stats: Record<string, number | string> } {
+  const errors:   string[] = [];
+  const warnings: string[] = [];
+  const stats: Record<string, number | string> = {};
+
+  // -------------------------------------------------------
+  // overallScore 非反映確認:
+  //   (a) earthquakeRisk が SCORE_ITEMS に残っていること（UI 表示用）
+  //   (b) 実際の overallScore が earthquakeRisk を除外して計算されていること
+  //       → merge-datasets.ts の SCORE_FIELDS と同定義で再計算し一致を確認
+  // -------------------------------------------------------
+  const scoreItemKeys = SCORE_ITEMS.map((i) => i.key as string);
+  if (!scoreItemKeys.includes("earthquakeRisk")) {
+    errors.push(
+      "earthquakeRisk が SCORE_ITEMS から削除されています。UI 表示に影響します（意図しない変更）",
+    );
+  }
+
+  // merge-datasets.ts の SCORE_FIELDS と同一定義（earthquakeRisk を含まない）
+  const MERGE_SCORE_FIELDS: ScoreKey[] = [
+    "floodRisk", "fireRisk",
+    "agingRisk", "shelterCapacity",
+    "isolationRisk", "childcareStressRisk", "emotionalRecoveryRisk",
+    "socialSupportScore", "infrastructureRecoveryScore", "familyDisasterPreparedness",
+  ];
+
+  // 定義ミス防止: この配列に earthquakeRisk が混入していたら即エラー
+  if ((MERGE_SCORE_FIELDS as string[]).includes("earthquakeRisk")) {
+    errors.push(
+      "MERGE_SCORE_FIELDS に earthquakeRisk が含まれています（validate-datasets.ts の定義ミス）",
+    );
+  }
+
+  // 全自治体の overallScore が earthquakeRisk 除外計算と一致することを確認
+  let overallScoreMismatch = 0;
+  for (const m of data) {
+    const id = String(m["jisCode"] ?? m["id"] ?? "unknown");
+    const scoresWithoutEq: Partial<Record<ScoreKey, number>> = {};
+    for (const field of MERGE_SCORE_FIELDS) {
+      const v = m[field];
+      if (typeof v === "number" && !isNaN(v)) scoresWithoutEq[field] = v;
+    }
+    const expected = calcOverallScore(scoresWithoutEq);
+    const stored   = m.overallScore;
+    if (expected !== stored) {
+      overallScoreMismatch++;
+      if (overallScoreMismatch <= 5) {
+        errors.push(
+          `[${id}] overallScore が earthquakeRisk 除外計算と不一致: ` +
+          `stored=${stored}, expected=${expected}`,
+        );
+      }
+    }
+  }
+  if (overallScoreMismatch > 5) {
+    errors.push(`...overallScore 不一致 他 ${overallScoreMismatch - 5}件`);
+  }
+  stats["overallScore-earthquakeRisk除外不一致"] = overallScoreMismatch;
+
+  const statusCounts: Record<string, number> = {
+    direct: 0,
+    "aggregated-from-wards": 0,
+    "known-missing": 0,
+    "not-found": 0,
+  };
+
+  let reflected = 0; // direct + aggregated (real probability data)
+  let neutral   = 0; // known-missing + not-found (earthquakeRisk=50)
+
+  for (const m of data) {
+    const id             = String(m["jisCode"] ?? m["id"] ?? "unknown");
+    const isKnownMissing = KNOWN_EARTHQUAKE_MISSING.has(id);
+    const dataStatus     = m["earthquakeDataStatus"];
+    const prob           = m["earthquakeProbability"];
+    const method         = m["earthquakeProbabilityMethod"];
+    const eqRisk         = m["earthquakeRisk"];
+    const eqVersion      = m["earthquakeVersion"];
+    const eqSource       = m["earthquakeSource"];
+    const eqUpdAt        = m["earthquakeUpdatedAt"];
+
+    // -------------------------------------------------------
+    // earthquakeRisk: 全自治体で必須（10〜90 整数）
+    // -------------------------------------------------------
+    if (eqRisk === undefined || eqRisk === null) {
+      errors.push(`[${id}] earthquakeRisk が未設定 (全自治体必須)`);
+    } else if (
+      typeof eqRisk !== "number" ||
+      !Number.isInteger(eqRisk) ||
+      eqRisk < 10 || eqRisk > 90
+    ) {
+      errors.push(`[${id}] earthquakeRisk が無効 (10〜90 整数必須): ${eqRisk}`);
+    }
+
+    // -------------------------------------------------------
+    // earthquakeDataStatus: 全自治体で必須（enum チェック）
+    // -------------------------------------------------------
+    if (typeof dataStatus !== "string" || !VALID_EARTHQUAKE_STATUSES.has(dataStatus)) {
+      errors.push(
+        `[${id}] earthquakeDataStatus が無効 (${[...VALID_EARTHQUAKE_STATUSES].join("|")} 必須): ${dataStatus}`,
+      );
+      continue; // dataStatus が不正な場合、以後の整合性チェックはスキップ
+    }
+
+    statusCounts[dataStatus] = (statusCounts[dataStatus] ?? 0) + 1;
+
+    // -------------------------------------------------------
+    // earthquakeProbabilityMethod: 全自治体で必須（enum チェック）
+    // -------------------------------------------------------
+    if (typeof method !== "string" || !VALID_EARTHQUAKE_METHODS.has(method)) {
+      errors.push(
+        `[${id}] earthquakeProbabilityMethod が無効 (${[...VALID_EARTHQUAKE_METHODS].join("|")} 必須): ${method}`,
+      );
+    }
+
+    // -------------------------------------------------------
+    // earthquakeVersion: 全自治体で Y2020 必須
+    // -------------------------------------------------------
+    if (eqVersion !== "Y2020") {
+      errors.push(`[${id}] earthquakeVersion が無効 ("Y2020" 必須): ${eqVersion}`);
+    }
+
+    // -------------------------------------------------------
+    // earthquakeSource: 全自治体で非空文字列必須
+    // -------------------------------------------------------
+    if (typeof eqSource !== "string" || eqSource.trim() === "") {
+      errors.push(`[${id}] earthquakeSource が未設定または空 (全自治体必須)`);
+    }
+
+    // -------------------------------------------------------
+    // earthquakeUpdatedAt: 全自治体で実在 YYYY-MM-DD 必須
+    // -------------------------------------------------------
+    if (typeof eqUpdAt !== "string" || !isValidDate(eqUpdAt)) {
+      errors.push(`[${id}] earthquakeUpdatedAt が無効 (実在 YYYY-MM-DD 必須): ${eqUpdAt}`);
+    }
+
+    // -------------------------------------------------------
+    // dataStatus 別の整合性チェック
+    // -------------------------------------------------------
+
+    if (dataStatus === "direct" || dataStatus === "aggregated-from-wards") {
+      reflected++;
+
+      // probability: 0〜1 の数値必須
+      if (typeof prob !== "number" || prob < 0 || prob > 1) {
+        errors.push(
+          `[${id}] earthquakeProbability: ${dataStatus} では 0〜1 の数値必須 (${prob})`,
+        );
+      }
+
+      // method 整合性
+      const expectedMethod = dataStatus === "direct" ? "direct" : "ward-average";
+      if (method !== expectedMethod) {
+        errors.push(
+          `[${id}] earthquakeProbabilityMethod: ${dataStatus} では "${expectedMethod}" 必須 (${method})`,
+        );
+      }
+
+      // aggregated 専用フィールド
+      if (dataStatus === "aggregated-from-wards") {
+        const srcCodes  = m["earthquakeSourceJisCodes"];
+        const wardCount = m["earthquakeWardCount"];
+        const probMin   = m["earthquakeProbabilityMin"];
+        const probMax   = m["earthquakeProbabilityMax"];
+
+        if (!Array.isArray(srcCodes) || srcCodes.length === 0) {
+          errors.push(`[${id}] earthquakeSourceJisCodes が未設定または空配列 (aggregated-from-wards 必須)`);
+        }
+        if (typeof wardCount !== "number" || !Number.isInteger(wardCount) || wardCount < 1) {
+          errors.push(`[${id}] earthquakeWardCount が無効 (正整数必須): ${wardCount}`);
+        }
+        if (Array.isArray(srcCodes) && typeof wardCount === "number" && srcCodes.length !== wardCount) {
+          errors.push(
+            `[${id}] earthquakeSourceJisCodes.length (${srcCodes.length}) と earthquakeWardCount (${wardCount}) が不一致`,
+          );
+        }
+        if (typeof probMin !== "number" || probMin < 0 || probMin > 1) {
+          errors.push(`[${id}] earthquakeProbabilityMin が無効 (0〜1 必須): ${probMin}`);
+        }
+        if (typeof probMax !== "number" || probMax < 0 || probMax > 1) {
+          errors.push(`[${id}] earthquakeProbabilityMax が無効 (0〜1 必須): ${probMax}`);
+        }
+        if (
+          typeof prob === "number" && typeof probMin === "number" && typeof probMax === "number" &&
+          (prob < probMin - 0.00001 || prob > probMax + 0.00001)
+        ) {
+          errors.push(
+            `[${id}] earthquakeProbability (${prob}) が min (${probMin}) ~ max (${probMax}) の範囲外`,
+          );
+        }
+      }
+
+    } else {
+      // known-missing or not-found
+      neutral++;
+
+      // probability: null 必須
+      if (prob !== null) {
+        errors.push(
+          `[${id}] earthquakeProbability: ${dataStatus} では null 必須 (${prob})`,
+        );
+      }
+
+      // earthquakeRisk: 中立値 50 必須
+      if (typeof eqRisk === "number" && eqRisk !== 50) {
+        errors.push(
+          `[${id}] earthquakeRisk: ${dataStatus} では 50 (中立値) 必須 (${eqRisk})`,
+        );
+      }
+
+      // method
+      if (method !== "neutral-fallback") {
+        errors.push(
+          `[${id}] earthquakeProbabilityMethod: ${dataStatus} では "neutral-fallback" 必須 (${method})`,
+        );
+      }
+
+      // known-missing: KNOWN_EARTHQUAKE_MISSING に含まれること
+      if (dataStatus === "known-missing" && !isKnownMissing) {
+        errors.push(
+          `[${id}] earthquakeDataStatus=known-missing だが KNOWN_EARTHQUAKE_MISSING に含まれていません`,
+        );
+      }
+    }
+  }
+
+  // -------------------------------------------------------
+  // 件数チェック
+  // -------------------------------------------------------
+  stats["earthquake直接データ件数"]     = statusCounts["direct"] ?? 0;
+  stats["earthquake集計データ件数"]     = statusCounts["aggregated-from-wards"] ?? 0;
+  stats["earthquake既知欠損件数"]       = statusCounts["known-missing"] ?? 0;
+  stats["earthquake未取得件数"]         = statusCounts["not-found"] ?? 0;
+  stats["earthquake実データ件数"]       = reflected;
+  stats["earthquake中立値件数"]         = neutral;
+
+  const total = reflected + neutral;
+  if (total !== EXPECTED_EARTHQUAKE_COUNTS.total) {
+    errors.push(
+      `earthquake 合計件数が期待値と異なります: ${total}件 (期待: ${EXPECTED_EARTHQUAKE_COUNTS.total}件)`,
+    );
+  }
+
+  for (const [status, expected] of Object.entries(EXPECTED_EARTHQUAKE_COUNTS)) {
+    if (status === "total") continue;
+    const actual = statusCounts[status] ?? 0;
+    if (actual !== expected) {
+      errors.push(
+        `earthquake dataStatus="${status}" 件数が期待値と異なります: ${actual}件 (期待: ${expected}件)`,
+      );
+    }
+  }
+
+  // -------------------------------------------------------
+  // earthquakeRisk 統計
+  // -------------------------------------------------------
+  const eqRiskVals = data
+    .map((m) => m["earthquakeRisk"])
+    .filter((v): v is number => typeof v === "number");
+  if (eqRiskVals.length > 0) {
+    stats["earthquakeRisk最小"] = Math.min(...eqRiskVals);
+    stats["earthquakeRisk最大"] = Math.max(...eqRiskVals);
+    stats["earthquakeRisk平均"] = Math.round(
+      eqRiskVals.reduce((s, v) => s + v, 0) / eqRiskVals.length,
+    );
+  }
+
+  // -------------------------------------------------------
+  // earthquakeProbability 統計（実データのみ）
+  // -------------------------------------------------------
+  const probVals = data
+    .map((m) => m["earthquakeProbability"])
+    .filter((v): v is number => typeof v === "number");
+  if (probVals.length > 0) {
+    stats["earthquakeProbability最小"] = Math.min(...probVals).toFixed(5);
+    stats["earthquakeProbability最大"] = Math.max(...probVals).toFixed(5);
+  }
+
+  return { errors, warnings, stats };
+}
+
 function validateDatasets(inputPath: string, strictMode = false, sheltersPath?: string): ValidationResult {
   const errors: string[] = [];
   const warnings: string[] = [];
@@ -1333,6 +1646,12 @@ function validateDatasets(inputPath: string, strictMode = false, sheltersPath?: 
   errors.push(...householdValidation.errors);
   warnings.push(...householdValidation.warnings);
   Object.assign(stats, householdValidation.stats);
+
+  // 17. earthquake-v1 フィールド検証
+  const earthquakeValidation = validateEarthquakeV1(data);
+  errors.push(...earthquakeValidation.errors);
+  warnings.push(...earthquakeValidation.warnings);
+  Object.assign(stats, earthquakeValidation.stats);
 
   return { errors, warnings, stats };
 }

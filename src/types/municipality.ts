@@ -58,6 +58,19 @@ export interface Municipality {
   scoreConfidence?: "high" | "no-shelter-data" | "no-data";
   scoreVersion?: "shelter-sufficiency-v1";
   calculationNotes?: string;
+  // earthquake-v1
+  earthquakeProbability?: number | null;
+  earthquakePex?: number | null;
+  earthquakeScore?: number | null;
+  earthquakeRank?: number | null;
+  earthquakeVersion?: "Y2020";
+  earthquakeDataStatus?: "direct" | "aggregated-from-wards" | "known-missing" | "not-found";
+  earthquakeProbabilityMethod?: "direct" | "ward-average" | "neutral-fallback";
+  earthquakeSourceJisCodes?: string[] | null;
+  earthquakeProbabilityMin?: number | null;
+  earthquakeProbabilityMax?: number | null;
+  earthquakeWardCount?: number | null;
+  earthquakeUpdatedAt?: string;
 }
 
 export interface RiskItem {

@@ -89,6 +89,24 @@ interface HouseholdEntry {
   calculationVersion: "household-v1";
 }
 
+interface EarthquakeEntry {
+  jisCode: string;
+  earthquakeRisk: number;
+  earthquakeProbability: number | null;
+  earthquakePex: number | null;
+  earthquakeScore: number | null;
+  earthquakeRank: number | null;
+  earthquakeVersion: "Y2020";
+  earthquakeDataStatus: string;
+  earthquakeProbabilityMethod: string;
+  earthquakeSourceJisCodes?: string[];
+  earthquakeProbabilityMin?: number;
+  earthquakeProbabilityMax?: number;
+  earthquakeWardCount?: number;
+  earthquakeSource: string;
+  earthquakeUpdatedAt: string;
+}
+
 interface MunicipalityBase {
   id: string;
   jisCode?: string;
@@ -169,8 +187,9 @@ function lookupEntry<T extends ScoreEntry>(
 // スコアフィールド適用
 // -------------------------------------------------------
 
+// earthquakeRisk は earthquake-v1 の standalone 指標。overallScoreV2 実装まで overallScore に反映しない。
 const SCORE_FIELDS: Array<ScoreKey> = [
-  "floodRisk", "earthquakeRisk", "fireRisk",
+  "floodRisk", "fireRisk",
   "agingRisk", "shelterCapacity",
   "isolationRisk", "childcareStressRisk", "emotionalRecoveryRisk",
   "socialSupportScore", "infrastructureRecoveryScore", "familyDisasterPreparedness",
@@ -394,8 +413,28 @@ function mergeDatasets(
     console.warn(`スキップ (未生成): ${householdPath}`);
   }
 
+  // -------------------------------------------------------
+  // earthquake.json を読み込み（地震ハザード・earthquakeRisk standalone 指標）
+  // -------------------------------------------------------
+
+  const earthquakePath      = path.join(processedDir, "earthquake.json");
+  const earthquakeData      = loadJsonIfExists<EarthquakeEntry>(earthquakePath);
+  const earthquakeByJisCode = new Map<string, EarthquakeEntry>();
+
+  if (earthquakeData.length > 0) {
+    console.log(`読み込み: ${earthquakePath} (${earthquakeData.length}件)`);
+    for (const e of earthquakeData) {
+      earthquakeByJisCode.set(e.jisCode, e);
+    }
+  } else {
+    console.warn(`スキップ (未生成): ${earthquakePath}`);
+  }
+
   let householdJoinCount    = 0;
   let householdMissingCount = 0;
+
+  let earthquakeJoinCount    = 0;
+  let earthquakeMissingCount = 0;
 
   let agingJoinCount    = 0;
   let agingMissingCount = 0;
@@ -436,6 +475,22 @@ function mergeDatasets(
     delete result["householdSource"];
     delete result["householdUpdatedAt"];
     delete result["householdRisk"];
+
+    // earthquake 系フィールドをすべてクリア（earthquake.json JOIN 成功時のみ再設定）
+    delete result["earthquakeRisk"];
+    delete result["earthquakeSource"];
+    delete result["earthquakeUpdatedAt"];
+    delete result["earthquakeProbability"];
+    delete result["earthquakePex"];
+    delete result["earthquakeScore"];
+    delete result["earthquakeRank"];
+    delete result["earthquakeVersion"];
+    delete result["earthquakeDataStatus"];
+    delete result["earthquakeProbabilityMethod"];
+    delete result["earthquakeSourceJisCodes"];
+    delete result["earthquakeProbabilityMin"];
+    delete result["earthquakeProbabilityMax"];
+    delete result["earthquakeWardCount"];
 
     // 汎用スコアファイルから JOIN
     for (const pair of scoreFilePairs) {
@@ -515,13 +570,45 @@ function mergeDatasets(
       }
     }
 
-    // dataUpdatedAt = max(shelterUpdatedAt, populationUpdatedAt, agingUpdatedAt, householdUpdatedAt)
+    // earthquake データを JOIN（jisCode のみ）
+    // earthquakeRisk は overallScore に含めない standalone 指標（overallScoreV2 実装まで）。
+    // 欠損自治体（北方領土・双葉町・浜松市新3区）は earthquakeRisk=50（中立値）のみ設定。
+    if (earthquakeData.length > 0) {
+      const eq = m.jisCode ? earthquakeByJisCode.get(m.jisCode) : undefined;
+      if (eq) {
+        result["earthquakeRisk"]              = eq.earthquakeRisk;
+        result["earthquakeProbability"]       = eq.earthquakeProbability;
+        result["earthquakePex"]               = eq.earthquakePex;
+        result["earthquakeScore"]             = eq.earthquakeScore;
+        result["earthquakeRank"]              = eq.earthquakeRank;
+        result["earthquakeVersion"]           = eq.earthquakeVersion;
+        result["earthquakeDataStatus"]        = eq.earthquakeDataStatus;
+        result["earthquakeProbabilityMethod"] = eq.earthquakeProbabilityMethod;
+        result["earthquakeSource"]            = eq.earthquakeSource;
+        result["earthquakeUpdatedAt"]         = eq.earthquakeUpdatedAt;
+        if (eq.earthquakeSourceJisCodes !== undefined)
+          result["earthquakeSourceJisCodes"]  = eq.earthquakeSourceJisCodes;
+        if (eq.earthquakeProbabilityMin !== undefined)
+          result["earthquakeProbabilityMin"]  = eq.earthquakeProbabilityMin;
+        if (eq.earthquakeProbabilityMax !== undefined)
+          result["earthquakeProbabilityMax"]  = eq.earthquakeProbabilityMax;
+        if (eq.earthquakeWardCount !== undefined)
+          result["earthquakeWardCount"]       = eq.earthquakeWardCount;
+        earthquakeJoinCount++;
+      } else {
+        result["earthquakeRisk"] = 50;
+        earthquakeMissingCount++;
+      }
+    }
+
+    // dataUpdatedAt = max(shelterUpdatedAt, populationUpdatedAt, agingUpdatedAt, householdUpdatedAt, earthquakeUpdatedAt)
     // 最新データ更新日を全体の dataUpdatedAt として保持
     const sDate = result["shelterUpdatedAt"];
     const pDate = result["populationUpdatedAt"];
     const aDate = result["agingUpdatedAt"];
     const hDate = result["householdUpdatedAt"];
-    const dateCandidates = [sDate, pDate, aDate, hDate].filter((d): d is string => typeof d === "string");
+    const eDate = result["earthquakeUpdatedAt"];
+    const dateCandidates = [sDate, pDate, aDate, hDate, eDate].filter((d): d is string => typeof d === "string");
     if (dateCandidates.length > 0) {
       result["dataUpdatedAt"] = dateCandidates.sort().at(-1)!;
     }
@@ -646,6 +733,27 @@ function mergeDatasets(
     const hrMax  = Math.max(...hrVals);
     const hrMean = hrVals.reduce((s, v) => s + v, 0) / hrVals.length;
     console.log(`  householdRisk range: ${hrMin} 〜 ${hrMax} (mean: ${hrMean.toFixed(2)})`);
+  }
+
+  // earthquake.json 統合結果ログ
+  if (earthquakeData.length > 0) {
+    console.log(
+      `\nearthquake.json 使用状況: ${earthquakeJoinCount}/${earthquakeData.length}件 JOIN済` +
+      ` / 未反映 ${earthquakeMissingCount}件（earthquakeRisk=50 維持）`,
+    );
+    const eqVals = merged
+      .map((m) => m["earthquakeRisk"])
+      .filter((v): v is number => typeof v === "number");
+    const eqMin  = Math.min(...eqVals);
+    const eqMax  = Math.max(...eqVals);
+    const eqMean = eqVals.reduce((s, v) => s + v, 0) / eqVals.length;
+    console.log(`  earthquakeRisk range: ${eqMin} 〜 ${eqMax} (mean: ${eqMean.toFixed(2)})`);
+    const byStatus = (s: string) =>
+      merged.filter((m) => m["earthquakeDataStatus"] === s).length;
+    console.log(
+      `  direct=${byStatus("direct")} aggregated=${byStatus("aggregated-from-wards")}` +
+      ` known-missing=${byStatus("known-missing")} not-found=${byStatus("not-found")}`,
+    );
   }
 
   // strict モード: エラーがあれば出力前に終了
