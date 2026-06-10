@@ -34,7 +34,8 @@
     "convert:jshis-earthquake-2020": "tsx scripts/converters/convert-jshis-earthquake-2020.ts",
     "import:earthquake": "tsx scripts/importers/import-earthquake.ts",
     "score:overall-v2": "tsx scripts/scoring/score-overall-v2.ts --dry-run",
-    "score:overall-v2:write": "tsx scripts/scoring/score-overall-v2.ts --output src/data/municipalities.json"
+    "score:overall-v2:write": "tsx scripts/scoring/score-overall-v2.ts --output src/data/municipalities.json",
+    "analyze:overall-v2-diff": "tsx scripts/analysis/analyze-overall-v2-diff.ts"
   },
   "dependencies": {
     "next": "16.2.6",
