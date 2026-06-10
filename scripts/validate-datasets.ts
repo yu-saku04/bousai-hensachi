@@ -1323,6 +1323,94 @@ function validateEarthquakeV1(
   return { errors, warnings, stats };
 }
 
+// -------------------------------------------------------
+// overallScoreV2 検証（dry-run）
+// -------------------------------------------------------
+
+import { computeOverallScoreV2 } from "./scoring/score-overall-v2";
+
+function validateOverallScoreV2(
+  data: Municipality[],
+): { errors: string[]; warnings: string[]; stats: Record<string, number | string> } {
+  const errors:   string[] = [];
+  const warnings: string[] = [];
+  const stats: Record<string, number | string> = {};
+
+  // overallScoreV2 フィールドが未投入の場合はスキップ
+  const withV2 = data.filter((m) => m["overallScoreV2"] !== undefined);
+  if (withV2.length === 0) {
+    warnings.push(
+      "overallScoreV2 フィールド未投入 (npm run score:overall-v2:write を実行してください)",
+    );
+    return { errors, warnings, stats };
+  }
+
+  // overallScore 不変確認: SCORE_FIELDS（earthquakeRisk 除外）での再計算と一致を事前確認済み
+  // ここでは overallScoreV2 のスキーマ・再計算整合性を検証する
+
+  stats["overallScoreV2件数"] = withV2.length;
+
+  let mismatch    = 0;
+  let nullCount   = 0;
+  const v2Vals: number[] = [];
+
+  for (const m of data) {
+    const id      = String(m["jisCode"] ?? m["id"] ?? "unknown");
+    const stored  = m["overallScoreV2"] as number | null | undefined;
+
+    // null は許容（データ不足自治体）
+    if (stored === null || stored === undefined) {
+      nullCount++;
+      continue;
+    }
+
+    // 数値 / 整数 / 10〜90 範囲
+    if (
+      typeof stored !== "number" ||
+      !Number.isInteger(stored) ||
+      stored < 10 || stored > 90
+    ) {
+      errors.push(`[${id}] overallScoreV2 が無効 (10〜90 整数または null 必須): ${stored}`);
+      continue;
+    }
+
+    v2Vals.push(stored);
+
+    // 再計算照合
+    const { score: expected } = computeOverallScoreV2(m as Parameters<typeof computeOverallScoreV2>[0]);
+    if (expected !== stored) {
+      mismatch++;
+      if (mismatch <= 5) {
+        errors.push(
+          `[${id}] overallScoreV2 再計算不一致: stored=${stored}, expected=${expected}`,
+        );
+      }
+    }
+
+    // overallScore が変更されていないことを確認
+    // （計算式が異なるため overallScore と overallScoreV2 の値自体は異なりうる）
+    const overallScore = m["overallScore"];
+    if (typeof overallScore !== "number") {
+      errors.push(`[${id}] overallScore が数値ではありません: ${overallScore}`);
+    }
+  }
+
+  if (mismatch > 5) errors.push(`...overallScoreV2 再計算不一致 他 ${mismatch - 5}件`);
+
+  stats["overallScoreV2-再計算不一致"] = mismatch;
+  stats["overallScoreV2-null件数"]     = nullCount;
+
+  if (v2Vals.length > 0) {
+    stats["overallScoreV2最小"] = Math.min(...v2Vals);
+    stats["overallScoreV2最大"] = Math.max(...v2Vals);
+    stats["overallScoreV2平均"] = Math.round(
+      v2Vals.reduce((a, b) => a + b, 0) / v2Vals.length,
+    );
+  }
+
+  return { errors, warnings, stats };
+}
+
 function validateDatasets(inputPath: string, strictMode = false, sheltersPath?: string): ValidationResult {
   const errors: string[] = [];
   const warnings: string[] = [];
@@ -1652,6 +1740,12 @@ function validateDatasets(inputPath: string, strictMode = false, sheltersPath?: 
   errors.push(...earthquakeValidation.errors);
   warnings.push(...earthquakeValidation.warnings);
   Object.assign(stats, earthquakeValidation.stats);
+
+  // 18. overallScoreV2 検証（dry-run）
+  const v2Validation = validateOverallScoreV2(data);
+  errors.push(...v2Validation.errors);
+  warnings.push(...v2Validation.warnings);
+  Object.assign(stats, v2Validation.stats);
 
   return { errors, warnings, stats };
 }

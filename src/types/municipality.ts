@@ -71,6 +71,9 @@ export interface Municipality {
   earthquakeProbabilityMax?: number | null;
   earthquakeWardCount?: number | null;
   earthquakeUpdatedAt?: string;
+  // overallScoreV2 (dry-run)
+  overallScoreV2?: number | null;
+  overallScoreV2Version?: string;
 }
 
 export interface RiskItem {
