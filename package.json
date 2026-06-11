@@ -35,7 +35,9 @@
     "import:earthquake": "tsx scripts/importers/import-earthquake.ts",
     "score:overall-v2": "tsx scripts/scoring/score-overall-v2.ts --dry-run",
     "score:overall-v2:write": "tsx scripts/scoring/score-overall-v2.ts --output src/data/municipalities.json",
-    "analyze:overall-v2-diff": "tsx scripts/analysis/analyze-overall-v2-diff.ts"
+    "analyze:overall-v2-diff": "tsx scripts/analysis/analyze-overall-v2-diff.ts",
+    "fetch:flood:sample": ".venv-flood/bin/python scripts/fetchers/fetch-nlftp-flood.py --pref 08 --download",
+    "score:flood-v1:sample": ".venv-flood/bin/python scripts/scoring/score-flood-v1.py --pref 08 --output data/processed/flood-scores-sample-08.json"
   },
   "dependencies": {
     "next": "16.2.6",
