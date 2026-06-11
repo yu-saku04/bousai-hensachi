@@ -40,6 +40,12 @@ data/raw/estat/
 # J-SHIS raw data
 data/raw/jshis/
 
+# Flood GIS Python venv
+.venv-flood/
+
+# Flood raw GML/ZIP data
+data/raw/flood/
+
 # vercel
 .vercel
 
