@@ -18,10 +18,11 @@
 import fs from "fs";
 import path from "path";
 
-const DEFAULT_INPUT     = "data/processed/flood-scores.json";
-const DEFAULT_MUNI_PATH = "src/data/municipalities.json";
-const DEFAULT_OUTPUT    = "data/processed/flood.json";
-const CALC_VERSION      = "flood-v1" as const;
+const DEFAULT_INPUT        = "data/processed/flood-scores.json";
+const DEFAULT_MUNI_PATH    = "src/data/municipalities.json";
+const DEFAULT_OUTPUT       = "data/processed/flood.json";
+const CALC_VERSION         = "flood-v1" as const;
+const DEFAULT_FLOOD_SOURCE = "国土交通省 国土数値情報 浸水想定区域データ A31-12";
 
 const JIS_RE = /^\d{5}$/;
 
@@ -176,7 +177,7 @@ export function importFlood(
         maxDepthCode:       null,
         maxDepthDanger:     null,
         floodAreaRatio:     null,
-        floodSource:        "",
+        floodSource:        DEFAULT_FLOOD_SOURCE,
         floodUpdatedAt:     "",
         calculationVersion: CALC_VERSION,
       });
@@ -193,7 +194,7 @@ export function importFlood(
         maxDepthCode:       flood.maxDepthCode,
         maxDepthDanger:     flood.maxDepthDanger,
         floodAreaRatio:     flood.floodAreaRatio,
-        floodSource:        flood.floodSource,
+        floodSource:        flood.floodSource || DEFAULT_FLOOD_SOURCE,
         floodUpdatedAt:     flood.floodUpdatedAt,
         calculationVersion: CALC_VERSION,
       });
@@ -219,7 +220,7 @@ export function importFlood(
         maxDepthCode:       null,
         maxDepthDanger:     null,
         floodAreaRatio:     null,
-        floodSource:        flood.floodSource,
+        floodSource:        flood.floodSource || DEFAULT_FLOOD_SOURCE,
         floodUpdatedAt:     flood.floodUpdatedAt,
         calculationVersion: CALC_VERSION,
       });
@@ -237,7 +238,7 @@ export function importFlood(
       maxDepthCode:       null,
       maxDepthDanger:     null,
       floodAreaRatio:     null,
-      floodSource:        flood.floodSource,
+      floodSource:        flood.floodSource || DEFAULT_FLOOD_SOURCE,
       floodUpdatedAt:     flood.floodUpdatedAt,
       calculationVersion: CALC_VERSION,
     });
