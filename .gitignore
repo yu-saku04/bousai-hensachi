@@ -46,6 +46,10 @@ data/raw/jshis/
 # Flood raw GML/ZIP data
 data/raw/flood/
 
+# Flood generated outputs
+data/processed/flood/
+data/processed/flood-scores.json
+
 # vercel
 .vercel
 

@@ -37,7 +37,10 @@
     "score:overall-v2:write": "tsx scripts/scoring/score-overall-v2.ts --output src/data/municipalities.json",
     "analyze:overall-v2-diff": "tsx scripts/analysis/analyze-overall-v2-diff.ts",
     "fetch:flood:sample": ".venv-flood/bin/python scripts/fetchers/fetch-nlftp-flood.py --pref 08 --download",
-    "score:flood-v1:sample": ".venv-flood/bin/python scripts/scoring/score-flood-v1.py --pref 08 --output data/processed/flood-scores-sample-08.json"
+    "fetch:flood:all": ".venv-flood/bin/python scripts/fetchers/fetch-nlftp-flood.py --all-prefs --download",
+    "score:flood-v1:sample": ".venv-flood/bin/python scripts/scoring/score-flood-v1.py --pref 08 --output data/processed/flood-scores-sample-08.json",
+    "score:flood-v1:all": ".venv-flood/bin/python scripts/scoring/score-flood-v1-all.py --output data/processed/flood-scores.json",
+    "score:flood-v1:merge": ".venv-flood/bin/python scripts/scoring/score-flood-v1-all.py --merge-only --output data/processed/flood-scores.json"
   },
   "dependencies": {
     "next": "16.2.6",
