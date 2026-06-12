@@ -71,7 +71,14 @@ export interface Municipality {
   earthquakeProbabilityMax?: number | null;
   earthquakeWardCount?: number | null;
   earthquakeUpdatedAt?: string;
-  // overallScoreV2 (dry-run)
+  // flood-v1
+  floodRiskCandidate?: number | null;
+  floodDataStatus?: "scored" | "no-flood-data" | "ward-averaged" | "missing";
+  maxDepthCode?: number | null;
+  maxDepthDanger?: number | null;
+  floodAreaRatio?: number | null;
+  floodUpdatedAt?: string;
+  // overallScoreV2 (v2.1 = earthquake + flood)
   overallScoreV2?: number | null;
   overallScoreV2Version?: string;
 }

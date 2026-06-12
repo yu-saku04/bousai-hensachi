@@ -107,6 +107,18 @@ interface EarthquakeEntry {
   earthquakeUpdatedAt: string;
 }
 
+interface FloodEntry {
+  jisCode:            string;
+  floodRiskCandidate: number | null;
+  floodDataStatus:    string;
+  maxDepthCode:       number | null;
+  maxDepthDanger:     number | null;
+  floodAreaRatio:     number | null;
+  floodSource:        string;
+  floodUpdatedAt:     string;
+  calculationVersion: string;
+}
+
 interface MunicipalityBase {
   id: string;
   jisCode?: string;
@@ -430,6 +442,23 @@ function mergeDatasets(
     console.warn(`スキップ (未生成): ${earthquakePath}`);
   }
 
+  // -------------------------------------------------------
+  // flood.json を読み込み（洪水ハザード・floodRiskCandidate standalone 指標）
+  // -------------------------------------------------------
+
+  const floodPath      = path.join(processedDir, "flood.json");
+  const floodData      = loadJsonIfExists<FloodEntry>(floodPath);
+  const floodByJisCode = new Map<string, FloodEntry>();
+
+  if (floodData.length > 0) {
+    console.log(`読み込み: ${floodPath} (${floodData.length}件)`);
+    for (const f of floodData) {
+      floodByJisCode.set(f.jisCode, f);
+    }
+  } else {
+    console.warn(`スキップ (未生成): ${floodPath}`);
+  }
+
   let householdJoinCount    = 0;
   let householdMissingCount = 0;
 
@@ -438,6 +467,9 @@ function mergeDatasets(
 
   let agingJoinCount    = 0;
   let agingMissingCount = 0;
+
+  let floodJoinCount    = 0;
+  let floodMissingCount = 0;
 
   const joinFailureWarnings: string[] = [];
   const missingShelterBaseKeys: string[] = [];
@@ -491,6 +523,14 @@ function mergeDatasets(
     delete result["earthquakeProbabilityMin"];
     delete result["earthquakeProbabilityMax"];
     delete result["earthquakeWardCount"];
+
+    // flood 系フィールドをすべてクリア（flood.json JOIN 成功時のみ再設定）
+    delete result["floodRiskCandidate"];
+    delete result["floodDataStatus"];
+    delete result["maxDepthCode"];
+    delete result["maxDepthDanger"];
+    delete result["floodAreaRatio"];
+    delete result["floodUpdatedAt"];
 
     // 汎用スコアファイルから JOIN
     for (const pair of scoreFilePairs) {
@@ -601,14 +641,34 @@ function mergeDatasets(
       }
     }
 
-    // dataUpdatedAt = max(shelterUpdatedAt, populationUpdatedAt, agingUpdatedAt, householdUpdatedAt, earthquakeUpdatedAt)
+    // flood データを JOIN（jisCode のみ）
+    // floodRiskCandidate は overallScoreV2 の Hazard 指標。overallScore には反映しない。
+    // 欠損自治体（missing）は floodRiskCandidate=null のまま。
+    if (floodData.length > 0) {
+      const fl = m.jisCode ? floodByJisCode.get(m.jisCode) : undefined;
+      if (fl) {
+        result["floodRiskCandidate"] = fl.floodRiskCandidate;
+        result["floodDataStatus"]    = fl.floodDataStatus;
+        result["maxDepthCode"]       = fl.maxDepthCode;
+        result["maxDepthDanger"]     = fl.maxDepthDanger;
+        result["floodAreaRatio"]     = fl.floodAreaRatio;
+        if (fl.floodSource)     result["floodSource"]     = fl.floodSource;
+        if (fl.floodUpdatedAt)  result["floodUpdatedAt"]  = fl.floodUpdatedAt;
+        floodJoinCount++;
+      } else {
+        floodMissingCount++;
+      }
+    }
+
+    // dataUpdatedAt = max(shelterUpdatedAt, populationUpdatedAt, agingUpdatedAt, householdUpdatedAt, earthquakeUpdatedAt, floodUpdatedAt)
     // 最新データ更新日を全体の dataUpdatedAt として保持
     const sDate = result["shelterUpdatedAt"];
     const pDate = result["populationUpdatedAt"];
     const aDate = result["agingUpdatedAt"];
     const hDate = result["householdUpdatedAt"];
     const eDate = result["earthquakeUpdatedAt"];
-    const dateCandidates = [sDate, pDate, aDate, hDate, eDate].filter((d): d is string => typeof d === "string");
+    const fDate = result["floodUpdatedAt"];
+    const dateCandidates = [sDate, pDate, aDate, hDate, eDate, fDate].filter((d): d is string => typeof d === "string");
     if (dateCandidates.length > 0) {
       result["dataUpdatedAt"] = dateCandidates.sort().at(-1)!;
     }
@@ -753,6 +813,31 @@ function mergeDatasets(
     console.log(
       `  direct=${byStatus("direct")} aggregated=${byStatus("aggregated-from-wards")}` +
       ` known-missing=${byStatus("known-missing")} not-found=${byStatus("not-found")}`,
+    );
+  }
+
+  // flood.json 統合結果ログ
+  if (floodData.length > 0) {
+    console.log(
+      `\nflood.json 使用状況: ${floodJoinCount}/${floodData.length}件 JOIN済` +
+      ` / 未反映 ${floodMissingCount}件（floodRiskCandidate=null）`,
+    );
+    const flVals = merged
+      .map((m) => m["floodRiskCandidate"])
+      .filter((v): v is number => typeof v === "number");
+    if (flVals.length > 0) {
+      const flMin  = Math.min(...flVals);
+      const flMax  = Math.max(...flVals);
+      const flMean = flVals.reduce((s, v) => s + v, 0) / flVals.length;
+      console.log(`  floodRiskCandidate range: ${flMin} 〜 ${flMax} (mean: ${flMean.toFixed(2)})`);
+    }
+    const byFloodStatus = (s: string) =>
+      merged.filter((m) => m["floodDataStatus"] === s).length;
+    console.log(
+      `  scored=${byFloodStatus("scored")}` +
+      ` no-flood-data=${byFloodStatus("no-flood-data")}` +
+      ` ward-averaged=${byFloodStatus("ward-averaged")}` +
+      ` missing=${byFloodStatus("missing")}`,
     );
   }
 
