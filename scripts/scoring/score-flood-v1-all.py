@@ -64,9 +64,18 @@ MUNI_JSON = Path("src/data/municipalities.json")
 # A31_001 コード体系: 1の位=深さ区分(1〜5), 10の位=洪水種別(1=計画規模,2=想定最大規模 等)
 # 深さ区分: 1=0〜0.5m, 2=0.5〜1m, 3=1〜2m, 4=2〜5m, 5=5m超
 def depth_danger_from_code(code: int) -> int:
-    """A31_001コードの1の位から危険度 1〜5 を返す。1の位が 1〜5 以外なら 0。"""
+    """A31_001コードの1の位から危険度 1〜5 を返す。
+
+    1の位 1〜5: そのまま危険度
+    1の位 6〜9: 非標準深さ（想定最大規模の5m超超過など）→ 最大危険度 5
+    1の位 0   : 不明 → 0
+    """
     danger = code % 10
-    return danger if 1 <= danger <= 5 else 0
+    if 1 <= danger <= 5:
+        return danger
+    if danger >= 6:
+        return 5   # 規格外の深い浸水は最大危険度として扱う
+    return 0
 
 # ---------------------------------------------------------------------------
 # Pref selection helpers
@@ -135,30 +144,48 @@ def download_zip(url: str, dest: Path) -> str:
 # ---------------------------------------------------------------------------
 
 def load_gml(zip_path: Path):
-    """ZIP 内の GML/XML または shapefile を読み込む。"""
+    """ZIP 内の shapefile / GML を読み込む。
+
+    優先順位:
+      1. ZIP直接読み込み（成功 かつ 1件以上のフィーチャがある場合）
+      2. .shp を明示指定（サブディレクトリ配下も探索、KS-META を除外）
+      3. .xml / .gml を明示指定（同除外）
+    全候補が空または読み込み失敗なら RuntimeError。
+    """
     import geopandas as gpd
     import zipfile
 
-    # まず ZIP の整合性を確認
     try:
         with zipfile.ZipFile(zip_path) as z:
             names = z.namelist()
     except zipfile.BadZipFile as e:
-        raise RuntimeError(f"ZIP ファイルが壊れています（再DL推奨）: {zip_path} — {e}")
+        raise RuntimeError(f"ZIP 破損（再DL推奨）: {zip_path} — {e}")
 
-    # 直接読み込み（GML/shapefile どちらも gpd.read_file が処理）
+    def _is_meta(name: str) -> bool:
+        return name.split("/")[-1].upper().startswith("KS-META")
+
+    # 1. 直接読み込み（空でなければ採用）
     try:
-        return gpd.read_file(f"zip://{zip_path.resolve()}")
+        gdf = gpd.read_file(f"zip://{zip_path.resolve()}")
+        if len(gdf) > 0:
+            return gdf
+        print(f"  [warn] 直接読み込み結果が空、fallback へ: {zip_path.name}", flush=True)
     except Exception as _e:
-        print(f"  [warn] gpd.read_file 直接読み込み失敗、fallback へ: {_e}", flush=True)
+        print(f"  [warn] 直接読み込み失敗、fallback へ: {_e}", flush=True)
 
-    # フォールバック: GML/XML → shapefile の順で明示指定
-    for ext in (".xml", ".gml", ".shp"):
-        candidates = [n for n in names if n.endswith(ext)]
-        if candidates:
-            return gpd.read_file(f"zip://{zip_path.resolve()}!{candidates[0]}")
+    # 2/3. SHP 優先 → XML/GML の順でフォールバック
+    for ext in (".shp", ".xml", ".gml"):
+        candidates = [n for n in names if n.endswith(ext) and not _is_meta(n)]
+        for candidate in candidates:
+            try:
+                gdf = gpd.read_file(f"zip://{zip_path.resolve()}!{candidate}")
+                if len(gdf) > 0:
+                    return gdf
+                print(f"  [warn] fallback {candidate} が空", flush=True)
+            except Exception as _e2:
+                print(f"  [warn] fallback {candidate} 失敗: {_e2}", flush=True)
 
-    raise RuntimeError(f"読み込み可能なファイルが見つかりません (GML/SHP): {zip_path}")
+    raise RuntimeError(f"有効なフィーチャが見つかりません: {zip_path}")
 
 def find_jis_col(gdf) -> str:
     for c in ("N03_007", "N03_007_", "jiscode"):
@@ -191,10 +218,8 @@ def compute_pref(pref: str) -> list[dict]:
 
     jis_col = find_jis_col(n03)
 
-    if "A31_001" not in a31.columns:
-        raise RuntimeError(f"A31_001 列なし。列: {list(a31.columns)}")
-
-    a31["depth_code"]   = pd.to_numeric(a31["A31_001"], errors="coerce").astype("Int64")
+    a31["depth_code"]   = pd.to_numeric(a31["A31_001"], errors="coerce").astype("Int64") \
+                          if "A31_001" in a31.columns else pd.array([], dtype="Int64")
     # 1の位が深さ区分(1〜5)、10の位が洪水種別(1x=計画規模, 2x=想定最大規模 等)
     a31["depth_danger"] = a31["depth_code"].apply(
         lambda c: depth_danger_from_code(int(c)) if pd.notna(c) else 0
@@ -207,6 +232,30 @@ def compute_pref(pref: str) -> list[dict]:
         .reset_index()
         .rename(columns={"N03_001": "prefecture", "N03_004": "name"})
     )
+
+    # A31 が空（フィーチャなし or A31_001 列なし）なら overlay をスキップ
+    # → 全自治体を no-flood-data として返す
+    if len(a31) == 0:
+        print(f"  [warn] A31 フィーチャなし → 全自治体 no-flood-data", flush=True)
+        today = date.today().isoformat()
+        return [
+            {
+                "jisCode":            str(r[jis_col]),
+                "prefecture":         str(r.get("prefecture") or ""),
+                "name":               str(r.get("name") or ""),
+                "floodRiskCandidate": 90,
+                "maxDepthCode":       0,
+                "maxDepthDanger":     0,
+                "meanDepthScore":     0.0,
+                "floodAreaRatio":     0.0,
+                "floodPolyCount":     0,
+                "floodDataStatus":    "no-flood-data",
+                "floodSource":        FLOOD_SOURCE,
+                "floodUpdatedAt":     today,
+                "calculationVersion": CALC_VERSION,
+            }
+            for _, r in name_df.iterrows()
+        ]
 
     a31_m    = a31.to_crs(METRIC_CRS)
     n03_m    = n03_clean[[jis_col, "geometry"]].to_crs(METRIC_CRS)
@@ -301,9 +350,9 @@ def _check_row(r: dict, i: int, seen: dict[str, int], errors: list[str]) -> None
 
     mdc = r.get("maxDepthCode")
     if mdc is not None:
-        valid_mdc = (mdc == 0) or (isinstance(mdc, int) and mdc >= 10 and depth_danger_from_code(mdc) > 0)
+        valid_mdc = (mdc == 0) or (isinstance(mdc, int) and mdc >= 10)
         if not valid_mdc:
-            errors.append(f"{tag} maxDepthCode: 0 または X{{1〜5}}形式必須 (A31_001): {mdc!r}")
+            errors.append(f"{tag} maxDepthCode: 0 または 10以上の整数必須 (A31_001生コード): {mdc!r}")
 
     if r.get("calculationVersion") != CALC_VERSION:
         errors.append(f"{tag} calculationVersion: {CALC_VERSION!r} 必須")
