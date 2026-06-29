@@ -48,7 +48,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!data.jisCode) return { title: "データが見つかりません | 全国防災偏差値" };
 
   const SITE_URL = "https://bousai-hensachi.vercel.app";
-  const title = `${data.prefecture}${data.municipality}の防災偏差値 ${data.overallScore}`;
+  const metaScore = data.overallScoreV2 ?? data.overallScore;
+  const title = `${data.prefecture}${data.municipality}の防災偏差値 ${metaScore}`;
   const description = data.comment;
   const url = `${SITE_URL}${buildResultPath(data.jisCode)}`;
 
@@ -89,7 +90,7 @@ function buildRuleBasedComment(data: Municipality): string {
     emotional: "孤立防止・心のケア・家族防災力の強化が今後の重点テーマです。",
   };
 
-  const overall = data.overallScore;
+  const overall = data.overallScoreV2 ?? data.overallScore;
   if (overall >= 70) {
     return `防災体制が全体的に整った地域です。${weakMessages[weakest]}`;
   }
@@ -110,7 +111,8 @@ export default async function ResultPage({ params }: PageProps) {
     notFound();
   }
 
-  const score = clampScore(data.overallScore);
+  const score = clampScore(data.overallScoreV2 ?? data.overallScore);
+  const scoreVersionLabel = typeof data.overallScoreV2 === "number" ? "v2.1" : "旧スコア";
   const levelLabel = getScoreLevelLabel(score);
   const scores = data as Partial<Record<ScoreKey, number>>;
 
@@ -261,6 +263,120 @@ export default async function ResultPage({ params }: PageProps) {
             </section>
           );
         })}
+
+        {/* 総合防災偏差値 v2.1 の内訳 */}
+        {typeof data.overallScoreV2 === "number" && (
+          <section className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm space-y-4">
+            <div className="flex items-center gap-2">
+              <h2 className="font-bold text-gray-800 text-sm">🧮 総合防災偏差値 {scoreVersionLabel} の内訳</h2>
+              {data.overallScoreV2Version && (
+                <span className="ml-auto text-xs text-gray-400 bg-gray-50 px-2 py-0.5 rounded-full">
+                  {data.overallScoreV2Version}
+                </span>
+              )}
+            </div>
+
+            {/* ハザード 40% */}
+            <div className="space-y-2">
+              <p className="text-xs font-semibold text-gray-500 tracking-wide">ハザード（40%）</p>
+              {/* 地震リスク */}
+              <div className="flex items-center gap-2">
+                <span className="text-base" aria-hidden="true">🏔️</span>
+                <span className="text-xs text-gray-600 flex-1">地震リスク</span>
+                {typeof data.earthquakeRisk === "number" ? (
+                  <span className={`text-sm font-bold tabular-nums ${getScoreLevelColor(clampScore(data.earthquakeRisk))}`}>
+                    {clampScore(data.earthquakeRisk)}
+                  </span>
+                ) : (
+                  <span className="text-xs text-gray-400">—</span>
+                )}
+              </div>
+              {/* 洪水リスク */}
+              {data.floodDataStatus === "no-flood-data" ? (
+                <div className="flex items-center gap-2">
+                  <span className="text-base" aria-hidden="true">🌊</span>
+                  <span className="text-xs text-gray-600 flex-1">洪水リスク</span>
+                  <span className="text-xs text-gray-400">洪水ハザードデータなし</span>
+                </div>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <span className="text-base" aria-hidden="true">🌊</span>
+                  <span className="text-xs text-gray-600 flex-1">
+                    洪水リスク{data.floodDataStatus === "ward-averaged" && <span className="text-gray-400">（区平均）</span>}
+                  </span>
+                  {typeof data.floodRiskCandidate === "number" ? (
+                    <span className={`text-sm font-bold tabular-nums ${getScoreLevelColor(clampScore(data.floodRiskCandidate))}`}>
+                      {clampScore(data.floodRiskCandidate)}
+                    </span>
+                  ) : (
+                    <span className="text-xs text-gray-400">—</span>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* インフラ 30% */}
+            <div className="space-y-2">
+              <p className="text-xs font-semibold text-gray-500 tracking-wide">インフラ（30%）</p>
+              {(() => {
+                const infraVal =
+                  typeof data.shelterScore === "number" && data.shelterScore !== null
+                    ? data.shelterScore
+                    : typeof data.shelterCapacity === "number"
+                    ? data.shelterCapacity
+                    : null;
+                const isCapacityFallback =
+                  !(typeof data.shelterScore === "number" && data.shelterScore !== null);
+                return (
+                  <div className="flex items-center gap-2">
+                    <span className="text-base" aria-hidden="true">🏠</span>
+                    <span className="text-xs text-gray-600 flex-1">
+                      避難所充足度{isCapacityFallback && <span className="text-gray-400">（容量ベース）</span>}
+                    </span>
+                    {infraVal !== null ? (
+                      <span className={`text-sm font-bold tabular-nums ${getScoreLevelColor(clampScore(infraVal))}`}>
+                        {clampScore(infraVal)}
+                      </span>
+                    ) : (
+                      <span className="text-xs text-gray-400">—</span>
+                    )}
+                  </div>
+                );
+              })()}
+            </div>
+
+            {/* 社会脆弱性 30% */}
+            <div className="space-y-2">
+              <p className="text-xs font-semibold text-gray-500 tracking-wide">社会脆弱性（30%）</p>
+              <div className="flex items-center gap-2">
+                <span className="text-base" aria-hidden="true">👥</span>
+                <span className="text-xs text-gray-600 flex-1">高齢化リスク</span>
+                {typeof data.agingRisk === "number" ? (
+                  <span className={`text-sm font-bold tabular-nums ${getScoreLevelColor(clampScore(data.agingRisk))}`}>
+                    {clampScore(data.agingRisk)}
+                  </span>
+                ) : (
+                  <span className="text-xs text-gray-400">—</span>
+                )}
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-base" aria-hidden="true">🏘️</span>
+                <span className="text-xs text-gray-600 flex-1">世帯脆弱リスク</span>
+                {typeof data.householdRisk === "number" ? (
+                  <span className={`text-sm font-bold tabular-nums ${getScoreLevelColor(clampScore(data.householdRisk))}`}>
+                    {clampScore(data.householdRisk)}
+                  </span>
+                ) : (
+                  <span className="text-xs text-gray-400">—</span>
+                )}
+              </div>
+            </div>
+
+            <p className="text-xs text-gray-400 leading-relaxed pt-1 border-t border-gray-50">
+              ランキング・検索の並び順は現時点では旧スコア基準です。一部詳細指標は旧v1項目を含みます。
+            </p>
+          </section>
+        )}
 
         {/* 避難所充足偏差値 v1 */}
         {data.scoreConfidence === "high" && typeof data.shelterScore === "number" ? (
