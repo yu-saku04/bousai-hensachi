@@ -6,19 +6,14 @@ import { safeJsonLd } from "@/lib/json-ld";
 import {
   getScoreLevelLabel,
   clampScore,
-  SCORE_ITEMS,
-  CATEGORY_LABELS,
-  CATEGORY_ICONS,
   calcCategoryScore,
   getScoreLevelColor,
-  getScoreBarColor,
 } from "@/lib/score";
 import type { ScoreCategory, ScoreKey } from "@/lib/score";
 import ScoreCard from "@/components/ScoreCard";
 import ShareButtons from "@/components/ShareButtons";
 import AdPlaceholder from "@/components/AdPlaceholder";
 import Disclaimer from "@/components/Disclaimer";
-import RadarChartWrapper from "@/components/RadarChartWrapper";
 import type { Municipality } from "@/types/municipality";
 
 export const dynamicParams = false;
@@ -70,7 +65,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-const categories: ScoreCategory[] = ["physical", "social", "emotional"];
 
 function buildRuleBasedComment(data: Municipality): string {
   const scores = data as Partial<Record<ScoreKey, number>>;
@@ -238,7 +232,6 @@ export default async function ResultPage({ params }: PageProps) {
   const score = clampScore(data.overallScoreV2 ?? data.overallScore);
   const scoreVersionLabel = typeof data.overallScoreV2 === "number" ? "v2.1" : "旧スコア";
   const levelLabel = getScoreLevelLabel(score);
-  const scores = data as Partial<Record<ScoreKey, number>>;
   const floodStatusLabel = getFloodStatusLabel(data.floodDataStatus);
   const overallRanking = calculateRank(data, getAllMunicipalities());
   const shelterRadarScore =
@@ -292,15 +285,6 @@ export default async function ResultPage({ params }: PageProps) {
 
   const aiComment = buildRuleBasedComment(data);
   const aiAdviceComment = buildAiAdviceComment(data);
-
-  // RadarChart 用データを RSC で計算してクライアントへ渡す（Municipality 全体を渡さない）
-  const radarData = SCORE_ITEMS
-    .filter((item) => item.visible)
-    .map((item) => ({
-      subject: item.shortLabel,
-      score: clampScore((data as unknown as Record<string, number>)[item.key] ?? 0),
-      fullMark: 100 as const,
-    }));
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
@@ -371,90 +355,115 @@ export default async function ResultPage({ params }: PageProps) {
           </p>
         </section>
 
-        {/* AI風コメント */}
-        <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm space-y-1">
-          <p className="text-xs text-gray-400 mb-1">TEMMEI診断コメント</p>
-          <p className="text-sm text-gray-700 leading-relaxed">{aiComment}</p>
-          <p className="text-xs text-gray-500 mt-1 pt-1 border-t border-gray-50">{data.comment}</p>
-        </div>
-
-        {/* 広告枠 */}
-        <AdPlaceholder label="広告" className="h-20" />
-
-        {/* レーダーチャート */}
-        <section className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
-          <h2 className="font-bold text-gray-800 text-sm mb-3">防災レーダーチャート</h2>
-          <RadarChartWrapper data={radarData} />
-        </section>
-
-        {/* 3カテゴリスコア */}
-        <section className="space-y-3">
-          <h2 className="font-bold text-gray-800 text-sm">カテゴリ別スコア</h2>
-          <div className="grid grid-cols-3 gap-2">
-            {categories.map((cat) => {
-              const catScore = calcCategoryScore(scores, cat);
-              const displayScore = catScore ?? 0;
-              const color = getScoreLevelColor(displayScore);
-              return (
-                <div
-                  key={cat}
-                  className="bg-white rounded-xl border border-gray-100 p-3 text-center shadow-sm"
-                >
-                  <div className="text-xl mb-1">{CATEGORY_ICONS[cat]}</div>
-                  <div className={`text-2xl font-bold tabular-nums ${color}`}>{displayScore}</div>
-                  <div className="text-xs text-gray-500 mt-1">{CATEGORY_LABELS[cat]}</div>
+        {/* 防災スコアレーダー */}
+        {typeof data.overallScoreV2 === "number" && (
+          <section className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm space-y-3">
+            <div className="flex items-center justify-between gap-2">
+              <h2 className="font-bold text-gray-800 text-sm">防災スコアレーダー</h2>
+              <p className="text-[10px] text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full">0〜100 / 高いほど安全</p>
+            </div>
+            <svg
+              viewBox="0 0 180 180"
+              role="img"
+              aria-label={`${data.prefecture}${data.municipality}の防災スコア内訳レーダーチャート`}
+              className="mx-auto h-56 w-full max-w-xs"
+            >
+              {[25, 50, 75, 100].map((level) => (
+                <polygon
+                  key={level}
+                  points={disasterRadarItems
+                    .map((_, index) =>
+                      formatRadarPoint(
+                        getDisasterRadarPoint(
+                          index,
+                          disasterRadarItems.length,
+                          level,
+                          DISASTER_RADAR_RADIUS,
+                        ),
+                      ),
+                    )
+                    .join(" ")}
+                  fill="none"
+                  stroke="#bfdbfe"
+                  strokeWidth="0.8"
+                />
+              ))}
+              {disasterRadarItems.map((item, index) => {
+                const edgePoint = getDisasterRadarPoint(
+                  index,
+                  disasterRadarItems.length,
+                  100,
+                  DISASTER_RADAR_RADIUS,
+                );
+                const labelPoint = getDisasterRadarPoint(
+                  index,
+                  disasterRadarItems.length,
+                  100,
+                  DISASTER_RADAR_LABEL_RADIUS,
+                );
+                return (
+                  <g key={item.label}>
+                    <line
+                      x1={DISASTER_RADAR_CENTER}
+                      y1={DISASTER_RADAR_CENTER}
+                      x2={edgePoint.x}
+                      y2={edgePoint.y}
+                      stroke="#dbeafe"
+                      strokeWidth="0.8"
+                    />
+                    <text
+                      x={labelPoint.x}
+                      y={labelPoint.y}
+                      textAnchor="middle"
+                      dominantBaseline="middle"
+                      className="fill-gray-500 text-[8px] font-medium"
+                    >
+                      {item.label}
+                    </text>
+                  </g>
+                );
+              })}
+              {disasterRadarValidPointCount >= 3 && (
+                <polygon
+                  points={disasterRadarPolygonPoints}
+                  fill="#2563eb"
+                  fillOpacity="0.16"
+                  stroke="#2563eb"
+                  strokeWidth="2"
+                  strokeLinejoin="round"
+                />
+              )}
+              {disasterRadarItems.map((item, index) => {
+                if (item.value === null) return null;
+                const point = getDisasterRadarPoint(
+                  index,
+                  disasterRadarItems.length,
+                  item.value,
+                  DISASTER_RADAR_RADIUS,
+                );
+                return (
+                  <circle
+                    key={`${item.label}-point`}
+                    cx={point.x}
+                    cy={point.y}
+                    r="2.4"
+                    fill="#1d4ed8"
+                  />
+                );
+              })}
+            </svg>
+            <div className="grid grid-cols-5 gap-1 text-center">
+              {disasterRadarItems.map((item) => (
+                <div key={item.label} className="rounded-lg bg-gray-50 px-1.5 py-2">
+                  <p className="text-[10px] text-gray-500 leading-tight">{item.label}</p>
+                  <p className="text-xs font-bold text-gray-800 tabular-nums">
+                    {item.value === null ? "未算出" : item.value}
+                  </p>
                 </div>
-              );
-            })}
-          </div>
-        </section>
-
-        {/* 指標タブ詳細 */}
-        {categories.map((cat) => {
-          const items = SCORE_ITEMS.filter((i) => i.visible && i.category === cat);
-          const catScore = calcCategoryScore(scores, cat) ?? 0;
-          const hasData = items.some((item) => {
-            const raw = data[item.key as keyof Municipality];
-            return typeof raw === "number";
-          });
-          if (!hasData) return null;
-
-          return (
-            <section key={cat} className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm space-y-3">
-              <div className="flex items-center gap-2">
-                <span className="text-lg">{CATEGORY_ICONS[cat]}</span>
-                <h2 className="font-bold text-gray-800 text-sm">{CATEGORY_LABELS[cat]}</h2>
-                <span className={`ml-auto text-lg font-bold tabular-nums ${getScoreLevelColor(catScore)}`}>
-                  {catScore}
-                </span>
-              </div>
-              <div className="space-y-3">
-                {items.map((item) => {
-                  const raw = data[item.key as keyof Municipality];
-                  if (typeof raw !== "number") return null;
-                  const itemScore = clampScore(raw);
-                  const color = getScoreLevelColor(itemScore);
-                  const barColor = getScoreBarColor(itemScore);
-                  return (
-                    <div key={item.key}>
-                      <div className="flex items-center gap-2 mb-1.5">
-                        <span className="text-base" role="img" aria-label={item.label}>{item.icon}</span>
-                        <div className="flex-1">
-                          <p className="text-xs font-semibold text-gray-700">{item.label}</p>
-                          <p className="text-xs text-gray-400">{item.description}</p>
-                        </div>
-                        <div className={`text-lg font-bold tabular-nums ${color}`}>{itemScore}</div>
-                      </div>
-                      <div className="h-1.5 rounded-full bg-gray-100 overflow-hidden">
-                        <div className={`h-full rounded-full ${barColor}`} style={{ width: `${itemScore}%` }} />
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </section>
-          );
-        })}
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* 総合防災偏差値 v2.1 の内訳 */}
         {typeof data.overallScoreV2 === "number" && (
@@ -468,117 +477,9 @@ export default async function ResultPage({ params }: PageProps) {
               )}
             </div>
 
-            <div className="rounded-xl border border-blue-100 bg-blue-50/50 px-3 py-4">
-              <div className="mb-3 flex items-center justify-between gap-2">
-                <p className="text-xs font-semibold text-blue-900">防災スコア内訳レーダー</p>
-                <p className="text-[10px] text-blue-700">0〜100 / 高いほど安全</p>
-              </div>
-              <svg
-                viewBox="0 0 180 180"
-                role="img"
-                aria-label={`${data.prefecture}${data.municipality}の防災スコア内訳レーダーチャート`}
-                className="mx-auto h-56 w-full max-w-xs"
-              >
-                {[25, 50, 75, 100].map((level) => (
-                  <polygon
-                    key={level}
-                    points={disasterRadarItems
-                      .map((_, index) =>
-                        formatRadarPoint(
-                          getDisasterRadarPoint(
-                            index,
-                            disasterRadarItems.length,
-                            level,
-                            DISASTER_RADAR_RADIUS,
-                          ),
-                        ),
-                      )
-                      .join(" ")}
-                    fill="none"
-                    stroke="#bfdbfe"
-                    strokeWidth="0.8"
-                  />
-                ))}
-                {disasterRadarItems.map((item, index) => {
-                  const edgePoint = getDisasterRadarPoint(
-                    index,
-                    disasterRadarItems.length,
-                    100,
-                    DISASTER_RADAR_RADIUS,
-                  );
-                  const labelPoint = getDisasterRadarPoint(
-                    index,
-                    disasterRadarItems.length,
-                    100,
-                    DISASTER_RADAR_LABEL_RADIUS,
-                  );
-                  return (
-                    <g key={item.label}>
-                      <line
-                        x1={DISASTER_RADAR_CENTER}
-                        y1={DISASTER_RADAR_CENTER}
-                        x2={edgePoint.x}
-                        y2={edgePoint.y}
-                        stroke="#dbeafe"
-                        strokeWidth="0.8"
-                      />
-                      <text
-                        x={labelPoint.x}
-                        y={labelPoint.y}
-                        textAnchor="middle"
-                        dominantBaseline="middle"
-                        className="fill-gray-500 text-[8px] font-medium"
-                      >
-                        {item.label}
-                      </text>
-                    </g>
-                  );
-                })}
-                {disasterRadarValidPointCount >= 3 && (
-                  <polygon
-                    points={disasterRadarPolygonPoints}
-                    fill="#2563eb"
-                    fillOpacity="0.16"
-                    stroke="#2563eb"
-                    strokeWidth="2"
-                    strokeLinejoin="round"
-                  />
-                )}
-                {disasterRadarItems.map((item, index) => {
-                  if (item.value === null) return null;
-                  const point = getDisasterRadarPoint(
-                    index,
-                    disasterRadarItems.length,
-                    item.value,
-                    DISASTER_RADAR_RADIUS,
-                  );
-                  return (
-                    <circle
-                      key={`${item.label}-point`}
-                      cx={point.x}
-                      cy={point.y}
-                      r="2.4"
-                      fill="#1d4ed8"
-                    />
-                  );
-                })}
-              </svg>
-              <div className="grid grid-cols-5 gap-1 text-center">
-                {disasterRadarItems.map((item) => (
-                  <div key={item.label} className="rounded-lg bg-white/70 px-1.5 py-2">
-                    <p className="text-[10px] text-gray-500 leading-tight">{item.label}</p>
-                    <p className="text-xs font-bold text-gray-800 tabular-nums">
-                      {item.value === null ? "未算出" : item.value}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
             {/* ハザード 40% */}
             <div className="space-y-2">
               <p className="text-xs font-semibold text-gray-500 tracking-wide">ハザード（40%）</p>
-              {/* 地震リスク */}
               <div className="flex items-center gap-2">
                 <span className="text-base" aria-hidden="true">🏔️</span>
                 <span className="text-xs text-gray-600 flex-1">地震リスク</span>
@@ -590,7 +491,6 @@ export default async function ResultPage({ params }: PageProps) {
                   <span className="text-xs text-gray-400">—</span>
                 )}
               </div>
-              {/* 洪水リスク */}
               <div className="rounded-xl bg-gray-50 px-3 py-3 space-y-2">
                 <div className="flex items-center gap-2">
                   <span className="text-base" aria-hidden="true">🌊</span>
@@ -687,53 +587,18 @@ export default async function ResultPage({ params }: PageProps) {
           </section>
         )}
 
-        {/* 避難所充足偏差値 v1 */}
-        {data.scoreConfidence === "high" && typeof data.shelterScore === "number" ? (
-          <section className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm space-y-4">
-            <h2 className="font-bold text-gray-800 text-sm">🏠 避難所充足偏差値</h2>
-            <div className="flex items-end gap-3">
-              <p className={`text-5xl font-extrabold tabular-nums leading-none ${getScoreLevelColor(data.shelterScore)}`}>
-                {data.shelterScore}
-              </p>
-              <p className="text-sm text-gray-400 pb-1">全国比較スコア（偏差値）</p>
-            </div>
-            <div className="grid grid-cols-2 gap-3">
-              <div className="bg-gray-50 rounded-xl p-3 text-center">
-                <p className="text-xs text-gray-400 mb-1">全国順位</p>
-                <p className="text-xl font-bold text-gray-800 tabular-nums">
-                  {data.nationalRank}<span className="text-sm font-normal text-gray-500"> 位</span>
-                </p>
-              </div>
-              <div className="bg-gray-50 rounded-xl p-3 text-center">
-                <p className="text-xs text-gray-400 mb-1">都道府県内順位</p>
-                <p className="text-xl font-bold text-gray-800 tabular-nums">
-                  {data.prefectureRank}<span className="text-sm font-normal text-gray-500"> 位</span>
-                </p>
-              </div>
-            </div>
-            {typeof data.shelterCountPer10k === "number" && (
-              <div className="flex items-center justify-between bg-gray-50 rounded-xl px-4 py-3">
-                <p className="text-xs text-gray-500">人口1万人あたり避難所数</p>
-                <p className="text-sm font-bold text-gray-800 tabular-nums">
-                  {data.shelterCountPer10k.toFixed(2)} <span className="font-normal text-gray-400">か所</span>
-                </p>
-              </div>
-            )}
-            <p className="text-xs text-gray-400 leading-relaxed">
-              出典: 国土地理院 指定避難所CSV・e-Stat 2020年国勢調査（暫定版）。人口規模を補正した全国比較指標です。
-            </p>
-          </section>
-        ) : data.scoreConfidence === "no-shelter-data" ? (
-          <section className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm space-y-2">
-            <h2 className="font-bold text-gray-800 text-sm">🏠 避難所充足偏差値</h2>
-            <p className="text-sm text-gray-500">GSI避難所データ未提出/未確認のため算出対象外です。</p>
-          </section>
-        ) : data.scoreConfidence === "no-data" ? (
-          <section className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm space-y-2">
-            <h2 className="font-bold text-gray-800 text-sm">🏠 避難所充足偏差値</h2>
-            <p className="text-sm text-gray-500">人口データ未取得のため算出対象外です。</p>
-          </section>
-        ) : null}
+        {/* AI風コメント */}
+        <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm space-y-1">
+          <p className="text-xs text-gray-400 mb-1">TEMMEI診断コメント</p>
+          <p className="text-sm text-gray-700 leading-relaxed">{aiComment}</p>
+          <p className="text-xs text-gray-500 mt-1 pt-1 border-t border-gray-50">{data.comment}</p>
+        </div>
+
+        {/* 防災アドバイス */}
+        <section className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm space-y-3">
+          <h2 className="font-bold text-gray-800 text-sm">防災アドバイス</h2>
+          <p className="text-sm text-gray-700 leading-relaxed">{aiAdviceComment}</p>
+        </section>
 
         {/* 行動提案 */}
         <section className="bg-blue-50 rounded-2xl border border-blue-100 p-5 space-y-3">
@@ -752,6 +617,9 @@ export default async function ResultPage({ params }: PageProps) {
           </ul>
         </section>
 
+        {/* 広告枠 */}
+        <AdPlaceholder label="広告" className="h-24" />
+
         {/* SNSシェア */}
         <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
           <ShareButtons
@@ -760,9 +628,6 @@ export default async function ResultPage({ params }: PageProps) {
             prefecture={data.prefecture}
           />
         </div>
-
-        {/* 広告枠 */}
-        <AdPlaceholder label="広告" className="h-24" />
 
         {/* 注意事項 */}
         <Disclaimer sourceNote={data.sourceNote} />
@@ -803,12 +668,6 @@ export default async function ResultPage({ params }: PageProps) {
             算出方法を<br/>知る
           </Link>
         </div>
-
-        {/* 防災アドバイス */}
-        <section className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm space-y-3">
-          <h2 className="font-bold text-gray-800 text-sm">防災アドバイス</h2>
-          <p className="text-sm text-gray-700 leading-relaxed">{aiAdviceComment}</p>
-        </section>
 
         {/* フッター */}
         <footer className="text-center text-xs text-gray-400 space-y-1 pb-4">
