@@ -32,8 +32,13 @@
  *      - earthquakeRisk が overallScore に反映されていないこと（SCORE_FIELDS 除外確認）
  *  18. flood-v1 フィールド検証（floodRiskCandidate / floodDataStatus / overallScoreV2 v2.1）
  *      - floodRiskCandidate 10〜90 整数（全自治体必須）
+ *      - floodUpdatedAt 非空 string（全自治体必須）
+ *      - calculationVersion === "flood-v1"（全自治体必須）
  *      - 件数: scored=1429 / no-flood-data=469 / ward-averaged=20 / missing=0
- *      - floodSource / maxDepthDanger / floodAreaRatio の整合性チェック
+ *      - floodSource / maxDepthDanger / floodAreaRatio の status 別整合性チェック
+ *        scored: maxDepthDanger 1〜5 / floodAreaRatio 0〜1（必須）
+ *        no-flood-data: maxDepthDanger === 0 / floodAreaRatio === 0
+ *        ward-averaged: floodRiskCandidate number / floodSource string / floodUpdatedAt string
  *
  * オプション:
  *   --strict        jisCode 未設定 / processed 未使用 を warning ではなく error として報告
@@ -1387,6 +1392,17 @@ function validateFloodV1(
       candidateVals.push(candidate);
     }
 
+    // floodUpdatedAt: 全自治体で非空 string 必須
+    const floodUpdatedAt = m["floodUpdatedAt"];
+    if (typeof floodUpdatedAt !== "string" || floodUpdatedAt.trim() === "") {
+      errors.push(`[${id}] floodUpdatedAt が未設定または空 (全自治体必須): ${floodUpdatedAt}`);
+    }
+
+    // calculationVersion: "flood-v1" 必須
+    if (m["calculationVersion"] !== "flood-v1") {
+      errors.push(`[${id}] calculationVersion は flood-v1 である必要があります (${m["calculationVersion"]})`);
+    }
+
     const status = m["floodDataStatus"];
     if (status === "missing") {
       statusCounts.missing++;
@@ -1419,32 +1435,32 @@ function validateFloodV1(
       }
     }
 
-    const maxDepthDanger = m["maxDepthDanger"];
-    if (
-      maxDepthDanger !== undefined &&
-      maxDepthDanger !== null &&
-      (
+    if (status === "scored") {
+      const maxDepthDanger = m["maxDepthDanger"];
+      if (
         typeof maxDepthDanger !== "number" ||
         !Number.isInteger(maxDepthDanger) ||
-        maxDepthDanger < 0 ||
+        maxDepthDanger < 1 ||
         maxDepthDanger > 5
-      )
-    ) {
-      errors.push(`[${id}] maxDepthDanger が無効 (0〜5整数または null 必須): ${maxDepthDanger}`);
-    }
-
-    const floodAreaRatio = m["floodAreaRatio"];
-    if (
-      floodAreaRatio !== undefined &&
-      floodAreaRatio !== null &&
-      (
+      ) {
+        errors.push(`[${id}] scored の maxDepthDanger が無効 (1〜5 整数必須): ${maxDepthDanger}`);
+      }
+      const floodAreaRatio = m["floodAreaRatio"];
+      if (
         typeof floodAreaRatio !== "number" ||
         !Number.isFinite(floodAreaRatio) ||
         floodAreaRatio < 0 ||
         floodAreaRatio > 1
-      )
-    ) {
-      errors.push(`[${id}] floodAreaRatio が無効 (0.0〜1.0 または null 必須): ${floodAreaRatio}`);
+      ) {
+        errors.push(`[${id}] scored の floodAreaRatio が無効 (0.0〜1.0 の number 必須): ${floodAreaRatio}`);
+      }
+    } else if (status === "no-flood-data") {
+      if (m["maxDepthDanger"] !== 0) {
+        errors.push(`[${id}] no-flood-data の maxDepthDanger は 0 必須 (${m["maxDepthDanger"]})`);
+      }
+      if (m["floodAreaRatio"] !== 0) {
+        errors.push(`[${id}] no-flood-data の floodAreaRatio は 0 必須 (${m["floodAreaRatio"]})`);
+      }
     }
 
     const overallScoreV2 = m["overallScoreV2"];
