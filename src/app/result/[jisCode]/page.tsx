@@ -124,7 +124,7 @@ function buildAiAdviceComment(data: Municipality): string {
     sentences.push("避難所インフラに課題があります。");
   }
 
-  if (typeof data.agingRisk === "number" && clampScore(data.agingRisk) > 70) {
+  if (typeof data.agingRisk === "number" && clampScore(data.agingRisk) < 40) {
     sentences.push("高齢化への支援体制が重要です。");
   }
 
@@ -804,9 +804,9 @@ export default async function ResultPage({ params }: PageProps) {
           </Link>
         </div>
 
-        {/* AI防災アドバイス */}
+        {/* 防災アドバイス */}
         <section className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm space-y-3">
-          <h2 className="font-bold text-gray-800 text-sm">AI防災アドバイス</h2>
+          <h2 className="font-bold text-gray-800 text-sm">防災アドバイス</h2>
           <p className="text-sm text-gray-700 leading-relaxed">{aiAdviceComment}</p>
         </section>
 
