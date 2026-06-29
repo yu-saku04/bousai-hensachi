@@ -30,6 +30,10 @@
  *      - earthquakeDataStatus 別フィールド整合性チェック
  *      - 件数: direct=1762 / aggregated=19 / known-missing=10 / not-found=127
  *      - earthquakeRisk が overallScore に反映されていないこと（SCORE_FIELDS 除外確認）
+ *  18. flood-v1 フィールド検証（floodRiskCandidate / floodDataStatus / overallScoreV2 v2.1）
+ *      - floodRiskCandidate 10〜90 整数（全自治体必須）
+ *      - 件数: scored=1429 / no-flood-data=469 / ward-averaged=20 / missing=0
+ *      - floodSource / maxDepthDanger / floodAreaRatio の整合性チェック
  *
  * オプション:
  *   --strict        jisCode 未設定 / processed 未使用 を warning ではなく error として報告
@@ -1324,6 +1328,184 @@ function validateEarthquakeV1(
 }
 
 // -------------------------------------------------------
+// flood-v1 フィールド検証
+// -------------------------------------------------------
+
+const VALID_FLOOD_STATUSES = new Set([
+  "scored",
+  "no-flood-data",
+  "ward-averaged",
+]);
+
+const EXPECTED_FLOOD_COUNTS = {
+  scored:          1429,
+  "no-flood-data": 469,
+  "ward-averaged": 20,
+  missing:         0,
+  total:           1918,
+} as const;
+
+function validateFloodV1(
+  data: Municipality[],
+): { errors: string[]; warnings: string[]; stats: Record<string, number | string> } {
+  const errors:   string[] = [];
+  const warnings: string[] = [];
+  const stats: Record<string, number | string> = {};
+
+  if (data.length !== EXPECTED_FLOOD_COUNTS.total) {
+    errors.push(
+      `municipalities 件数が期待値と異なります: ${data.length}件 ` +
+      `(期待: ${EXPECTED_FLOOD_COUNTS.total}件)`,
+    );
+  }
+
+  const statusCounts: Record<string, number> = {
+    scored: 0,
+    "no-flood-data": 0,
+    "ward-averaged": 0,
+    missing: 0,
+  };
+
+  let candidateCount = 0;
+  let sourceCount    = 0;
+  let v2Count        = 0;
+  const candidateVals: number[] = [];
+
+  for (const m of data) {
+    const id = String(m["jisCode"] ?? m["id"] ?? "unknown");
+
+    const candidate = m["floodRiskCandidate"];
+    if (
+      typeof candidate !== "number" ||
+      !Number.isInteger(candidate) ||
+      candidate < 10 ||
+      candidate > 90
+    ) {
+      errors.push(`[${id}] floodRiskCandidate が無効 (10〜90 整数必須): ${candidate}`);
+    } else {
+      candidateCount++;
+      candidateVals.push(candidate);
+    }
+
+    const status = m["floodDataStatus"];
+    if (status === "missing") {
+      statusCounts.missing++;
+      errors.push(`[${id}] floodDataStatus=missing は許容されません`);
+    } else if (typeof status !== "string" || !VALID_FLOOD_STATUSES.has(status)) {
+      errors.push(
+        `[${id}] floodDataStatus が無効 ` +
+        `(${[...VALID_FLOOD_STATUSES].join("|")} 必須): ${status}`,
+      );
+    } else {
+      statusCounts[status] = (statusCounts[status] ?? 0) + 1;
+    }
+
+    if (typeof status === "string" && VALID_FLOOD_STATUSES.has(status)) {
+      const source = m["floodSource"];
+      if (typeof source !== "string" || source.trim() === "") {
+        errors.push(`[${id}] floodSource が未設定または空 (${status} では必須): ${source}`);
+      } else {
+        sourceCount++;
+      }
+    }
+
+    if (status === "ward-averaged") {
+      if (typeof candidate !== "number") {
+        errors.push(`[${id}] ward-averaged の floodRiskCandidate は number 必須: ${candidate}`);
+      }
+      const source = m["floodSource"];
+      if (typeof source !== "string" || source.trim() === "") {
+        errors.push(`[${id}] ward-averaged の floodSource は必須: ${source}`);
+      }
+    }
+
+    const maxDepthDanger = m["maxDepthDanger"];
+    if (
+      maxDepthDanger !== undefined &&
+      maxDepthDanger !== null &&
+      (
+        typeof maxDepthDanger !== "number" ||
+        !Number.isInteger(maxDepthDanger) ||
+        maxDepthDanger < 0 ||
+        maxDepthDanger > 5
+      )
+    ) {
+      errors.push(`[${id}] maxDepthDanger が無効 (0〜5整数または null 必須): ${maxDepthDanger}`);
+    }
+
+    const floodAreaRatio = m["floodAreaRatio"];
+    if (
+      floodAreaRatio !== undefined &&
+      floodAreaRatio !== null &&
+      (
+        typeof floodAreaRatio !== "number" ||
+        !Number.isFinite(floodAreaRatio) ||
+        floodAreaRatio < 0 ||
+        floodAreaRatio > 1
+      )
+    ) {
+      errors.push(`[${id}] floodAreaRatio が無効 (0.0〜1.0 または null 必須): ${floodAreaRatio}`);
+    }
+
+    const overallScoreV2 = m["overallScoreV2"];
+    if (typeof overallScoreV2 !== "number" || !Number.isInteger(overallScoreV2)) {
+      errors.push(`[${id}] overallScoreV2 が未設定または無効 (整数必須): ${overallScoreV2}`);
+    } else {
+      v2Count++;
+    }
+
+    if (m["overallScoreV2Version"] !== "v2.1") {
+      errors.push(
+        `[${id}] overallScoreV2Version が無効 ("v2.1" 必須): ${m["overallScoreV2Version"]}`,
+      );
+    }
+  }
+
+  stats["floodRiskCandidate件数"]   = candidateCount;
+  stats["floodSource件数"]          = sourceCount;
+  stats["flood.scored件数"]         = statusCounts.scored ?? 0;
+  stats["flood.no-flood-data件数"]  = statusCounts["no-flood-data"] ?? 0;
+  stats["flood.ward-averaged件数"]  = statusCounts["ward-averaged"] ?? 0;
+  stats["flood.missing件数"]        = statusCounts.missing ?? 0;
+  stats["overallScoreV2.v2.1件数"] = v2Count;
+
+  if (candidateCount !== EXPECTED_FLOOD_COUNTS.total) {
+    errors.push(
+      `floodRiskCandidate 件数が期待値と異なります: ${candidateCount}件 ` +
+      `(期待: ${EXPECTED_FLOOD_COUNTS.total}件)`,
+    );
+  }
+
+  for (const [status, expected] of Object.entries(EXPECTED_FLOOD_COUNTS)) {
+    if (status === "total") continue;
+    const actual = statusCounts[status] ?? 0;
+    if (actual !== expected) {
+      errors.push(
+        `floodDataStatus="${status}" 件数が期待値と異なります: ${actual}件 ` +
+        `(期待: ${expected}件)`,
+      );
+    }
+  }
+
+  if (v2Count !== EXPECTED_FLOOD_COUNTS.total) {
+    errors.push(
+      `overallScoreV2 件数が期待値と異なります: ${v2Count}件 ` +
+      `(期待: ${EXPECTED_FLOOD_COUNTS.total}件)`,
+    );
+  }
+
+  if (candidateVals.length > 0) {
+    stats["floodRiskCandidate最小"] = Math.min(...candidateVals);
+    stats["floodRiskCandidate最大"] = Math.max(...candidateVals);
+    stats["floodRiskCandidate平均"] = Math.round(
+      candidateVals.reduce((s, v) => s + v, 0) / candidateVals.length,
+    );
+  }
+
+  return { errors, warnings, stats };
+}
+
+// -------------------------------------------------------
 // overallScoreV2 検証（dry-run）
 // -------------------------------------------------------
 
@@ -1741,7 +1923,13 @@ function validateDatasets(inputPath: string, strictMode = false, sheltersPath?: 
   warnings.push(...earthquakeValidation.warnings);
   Object.assign(stats, earthquakeValidation.stats);
 
-  // 18. overallScoreV2 検証（dry-run）
+  // 18. flood-v1 フィールド検証
+  const floodValidation = validateFloodV1(data);
+  errors.push(...floodValidation.errors);
+  warnings.push(...floodValidation.warnings);
+  Object.assign(stats, floodValidation.stats);
+
+  // 19. overallScoreV2 検証（dry-run）
   const v2Validation = validateOverallScoreV2(data);
   errors.push(...v2Validation.errors);
   warnings.push(...v2Validation.warnings);
