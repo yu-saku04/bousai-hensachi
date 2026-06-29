@@ -567,6 +567,106 @@ npm run build
 
 ---
 
+## 全国防災偏差値 v2.1（overallScoreV2）
+
+### 概要
+
+v2.1 は **ハザード・インフラ・社会脆弱性** の 3 軸を実データで算出する統合スコアです。
+旧スコア（`overallScore`）は引き続き並走しており、ランキング・検索は旧スコア基準のままです。
+v2.1 の結果ページへの表示切り替えは完了済みです。
+
+### 対応データ（全 1,918 自治体）
+
+| 軸 | 指標 | フィールド | ウェイト |
+|---|---|---|---|
+| ハザード（40%） | 地震リスク | `earthquakeRisk` | 20% |
+| ハザード（40%） | 洪水リスク | `floodRiskCandidate` | 20% |
+| インフラ（30%） | 避難所充足度 | `shelterScore` / `shelterCapacity` | 30% |
+| 社会脆弱性（30%） | 高齢化リスク | `agingRisk` | 15% |
+| 社会脆弱性（30%） | 世帯脆弱リスク | `householdRisk` | 15% |
+
+### overallScoreV2 の説明
+
+```
+overallScoreV2 = round(
+  earthquakeRisk    × 0.20 +
+  floodRiskCandidate × 0.20 +
+  shelterScore      × 0.30 +
+  agingRisk         × 0.15 +
+  householdRisk     × 0.15
+)
+```
+
+- スコア範囲: 10〜90（整数）
+- 高いほど安全・余裕あり
+- `overallScoreV2Version === "v2.1"` を全自治体に付与
+- 算出ロジック: `scripts/scoring/score-overall-v2.ts`
+
+### Flood ETL 再生成手順
+
+洪水リスクの生データ（`data/raw/flood/`）は国土数値情報から取得します。
+Pythonの仮想環境（`.venv-flood/`）が必要です。
+
+```bash
+# 1. 全都道府県の浸水想定区域シェープファイルを取得
+npm run fetch:flood:all
+# → data/raw/flood/ に各都道府県のShapefileを保存（.gitignore対象）
+
+# 2. 全都道府県のスコアを一括算出
+npm run score:flood-v1:all
+# → data/processed/flood-scores.json（.gitignore対象）
+```
+
+### import:flood → merge:data → score:overall-v2:write → validate:data の実行順
+
+```bash
+# 1. flood-scores.json を municipalities.json にインポート
+npm run import:flood
+# → data/processed/flood.json（コミット対象）
+
+# 2. flood.json を municipalities.json にマージ
+npm run merge:data:strict
+
+# 3. overallScoreV2 を全自治体に書き込み
+npm run score:overall-v2:write
+
+# 4. strict バリデーション（flood.json の calculationVersion ゲートを含む）
+npm run validate:data -- --strict
+```
+
+### data/processed/flood.json をコミット対象にした理由
+
+`data/raw/flood/`（Shapefile）と `data/processed/flood-scores.json`（Python算出）は
+再生成に時間がかかる生成物のため `.gitignore` で除外しています。
+
+`data/processed/flood.json` は `import-flood` が出力する **正規化済み中間データ** であり、
+以下の理由からコミット対象としています：
+
+- `calculationVersion === "flood-v1"` による **パイプラインゲート** として機能する
+- `municipalities.json` の洪水フィールドの唯一の正規ソースである
+- Shapefile（数GB）なしでも `merge:data` を再現可能にする
+- `validate:data` の `validateFloodJson` がこのファイルを直接検証する
+
+> `data/raw/flood/` と `data/processed/flood-scores.json` は `.gitignore` 対象。
+> 再生成が必要な場合は `fetch:flood:all` → `score:flood-v1:all` → `import:flood` の順に実行してください。
+
+### リリース前チェック
+
+```bash
+# 1. データ品質・スキーマ・再計算整合性を全検証
+npm run validate:data -- --strict
+
+# 2. Lint
+npm run lint
+
+# 3. ビルド（1,918ページの SSG が成功することを確認）
+npm run build
+```
+
+3コマンドがすべてエラーなしで通過したらリリース可能です。
+
+---
+
 ## 次にやること（実データ拡充）
 
 1. e-Stat等による人口・高齢化率・単身世帯などの実データ拡充
