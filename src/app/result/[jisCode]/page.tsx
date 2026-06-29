@@ -103,6 +103,29 @@ function buildRuleBasedComment(data: Municipality): string {
   return `複数の重大リスクが存在します。早急な防災行動計画の策定を推奨します。${weakMessages[weakest]}`;
 }
 
+function getFloodStatusLabel(status: Municipality["floodDataStatus"]): string {
+  switch (status) {
+    case "scored":
+      return "洪水リスク算出済み";
+    case "no-flood-data":
+      return "洪水浸水想定区域データなし";
+    case "ward-averaged":
+      return "行政区データから市全体を平均";
+    case "missing":
+      return "洪水データ未取得";
+    default:
+      return "未算出";
+  }
+}
+
+function formatFloodAreaRatio(value: Municipality["floodAreaRatio"]): string {
+  return typeof value === "number" ? `${(value * 100).toFixed(1)}%` : "未算出";
+}
+
+function formatMaxDepthDanger(value: Municipality["maxDepthDanger"]): string {
+  return typeof value === "number" ? `${value} / 5` : "未算出";
+}
+
 export default async function ResultPage({ params }: PageProps) {
   const { jisCode } = await params;
   const data = getMunicipalityByJisCode(jisCode);
@@ -115,6 +138,7 @@ export default async function ResultPage({ params }: PageProps) {
   const scoreVersionLabel = typeof data.overallScoreV2 === "number" ? "v2.1" : "旧スコア";
   const levelLabel = getScoreLevelLabel(score);
   const scores = data as Partial<Record<ScoreKey, number>>;
+  const floodStatusLabel = getFloodStatusLabel(data.floodDataStatus);
 
   const SITE_URL = "https://bousai-hensachi.vercel.app";
   const pageUrl = `${SITE_URL}${buildResultPath(data.jisCode)}`;
@@ -292,27 +316,37 @@ export default async function ResultPage({ params }: PageProps) {
                 )}
               </div>
               {/* 洪水リスク */}
-              {data.floodDataStatus === "no-flood-data" ? (
+              <div className="rounded-xl bg-gray-50 px-3 py-3 space-y-2">
                 <div className="flex items-center gap-2">
                   <span className="text-base" aria-hidden="true">🌊</span>
                   <span className="text-xs text-gray-600 flex-1">洪水リスク</span>
-                  <span className="text-xs text-gray-400">洪水ハザードデータなし</span>
-                </div>
-              ) : (
-                <div className="flex items-center gap-2">
-                  <span className="text-base" aria-hidden="true">🌊</span>
-                  <span className="text-xs text-gray-600 flex-1">
-                    洪水リスク{data.floodDataStatus === "ward-averaged" && <span className="text-gray-400">（区平均）</span>}
-                  </span>
                   {typeof data.floodRiskCandidate === "number" ? (
                     <span className={`text-sm font-bold tabular-nums ${getScoreLevelColor(clampScore(data.floodRiskCandidate))}`}>
                       {clampScore(data.floodRiskCandidate)}
                     </span>
                   ) : (
-                    <span className="text-xs text-gray-400">—</span>
+                    <span className="text-xs text-gray-400">未算出</span>
                   )}
                 </div>
-              )}
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  <div>
+                    <p className="text-gray-400">データ状態</p>
+                    <p className="font-medium text-gray-700 leading-snug">{floodStatusLabel}</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-400">面積比率</p>
+                    <p className="font-medium text-gray-700 tabular-nums">{formatFloodAreaRatio(data.floodAreaRatio)}</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-400">最大浸水深危険度</p>
+                    <p className="font-medium text-gray-700 tabular-nums">{formatMaxDepthDanger(data.maxDepthDanger)}</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-400">スコア方向</p>
+                    <p className="font-medium text-gray-700">高いほど安全</p>
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* インフラ 30% */}
