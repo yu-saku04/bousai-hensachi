@@ -136,12 +136,50 @@ type DisasterRadarItem = {
   value: number | null;
 };
 
+type OverallRanking = {
+  nationalRank: number | null;
+  nationalTotal: number;
+  prefectureRank: number | null;
+  prefectureTotal: number;
+};
+
 const DISASTER_RADAR_CENTER = 90;
 const DISASTER_RADAR_RADIUS = 58;
 const DISASTER_RADAR_LABEL_RADIUS = 78;
 
 function getOptionalScore(value: number | null | undefined): number | null {
   return typeof value === "number" && Number.isFinite(value) ? clampScore(value) : null;
+}
+
+function getOverallRankingScore(municipality: Municipality): number | null {
+  return getOptionalScore(municipality.overallScoreV2 ?? municipality.overallScore);
+}
+
+function calculateRank(target: Municipality, municipalities: Municipality[]): OverallRanking {
+  const targetScore = getOverallRankingScore(target);
+  const nationalScores = municipalities
+    .map((municipality) => getOverallRankingScore(municipality))
+    .filter((rankingScore): rankingScore is number => rankingScore !== null);
+  const prefectureScores = municipalities
+    .filter((municipality) => municipality.prefecture === target.prefecture)
+    .map((municipality) => getOverallRankingScore(municipality))
+    .filter((rankingScore): rankingScore is number => rankingScore !== null);
+
+  if (targetScore === null) {
+    return {
+      nationalRank: null,
+      nationalTotal: nationalScores.length,
+      prefectureRank: null,
+      prefectureTotal: prefectureScores.length,
+    };
+  }
+
+  return {
+    nationalRank: nationalScores.filter((rankingScore) => rankingScore > targetScore).length + 1,
+    nationalTotal: nationalScores.length,
+    prefectureRank: prefectureScores.filter((rankingScore) => rankingScore > targetScore).length + 1,
+    prefectureTotal: prefectureScores.length,
+  };
 }
 
 function getDisasterRadarPoint(index: number, total: number, value: number, radius: number): RadarPoint {
@@ -170,6 +208,7 @@ export default async function ResultPage({ params }: PageProps) {
   const levelLabel = getScoreLevelLabel(score);
   const scores = data as Partial<Record<ScoreKey, number>>;
   const floodStatusLabel = getFloodStatusLabel(data.floodDataStatus);
+  const overallRanking = calculateRank(data, getAllMunicipalities());
   const shelterRadarScore =
     typeof data.shelterScore === "number"
       ? data.shelterScore
@@ -256,6 +295,48 @@ export default async function ResultPage({ params }: PageProps) {
           municipalityName={data.municipality}
           prefecture={data.prefecture}
         />
+
+        <section className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm space-y-3">
+          <div className="flex items-center justify-between gap-2">
+            <h2 className="font-bold text-gray-800 text-sm">総合防災偏差値 {scoreVersionLabel} の順位</h2>
+            <span className="text-xs text-gray-400 bg-gray-50 px-2 py-0.5 rounded-full">
+              {scoreVersionLabel}
+            </span>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="rounded-xl bg-blue-50 px-3 py-3 text-center">
+              <p className="text-xs text-blue-700 mb-1">全国順位</p>
+              {overallRanking.nationalRank === null ? (
+                <p className="text-sm font-bold text-gray-500">順位未算出</p>
+              ) : (
+                <p className="text-xl font-bold text-blue-900 tabular-nums">
+                  {overallRanking.nationalRank}
+                  <span className="text-sm font-normal text-blue-700"> 位</span>
+                </p>
+              )}
+              <p className="text-[11px] text-blue-700 mt-1 tabular-nums">
+                / {overallRanking.nationalTotal}自治体
+              </p>
+            </div>
+            <div className="rounded-xl bg-gray-50 px-3 py-3 text-center">
+              <p className="text-xs text-gray-500 mb-1">{data.prefecture}内順位</p>
+              {overallRanking.prefectureRank === null ? (
+                <p className="text-sm font-bold text-gray-500">順位未算出</p>
+              ) : (
+                <p className="text-xl font-bold text-gray-800 tabular-nums">
+                  {overallRanking.prefectureRank}
+                  <span className="text-sm font-normal text-gray-500"> 位</span>
+                </p>
+              )}
+              <p className="text-[11px] text-gray-500 mt-1 tabular-nums">
+                / {overallRanking.prefectureTotal}自治体
+              </p>
+            </div>
+          </div>
+          <p className="text-xs text-gray-400 leading-relaxed">
+            同点の自治体は同順位です。順位は総合防災偏差値 {scoreVersionLabel} を基準に算出しています。
+          </p>
+        </section>
 
         {/* AI風コメント */}
         <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm space-y-1">
