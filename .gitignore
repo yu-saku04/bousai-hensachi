@@ -50,6 +50,13 @@ data/raw/flood/
 data/processed/flood/
 data/processed/flood-scores.json
 
+# Landslide raw GML/ZIP data
+data/raw/landslide/
+
+# Landslide generated outputs
+data/processed/landslide/
+data/processed/landslide-scores.json
+
 # vercel
 .vercel
 

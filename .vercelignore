@@ -10,6 +10,7 @@ data/processed/flood-scores.json
 # その他生データ
 data/raw/estat/
 data/raw/jshis/
+data/raw/landslide/
 
 # Python 仮想環境
 .venv-flood/
