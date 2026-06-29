@@ -126,6 +126,37 @@ function formatMaxDepthDanger(value: Municipality["maxDepthDanger"]): string {
   return typeof value === "number" ? `${value} / 5` : "未算出";
 }
 
+type RadarPoint = {
+  x: number;
+  y: number;
+};
+
+type DisasterRadarItem = {
+  label: string;
+  value: number | null;
+};
+
+const DISASTER_RADAR_CENTER = 90;
+const DISASTER_RADAR_RADIUS = 58;
+const DISASTER_RADAR_LABEL_RADIUS = 78;
+
+function getOptionalScore(value: number | null | undefined): number | null {
+  return typeof value === "number" && Number.isFinite(value) ? clampScore(value) : null;
+}
+
+function getDisasterRadarPoint(index: number, total: number, value: number, radius: number): RadarPoint {
+  const angle = -Math.PI / 2 + (2 * Math.PI * index) / total;
+  const scaledRadius = radius * (value / 100);
+  return {
+    x: DISASTER_RADAR_CENTER + Math.cos(angle) * scaledRadius,
+    y: DISASTER_RADAR_CENTER + Math.sin(angle) * scaledRadius,
+  };
+}
+
+function formatRadarPoint(point: RadarPoint): string {
+  return `${point.x.toFixed(1)},${point.y.toFixed(1)}`;
+}
+
 export default async function ResultPage({ params }: PageProps) {
   const { jisCode } = await params;
   const data = getMunicipalityByJisCode(jisCode);
@@ -139,6 +170,29 @@ export default async function ResultPage({ params }: PageProps) {
   const levelLabel = getScoreLevelLabel(score);
   const scores = data as Partial<Record<ScoreKey, number>>;
   const floodStatusLabel = getFloodStatusLabel(data.floodDataStatus);
+  const shelterRadarScore =
+    typeof data.shelterScore === "number"
+      ? data.shelterScore
+      : typeof data.shelterCapacity === "number"
+      ? data.shelterCapacity
+      : null;
+  const disasterRadarItems: DisasterRadarItem[] = [
+    { label: "地震", value: getOptionalScore(data.earthquakeRisk) },
+    { label: "洪水", value: getOptionalScore(data.floodRiskCandidate) },
+    { label: "避難所", value: getOptionalScore(shelterRadarScore) },
+    { label: "高齢化", value: getOptionalScore(data.agingRisk) },
+    { label: "世帯", value: getOptionalScore(data.householdRisk) },
+  ];
+  const disasterRadarValidPointCount = disasterRadarItems.filter((item) => item.value !== null).length;
+  const disasterRadarPolygonPoints = disasterRadarItems
+    .map((item, index) =>
+      item.value === null
+        ? null
+        : getDisasterRadarPoint(index, disasterRadarItems.length, item.value, DISASTER_RADAR_RADIUS),
+    )
+    .filter((point): point is RadarPoint => point !== null)
+    .map(formatRadarPoint)
+    .join(" ");
 
   const SITE_URL = "https://bousai-hensachi.vercel.app";
   const pageUrl = `${SITE_URL}${buildResultPath(data.jisCode)}`;
@@ -298,6 +352,113 @@ export default async function ResultPage({ params }: PageProps) {
                   {data.overallScoreV2Version}
                 </span>
               )}
+            </div>
+
+            <div className="rounded-xl border border-blue-100 bg-blue-50/50 px-3 py-4">
+              <div className="mb-3 flex items-center justify-between gap-2">
+                <p className="text-xs font-semibold text-blue-900">防災スコア内訳レーダー</p>
+                <p className="text-[10px] text-blue-700">0〜100 / 高いほど安全</p>
+              </div>
+              <svg
+                viewBox="0 0 180 180"
+                role="img"
+                aria-label={`${data.prefecture}${data.municipality}の防災スコア内訳レーダーチャート`}
+                className="mx-auto h-56 w-full max-w-xs"
+              >
+                {[25, 50, 75, 100].map((level) => (
+                  <polygon
+                    key={level}
+                    points={disasterRadarItems
+                      .map((_, index) =>
+                        formatRadarPoint(
+                          getDisasterRadarPoint(
+                            index,
+                            disasterRadarItems.length,
+                            level,
+                            DISASTER_RADAR_RADIUS,
+                          ),
+                        ),
+                      )
+                      .join(" ")}
+                    fill="none"
+                    stroke="#bfdbfe"
+                    strokeWidth="0.8"
+                  />
+                ))}
+                {disasterRadarItems.map((item, index) => {
+                  const edgePoint = getDisasterRadarPoint(
+                    index,
+                    disasterRadarItems.length,
+                    100,
+                    DISASTER_RADAR_RADIUS,
+                  );
+                  const labelPoint = getDisasterRadarPoint(
+                    index,
+                    disasterRadarItems.length,
+                    100,
+                    DISASTER_RADAR_LABEL_RADIUS,
+                  );
+                  return (
+                    <g key={item.label}>
+                      <line
+                        x1={DISASTER_RADAR_CENTER}
+                        y1={DISASTER_RADAR_CENTER}
+                        x2={edgePoint.x}
+                        y2={edgePoint.y}
+                        stroke="#dbeafe"
+                        strokeWidth="0.8"
+                      />
+                      <text
+                        x={labelPoint.x}
+                        y={labelPoint.y}
+                        textAnchor="middle"
+                        dominantBaseline="middle"
+                        className="fill-gray-500 text-[8px] font-medium"
+                      >
+                        {item.label}
+                      </text>
+                    </g>
+                  );
+                })}
+                {disasterRadarValidPointCount >= 3 && (
+                  <polygon
+                    points={disasterRadarPolygonPoints}
+                    fill="#2563eb"
+                    fillOpacity="0.16"
+                    stroke="#2563eb"
+                    strokeWidth="2"
+                    strokeLinejoin="round"
+                  />
+                )}
+                {disasterRadarItems.map((item, index) => {
+                  if (item.value === null) return null;
+                  const point = getDisasterRadarPoint(
+                    index,
+                    disasterRadarItems.length,
+                    item.value,
+                    DISASTER_RADAR_RADIUS,
+                  );
+                  return (
+                    <circle
+                      key={`${item.label}-point`}
+                      cx={point.x}
+                      cy={point.y}
+                      r="2.4"
+                      fill="#1d4ed8"
+                    />
+                  );
+                })}
+              </svg>
+              <div className="grid grid-cols-5 gap-1 text-center">
+                {disasterRadarItems.map((item) => (
+                  <div key={item.label} className="rounded-lg bg-white/70 px-1.5 py-2">
+                    <p className="text-[10px] text-gray-500 leading-tight">{item.label}</p>
+                    <p className="text-xs font-bold text-gray-800 tabular-nums">
+                      {item.value === null ? "未算出" : item.value}
+                    </p>
+                  </div>
+                ))}
+              </div>
             </div>
 
             {/* ハザード 40% */}
