@@ -30,15 +30,17 @@
  *      - earthquakeDataStatus 別フィールド整合性チェック
  *      - 件数: direct=1762 / aggregated=19 / known-missing=10 / not-found=127
  *      - earthquakeRisk が overallScore に反映されていないこと（SCORE_FIELDS 除外確認）
- *  18. flood-v1 フィールド検証（floodRiskCandidate / floodDataStatus / overallScoreV2 v2.1）
+ *  18. flood.json スキーマ検証（中間データ / calculationVersion ゲート）
+ *      - calculationVersion === "flood-v1"（全エントリ必須）
+ *      - floodUpdatedAt 非空 string（全エントリ必須）
+ *      - status 別: scored(maxDepthDanger 1〜5 / floodAreaRatio 0〜1)
+ *                   no-flood-data(maxDepthDanger=0 / floodAreaRatio=0)
+ *                   ward-averaged(floodRiskCandidate number / floodSource string)
+ * 18b. flood-v1 フィールド検証（municipalities.json / overallScoreV2 v2.1）
  *      - floodRiskCandidate 10〜90 整数（全自治体必須）
  *      - floodUpdatedAt 非空 string（全自治体必須）
- *      - calculationVersion === "flood-v1"（全自治体必須）
  *      - 件数: scored=1429 / no-flood-data=469 / ward-averaged=20 / missing=0
  *      - floodSource / maxDepthDanger / floodAreaRatio の status 別整合性チェック
- *        scored: maxDepthDanger 1〜5 / floodAreaRatio 0〜1（必須）
- *        no-flood-data: maxDepthDanger === 0 / floodAreaRatio === 0
- *        ward-averaged: floodRiskCandidate number / floodSource string / floodUpdatedAt string
  *
  * オプション:
  *   --strict        jisCode 未設定 / processed 未使用 を warning ではなく error として報告
@@ -1333,6 +1335,112 @@ function validateEarthquakeV1(
 }
 
 // -------------------------------------------------------
+// flood.json スキーマ検証（calculationVersion を含む中間データ）
+// -------------------------------------------------------
+
+function validateFloodJson(
+  floodPath: string,
+  strictMode = false,
+): { errors: string[]; warnings: string[]; stats: Record<string, number | string> } {
+  const errors: string[] = [];
+  const warnings: string[] = [];
+  const stats: Record<string, number | string> = {};
+
+  if (!fs.existsSync(floodPath)) {
+    const msg = `flood.json が存在しません（スキップ）: ${floodPath}`;
+    if (strictMode) {
+      errors.push(msg);
+    } else {
+      warnings.push(msg);
+    }
+    return { errors, warnings, stats };
+  }
+
+  let flood: Array<Record<string, unknown>>;
+  try {
+    flood = JSON.parse(fs.readFileSync(floodPath, "utf-8"));
+  } catch {
+    return { errors: [`flood.json JSON parse 失敗: ${floodPath}`], warnings: [], stats: {} };
+  }
+
+  if (!Array.isArray(flood)) {
+    return { errors: [`flood.json は配列である必要があります: ${floodPath}`], warnings: [], stats: {} };
+  }
+
+  stats["flood.json件数"] = flood.length;
+
+  const statusCounts: Record<string, number> = { scored: 0, "no-flood-data": 0, "ward-averaged": 0 };
+
+  for (const f of flood) {
+    const id = `${f["jisCode"] ?? "unknown"}`;
+
+    if (typeof f["jisCode"] !== "string" || !JIS_RE.test(f["jisCode"] as string)) {
+      errors.push(`[${id}] jisCode が無効 (5桁数字必須): ${f["jisCode"]}`);
+    }
+
+    // calculationVersion: flood.json で保証するゲート
+    if (f["calculationVersion"] !== "flood-v1") {
+      errors.push(`[${id}] calculationVersion は flood-v1 である必要があります (${f["calculationVersion"]})`);
+    }
+
+    const floodUpdatedAt = f["floodUpdatedAt"];
+    if (typeof floodUpdatedAt !== "string" || (floodUpdatedAt as string).trim() === "") {
+      errors.push(`[${id}] floodUpdatedAt が未設定または空 (全エントリ必須): ${floodUpdatedAt}`);
+    }
+
+    const status = f["floodDataStatus"];
+    if (typeof status !== "string" || !VALID_FLOOD_STATUSES.has(status)) {
+      errors.push(
+        `[${id}] floodDataStatus が無効 (${[...VALID_FLOOD_STATUSES].join("|")} 必須): ${status}`,
+      );
+      continue;
+    }
+    statusCounts[status] = (statusCounts[status] ?? 0) + 1;
+
+    if (status === "scored") {
+      const maxDepthDanger = f["maxDepthDanger"];
+      if (
+        typeof maxDepthDanger !== "number" ||
+        !Number.isInteger(maxDepthDanger) ||
+        maxDepthDanger < 1 ||
+        maxDepthDanger > 5
+      ) {
+        errors.push(`[${id}] scored の maxDepthDanger が無効 (1〜5 整数必須): ${maxDepthDanger}`);
+      }
+      const floodAreaRatio = f["floodAreaRatio"];
+      if (
+        typeof floodAreaRatio !== "number" ||
+        !Number.isFinite(floodAreaRatio) ||
+        floodAreaRatio < 0 ||
+        floodAreaRatio > 1
+      ) {
+        errors.push(`[${id}] scored の floodAreaRatio が無効 (0.0〜1.0 の number 必須): ${floodAreaRatio}`);
+      }
+    } else if (status === "no-flood-data") {
+      if (f["maxDepthDanger"] !== 0) {
+        errors.push(`[${id}] no-flood-data の maxDepthDanger は 0 必須 (${f["maxDepthDanger"]})`);
+      }
+      if (f["floodAreaRatio"] !== 0) {
+        errors.push(`[${id}] no-flood-data の floodAreaRatio は 0 必須 (${f["floodAreaRatio"]})`);
+      }
+    } else if (status === "ward-averaged") {
+      if (typeof f["floodRiskCandidate"] !== "number") {
+        errors.push(`[${id}] ward-averaged の floodRiskCandidate は number 必須: ${f["floodRiskCandidate"]}`);
+      }
+      if (typeof f["floodSource"] !== "string" || (f["floodSource"] as string).trim() === "") {
+        errors.push(`[${id}] ward-averaged の floodSource は必須: ${f["floodSource"]}`);
+      }
+    }
+  }
+
+  stats["flood.json.scored件数"]         = statusCounts.scored;
+  stats["flood.json.no-flood-data件数"]  = statusCounts["no-flood-data"];
+  stats["flood.json.ward-averaged件数"]  = statusCounts["ward-averaged"];
+
+  return { errors, warnings, stats };
+}
+
+// -------------------------------------------------------
 // flood-v1 フィールド検証
 // -------------------------------------------------------
 
@@ -1396,11 +1504,6 @@ function validateFloodV1(
     const floodUpdatedAt = m["floodUpdatedAt"];
     if (typeof floodUpdatedAt !== "string" || floodUpdatedAt.trim() === "") {
       errors.push(`[${id}] floodUpdatedAt が未設定または空 (全自治体必須): ${floodUpdatedAt}`);
-    }
-
-    // calculationVersion: "flood-v1" 必須
-    if (m["calculationVersion"] !== "flood-v1") {
-      errors.push(`[${id}] calculationVersion は flood-v1 である必要があります (${m["calculationVersion"]})`);
     }
 
     const status = m["floodDataStatus"];
@@ -1939,7 +2042,13 @@ function validateDatasets(inputPath: string, strictMode = false, sheltersPath?: 
   warnings.push(...earthquakeValidation.warnings);
   Object.assign(stats, earthquakeValidation.stats);
 
-  // 18. flood-v1 フィールド検証
+  // 18. flood.json スキーマ検証（calculationVersion ゲート）
+  const floodJsonValidation = validateFloodJson("data/processed/flood.json", strictMode);
+  errors.push(...floodJsonValidation.errors);
+  warnings.push(...floodJsonValidation.warnings);
+  Object.assign(stats, floodJsonValidation.stats);
+
+  // 18b. flood-v1 フィールド検証（municipalities.json）
   const floodValidation = validateFloodV1(data);
   errors.push(...floodValidation.errors);
   warnings.push(...floodValidation.warnings);
