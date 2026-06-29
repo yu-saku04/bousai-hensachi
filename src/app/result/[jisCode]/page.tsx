@@ -103,6 +103,38 @@ function buildRuleBasedComment(data: Municipality): string {
   return `複数の重大リスクが存在します。早急な防災行動計画の策定を推奨します。${weakMessages[weakest]}`;
 }
 
+function buildAiAdviceComment(data: Municipality): string {
+  const sentences: string[] = [];
+
+  if (typeof data.earthquakeRisk === "number" && clampScore(data.earthquakeRisk) >= 70) {
+    sentences.push("地震リスクは比較的低いです。");
+  }
+
+  if (typeof data.floodRiskCandidate === "number" && clampScore(data.floodRiskCandidate) <= 40) {
+    sentences.push("洪水への備えを優先してください。");
+  }
+
+  const shelterVal =
+    typeof data.shelterScore === "number"
+      ? data.shelterScore
+      : typeof data.shelterCapacity === "number"
+      ? data.shelterCapacity
+      : null;
+  if (shelterVal !== null && clampScore(shelterVal) < 40) {
+    sentences.push("避難所インフラに課題があります。");
+  }
+
+  if (typeof data.agingRisk === "number" && clampScore(data.agingRisk) > 70) {
+    sentences.push("高齢化への支援体制が重要です。");
+  }
+
+  if (typeof data.householdRisk === "number" && clampScore(data.householdRisk) > 70) {
+    sentences.push("地域コミュニティが比較的維持されています。");
+  }
+
+  return sentences.slice(0, 5).join("") || "現在のデータからアドバイスを生成できませんでした。";
+}
+
 function getFloodStatusLabel(status: Municipality["floodDataStatus"]): string {
   switch (status) {
     case "scored":
@@ -259,6 +291,7 @@ export default async function ResultPage({ params }: PageProps) {
   };
 
   const aiComment = buildRuleBasedComment(data);
+  const aiAdviceComment = buildAiAdviceComment(data);
 
   // RadarChart 用データを RSC で計算してクライアントへ渡す（Municipality 全体を渡さない）
   const radarData = SCORE_ITEMS
@@ -770,6 +803,12 @@ export default async function ResultPage({ params }: PageProps) {
             算出方法を<br/>知る
           </Link>
         </div>
+
+        {/* AI防災アドバイス */}
+        <section className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm space-y-3">
+          <h2 className="font-bold text-gray-800 text-sm">AI防災アドバイス</h2>
+          <p className="text-sm text-gray-700 leading-relaxed">{aiAdviceComment}</p>
+        </section>
 
         {/* フッター */}
         <footer className="text-center text-xs text-gray-400 space-y-1 pb-4">
