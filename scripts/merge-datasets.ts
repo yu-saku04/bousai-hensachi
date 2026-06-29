@@ -119,6 +119,17 @@ interface FloodEntry {
   calculationVersion: string;
 }
 
+interface LandslideEntry {
+  jisCode:                   string;
+  landslideRiskCandidate:    number | null;
+  landslideDataStatus:       string;
+  landslideAreaRatio:        number | null;
+  landslideSpecialAreaRatio: number | null;
+  landslideSource:           string;
+  landslideUpdatedAt:        string;
+  calculationVersion:        string;
+}
+
 interface MunicipalityBase {
   id: string;
   jisCode?: string;
@@ -459,6 +470,23 @@ function mergeDatasets(
     console.warn(`スキップ (未生成): ${floodPath}`);
   }
 
+  // -------------------------------------------------------
+  // landslide.json を読み込み（土砂災害ハザード・landslideRiskCandidate standalone 指標）
+  // -------------------------------------------------------
+
+  const landslidePath      = path.join(processedDir, "landslide.json");
+  const landslideData      = loadJsonIfExists<LandslideEntry>(landslidePath);
+  const landslideByJisCode = new Map<string, LandslideEntry>();
+
+  if (landslideData.length > 0) {
+    console.log(`読み込み: ${landslidePath} (${landslideData.length}件)`);
+    for (const l of landslideData) {
+      landslideByJisCode.set(l.jisCode, l);
+    }
+  } else {
+    console.warn(`スキップ (未生成): ${landslidePath}`);
+  }
+
   let householdJoinCount    = 0;
   let householdMissingCount = 0;
 
@@ -470,6 +498,9 @@ function mergeDatasets(
 
   let floodJoinCount    = 0;
   let floodMissingCount = 0;
+
+  let landslideJoinCount    = 0;
+  let landslideMissingCount = 0;
 
   const joinFailureWarnings: string[] = [];
   const missingShelterBaseKeys: string[] = [];
@@ -531,6 +562,14 @@ function mergeDatasets(
     delete result["maxDepthDanger"];
     delete result["floodAreaRatio"];
     delete result["floodUpdatedAt"];
+
+    // landslide 系フィールドをすべてクリア（landslide.json JOIN 成功時のみ再設定）
+    delete result["landslideRiskCandidate"];
+    delete result["landslideDataStatus"];
+    delete result["landslideAreaRatio"];
+    delete result["landslideSpecialAreaRatio"];
+    delete result["landslideSource"];
+    delete result["landslideUpdatedAt"];
 
     // 汎用スコアファイルから JOIN
     for (const pair of scoreFilePairs) {
@@ -660,15 +699,34 @@ function mergeDatasets(
       }
     }
 
-    // dataUpdatedAt = max(shelterUpdatedAt, populationUpdatedAt, agingUpdatedAt, householdUpdatedAt, earthquakeUpdatedAt, floodUpdatedAt)
+    // landslide データを JOIN（jisCode のみ）
+    // landslideRiskCandidate は overallScoreV2 の Hazard 指標（Step4 統合予定）。
+    // 欠損自治体（missing）は landslideRiskCandidate=null のまま。
+    if (landslideData.length > 0) {
+      const ls = m.jisCode ? landslideByJisCode.get(m.jisCode) : undefined;
+      if (ls) {
+        result["landslideRiskCandidate"]    = ls.landslideRiskCandidate;
+        result["landslideDataStatus"]       = ls.landslideDataStatus;
+        result["landslideAreaRatio"]        = ls.landslideAreaRatio;
+        result["landslideSpecialAreaRatio"] = ls.landslideSpecialAreaRatio;
+        if (ls.landslideSource)     result["landslideSource"]     = ls.landslideSource;
+        if (ls.landslideUpdatedAt)  result["landslideUpdatedAt"]  = ls.landslideUpdatedAt;
+        landslideJoinCount++;
+      } else {
+        landslideMissingCount++;
+      }
+    }
+
+    // dataUpdatedAt = max(shelterUpdatedAt, populationUpdatedAt, agingUpdatedAt, householdUpdatedAt, earthquakeUpdatedAt, floodUpdatedAt, landslideUpdatedAt)
     // 最新データ更新日を全体の dataUpdatedAt として保持
-    const sDate = result["shelterUpdatedAt"];
-    const pDate = result["populationUpdatedAt"];
-    const aDate = result["agingUpdatedAt"];
-    const hDate = result["householdUpdatedAt"];
-    const eDate = result["earthquakeUpdatedAt"];
-    const fDate = result["floodUpdatedAt"];
-    const dateCandidates = [sDate, pDate, aDate, hDate, eDate, fDate].filter((d): d is string => typeof d === "string");
+    const sDate  = result["shelterUpdatedAt"];
+    const pDate  = result["populationUpdatedAt"];
+    const aDate  = result["agingUpdatedAt"];
+    const hDate  = result["householdUpdatedAt"];
+    const eDate  = result["earthquakeUpdatedAt"];
+    const fDate  = result["floodUpdatedAt"];
+    const lsDate = result["landslideUpdatedAt"];
+    const dateCandidates = [sDate, pDate, aDate, hDate, eDate, fDate, lsDate].filter((d): d is string => typeof d === "string");
     if (dateCandidates.length > 0) {
       result["dataUpdatedAt"] = dateCandidates.sort().at(-1)!;
     }
@@ -838,6 +896,31 @@ function mergeDatasets(
       ` no-flood-data=${byFloodStatus("no-flood-data")}` +
       ` ward-averaged=${byFloodStatus("ward-averaged")}` +
       ` missing=${byFloodStatus("missing")}`,
+    );
+  }
+
+  // landslide.json 統合結果ログ
+  if (landslideData.length > 0) {
+    console.log(
+      `\nlandslide.json 使用状況: ${landslideJoinCount}/${landslideData.length}件 JOIN済` +
+      ` / 未反映 ${landslideMissingCount}件（landslideRiskCandidate=null）`,
+    );
+    const lsVals = merged
+      .map((m) => m["landslideRiskCandidate"])
+      .filter((v): v is number => typeof v === "number");
+    if (lsVals.length > 0) {
+      const lsMin  = Math.min(...lsVals);
+      const lsMax  = Math.max(...lsVals);
+      const lsMean = lsVals.reduce((s, v) => s + v, 0) / lsVals.length;
+      console.log(`  landslideRiskCandidate range: ${lsMin} 〜 ${lsMax} (mean: ${lsMean.toFixed(2)})`);
+    }
+    const byLandStatus = (s: string) =>
+      merged.filter((m) => m["landslideDataStatus"] === s).length;
+    console.log(
+      `  scored=${byLandStatus("scored")}` +
+      ` no-landslide-data=${byLandStatus("no-landslide-data")}` +
+      ` ward-averaged=${byLandStatus("ward-averaged")}` +
+      ` missing=${byLandStatus("missing")}`,
     );
   }
 

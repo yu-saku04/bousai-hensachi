@@ -43,7 +43,8 @@
     "score:flood-v1:all": ".venv-flood/bin/python scripts/scoring/score-flood-v1-all.py --output data/processed/flood-scores.json",
     "score:flood-v1:merge": ".venv-flood/bin/python scripts/scoring/score-flood-v1-all.py --merge-only --output data/processed/flood-scores.json",
     "fetch:landslide:sample": ".venv-flood/bin/python scripts/fetchers/fetch-nlftp-landslide.py --pref 08 --download",
-    "fetch:landslide:all": ".venv-flood/bin/python scripts/fetchers/fetch-nlftp-landslide.py --all-prefs --download"
+    "fetch:landslide:all": ".venv-flood/bin/python scripts/fetchers/fetch-nlftp-landslide.py --all-prefs --download",
+    "import:landslide": "tsx scripts/importers/import-landslide.ts"
   },
   "dependencies": {
     "next": "16.2.6",

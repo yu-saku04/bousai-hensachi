@@ -78,6 +78,13 @@ export interface Municipality {
   maxDepthDanger?: number | null;
   floodAreaRatio?: number | null;
   floodUpdatedAt?: string;
+  // landslide-v1
+  landslideRiskCandidate?: number | null;
+  landslideDataStatus?: "scored" | "no-landslide-data" | "ward-averaged" | "missing";
+  landslideAreaRatio?: number | null;
+  landslideSpecialAreaRatio?: number | null;
+  landslideSource?: string;
+  landslideUpdatedAt?: string;
   // overallScoreV2 (v2.1 = earthquake + flood)
   overallScoreV2?: number | null;
   overallScoreV2Version?: string;

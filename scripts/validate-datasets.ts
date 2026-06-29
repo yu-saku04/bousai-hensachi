@@ -1441,6 +1441,107 @@ function validateFloodJson(
 }
 
 // -------------------------------------------------------
+// landslide.json スキーマ検証（calculationVersion を含む中間データ）
+// -------------------------------------------------------
+
+const VALID_LANDSLIDE_STATUSES = new Set([
+  "scored",
+  "no-landslide-data",
+  "ward-averaged",
+]);
+
+function validateLandslideJson(
+  landslidePath: string,
+): { errors: string[]; warnings: string[]; stats: Record<string, number | string> } {
+  const errors:   string[] = [];
+  const warnings: string[] = [];
+  const stats: Record<string, number | string> = {};
+
+  if (!fs.existsSync(landslidePath)) {
+    warnings.push(
+      `landslide.json が存在しません（スキップ）: ${landslidePath}` +
+      ` (npm run import:landslide を実行してください)`,
+    );
+    return { errors, warnings, stats };
+  }
+
+  let landslide: Array<Record<string, unknown>>;
+  try {
+    landslide = JSON.parse(fs.readFileSync(landslidePath, "utf-8"));
+  } catch {
+    return { errors: [`landslide.json JSON parse 失敗: ${landslidePath}`], warnings: [], stats: {} };
+  }
+
+  if (!Array.isArray(landslide)) {
+    return { errors: [`landslide.json は配列である必要があります: ${landslidePath}`], warnings: [], stats: {} };
+  }
+
+  stats["landslide.json件数"] = landslide.length;
+
+  const statusCounts: Record<string, number> = {
+    scored: 0, "no-landslide-data": 0, "ward-averaged": 0,
+  };
+
+  for (const l of landslide) {
+    const id = `${l["jisCode"] ?? "unknown"}`;
+
+    if (typeof l["jisCode"] !== "string" || !JIS_RE.test(l["jisCode"] as string)) {
+      errors.push(`[${id}] jisCode が無効 (5桁数字必須): ${l["jisCode"]}`);
+    }
+
+    if (l["calculationVersion"] !== "landslide-v1") {
+      errors.push(`[${id}] calculationVersion は landslide-v1 である必要があります (${l["calculationVersion"]})`);
+    }
+
+    const landUpdatedAt = l["landslideUpdatedAt"];
+    if (typeof landUpdatedAt !== "string" || (landUpdatedAt as string).trim() === "") {
+      errors.push(`[${id}] landslideUpdatedAt が未設定または空 (全エントリ必須): ${landUpdatedAt}`);
+    }
+
+    const status = l["landslideDataStatus"];
+    if (typeof status !== "string" || !VALID_LANDSLIDE_STATUSES.has(status)) {
+      errors.push(
+        `[${id}] landslideDataStatus が無効 (${[...VALID_LANDSLIDE_STATUSES].join("|")} 必須): ${status}`,
+      );
+      continue;
+    }
+    statusCounts[status] = (statusCounts[status] ?? 0) + 1;
+
+    const candidate = l["landslideRiskCandidate"];
+    if (
+      typeof candidate !== "number" ||
+      !Number.isInteger(candidate) ||
+      candidate < 10 ||
+      candidate > 90
+    ) {
+      errors.push(`[${id}] landslideRiskCandidate が無効 (10〜90 整数必須): ${candidate}`);
+    }
+
+    if (status === "scored") {
+      const areaRatio = l["landslideAreaRatio"];
+      if (
+        typeof areaRatio !== "number" ||
+        !Number.isFinite(areaRatio) ||
+        areaRatio < 0 ||
+        areaRatio > 1
+      ) {
+        errors.push(`[${id}] scored の landslideAreaRatio が無効 (0.0〜1.0 必須): ${areaRatio}`);
+      }
+    } else if (status === "ward-averaged") {
+      if (typeof candidate !== "number") {
+        errors.push(`[${id}] ward-averaged の landslideRiskCandidate は number 必須: ${candidate}`);
+      }
+    }
+  }
+
+  stats["landslide.json.scored件数"]           = statusCounts.scored;
+  stats["landslide.json.no-landslide-data件数"] = statusCounts["no-landslide-data"];
+  stats["landslide.json.ward-averaged件数"]     = statusCounts["ward-averaged"];
+
+  return { errors, warnings, stats };
+}
+
+// -------------------------------------------------------
 // flood-v1 フィールド検証
 // -------------------------------------------------------
 
@@ -1617,6 +1718,87 @@ function validateFloodV1(
     stats["floodRiskCandidate最小"] = Math.min(...candidateVals);
     stats["floodRiskCandidate最大"] = Math.max(...candidateVals);
     stats["floodRiskCandidate平均"] = Math.round(
+      candidateVals.reduce((s, v) => s + v, 0) / candidateVals.length,
+    );
+  }
+
+  return { errors, warnings, stats };
+}
+
+// -------------------------------------------------------
+// landslide-v1 フィールド検証（municipalities.json）
+// -------------------------------------------------------
+
+function validateLandslideV1(
+  data: Municipality[],
+): { errors: string[]; warnings: string[]; stats: Record<string, number | string> } {
+  const errors:   string[] = [];
+  const warnings: string[] = [];
+  const stats: Record<string, number | string> = {};
+
+  // landslide フィールドが未投入の場合はスキップ（国土全体スコアリング未実施）
+  const withLandslide = data.filter((m) => m["landslideRiskCandidate"] !== undefined);
+  if (withLandslide.length === 0) {
+    warnings.push(
+      "landslideRiskCandidate フィールド未投入 (npm run import:landslide を実行してください)",
+    );
+    return { errors, warnings, stats };
+  }
+
+  stats["landslide投入件数"] = withLandslide.length;
+
+  const statusCounts: Record<string, number> = {
+    scored: 0, "no-landslide-data": 0, "ward-averaged": 0, missing: 0,
+  };
+  const candidateVals: number[] = [];
+  let sourceCount = 0;
+
+  for (const m of data) {
+    const id = String(m["jisCode"] ?? m["id"] ?? "unknown");
+
+    const candidate = m["landslideRiskCandidate"];
+    if (candidate === undefined) continue;
+
+    if (
+      typeof candidate !== "number" ||
+      !Number.isInteger(candidate) ||
+      candidate < 10 ||
+      candidate > 90
+    ) {
+      if (candidate !== null) {
+        errors.push(`[${id}] landslideRiskCandidate が無効 (10〜90 整数または null 必須): ${candidate}`);
+      }
+    } else {
+      candidateVals.push(candidate);
+    }
+
+    const status = m["landslideDataStatus"];
+    if (typeof status === "string" && VALID_LANDSLIDE_STATUSES.has(status)) {
+      statusCounts[status] = (statusCounts[status] ?? 0) + 1;
+      const source = m["landslideSource"];
+      if (typeof source === "string" && source.trim() !== "") {
+        sourceCount++;
+      }
+    } else if (status === "missing") {
+      statusCounts.missing++;
+    } else {
+      errors.push(
+        `[${id}] landslideDataStatus が無効 ` +
+        `(scored|no-landslide-data|ward-averaged|missing 必須): ${status}`,
+      );
+    }
+  }
+
+  stats["landslide.scored件数"]           = statusCounts.scored;
+  stats["landslide.no-landslide-data件数"] = statusCounts["no-landslide-data"];
+  stats["landslide.ward-averaged件数"]     = statusCounts["ward-averaged"];
+  stats["landslide.missing件数"]           = statusCounts.missing;
+  stats["landslideSource件数"]             = sourceCount;
+
+  if (candidateVals.length > 0) {
+    stats["landslideRiskCandidate最小"] = Math.min(...candidateVals);
+    stats["landslideRiskCandidate最大"] = Math.max(...candidateVals);
+    stats["landslideRiskCandidate平均"] = Math.round(
       candidateVals.reduce((s, v) => s + v, 0) / candidateVals.length,
     );
   }
@@ -2053,6 +2235,18 @@ function validateDatasets(inputPath: string, strictMode = false, sheltersPath?: 
   errors.push(...floodValidation.errors);
   warnings.push(...floodValidation.warnings);
   Object.assign(stats, floodValidation.stats);
+
+  // 20. landslide.json スキーマ検証（calculationVersion ゲート）
+  const landslideJsonValidation = validateLandslideJson("data/processed/landslide.json");
+  errors.push(...landslideJsonValidation.errors);
+  warnings.push(...landslideJsonValidation.warnings);
+  Object.assign(stats, landslideJsonValidation.stats);
+
+  // 20b. landslide-v1 フィールド検証（municipalities.json）
+  const landslideValidation = validateLandslideV1(data);
+  errors.push(...landslideValidation.errors);
+  warnings.push(...landslideValidation.warnings);
+  Object.assign(stats, landslideValidation.stats);
 
   // 19. overallScoreV2 検証（dry-run）
   const v2Validation = validateOverallScoreV2(data);
