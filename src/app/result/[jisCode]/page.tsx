@@ -108,6 +108,10 @@ function buildAiAdviceComment(data: Municipality): string {
     sentences.push("洪水への備えを優先してください。");
   }
 
+  if (typeof data.landslideRiskCandidate === "number" && clampScore(data.landslideRiskCandidate) <= 40) {
+    sentences.push("土砂災害への備えを優先してください。");
+  }
+
   const shelterVal =
     typeof data.shelterScore === "number"
       ? data.shelterScore
@@ -127,6 +131,25 @@ function buildAiAdviceComment(data: Municipality): string {
   }
 
   return sentences.slice(0, 5).join("") || "現在のデータからアドバイスを生成できませんでした。";
+}
+
+function getLandslideStatusLabel(status: Municipality["landslideDataStatus"]): string {
+  switch (status) {
+    case "scored":
+      return "土砂災害リスク算出済み";
+    case "no-landslide-data":
+      return "土砂災害警戒区域データなし";
+    case "ward-averaged":
+      return "行政区データから市全体を平均";
+    case "missing":
+      return "土砂データ未取得";
+    default:
+      return "未算出";
+  }
+}
+
+function formatLandslideAreaRatio(value: Municipality["landslideAreaRatio"]): string {
+  return typeof value === "number" ? `${(value * 100).toFixed(1)}%` : "未算出";
 }
 
 function getFloodStatusLabel(status: Municipality["floodDataStatus"]): string {
@@ -230,9 +253,12 @@ export default async function ResultPage({ params }: PageProps) {
   }
 
   const score = clampScore(data.overallScoreV2 ?? data.overallScore);
-  const scoreVersionLabel = typeof data.overallScoreV2 === "number" ? "v2.1" : "旧スコア";
+  const scoreVersionLabel = typeof data.overallScoreV2 === "number"
+    ? (data.overallScoreV2Version ?? "v2")
+    : "旧スコア";
   const levelLabel = getScoreLevelLabel(score);
-  const floodStatusLabel = getFloodStatusLabel(data.floodDataStatus);
+  const floodStatusLabel     = getFloodStatusLabel(data.floodDataStatus);
+  const landslideStatusLabel = getLandslideStatusLabel(data.landslideDataStatus);
   const overallRanking = calculateRank(data, getAllMunicipalities());
   const shelterRadarScore =
     typeof data.shelterScore === "number"
@@ -243,6 +269,7 @@ export default async function ResultPage({ params }: PageProps) {
   const disasterRadarItems: DisasterRadarItem[] = [
     { label: "地震", value: getOptionalScore(data.earthquakeRisk) },
     { label: "洪水", value: getOptionalScore(data.floodRiskCandidate) },
+    { label: "土砂", value: getOptionalScore(data.landslideRiskCandidate) },
     { label: "避難所", value: getOptionalScore(shelterRadarScore) },
     { label: "高齢化", value: getOptionalScore(data.agingRisk) },
     { label: "世帯", value: getOptionalScore(data.householdRisk) },
@@ -452,7 +479,7 @@ export default async function ResultPage({ params }: PageProps) {
                 );
               })}
             </svg>
-            <div className="grid grid-cols-5 gap-1 text-center">
+            <div className="grid grid-cols-6 gap-1 text-center">
               {disasterRadarItems.map((item) => (
                 <div key={item.label} className="rounded-lg bg-gray-50 px-1.5 py-2">
                   <p className="text-[10px] text-gray-500 leading-tight">{item.label}</p>
@@ -515,6 +542,37 @@ export default async function ResultPage({ params }: PageProps) {
                   <div>
                     <p className="text-gray-400">最大浸水深危険度</p>
                     <p className="font-medium text-gray-700 tabular-nums">{formatMaxDepthDanger(data.maxDepthDanger)}</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-400">スコア方向</p>
+                    <p className="font-medium text-gray-700">高いほど安全</p>
+                  </div>
+                </div>
+              </div>
+              <div className="rounded-xl bg-gray-50 px-3 py-3 space-y-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-base" aria-hidden="true">⛰️</span>
+                  <span className="text-xs text-gray-600 flex-1">土砂災害リスク</span>
+                  {typeof data.landslideRiskCandidate === "number" ? (
+                    <span className={`text-sm font-bold tabular-nums ${getScoreLevelColor(clampScore(data.landslideRiskCandidate))}`}>
+                      {clampScore(data.landslideRiskCandidate)}
+                    </span>
+                  ) : (
+                    <span className="text-xs text-gray-400">未算出</span>
+                  )}
+                </div>
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  <div>
+                    <p className="text-gray-400">データ状態</p>
+                    <p className="font-medium text-gray-700 leading-snug">{landslideStatusLabel}</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-400">警戒区域面積比</p>
+                    <p className="font-medium text-gray-700 tabular-nums">{formatLandslideAreaRatio(data.landslideAreaRatio)}</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-400">特別警戒区域比</p>
+                    <p className="font-medium text-gray-700 tabular-nums">{formatLandslideAreaRatio(data.landslideSpecialAreaRatio)}</p>
                   </div>
                   <div>
                     <p className="text-gray-400">スコア方向</p>

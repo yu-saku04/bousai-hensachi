@@ -1674,9 +1674,9 @@ function validateFloodV1(
       v2Count++;
     }
 
-    if (m["overallScoreV2Version"] !== "v2.1") {
+    if (m["overallScoreV2Version"] !== "v2.2") {
       errors.push(
-        `[${id}] overallScoreV2Version が無効 ("v2.1" 必須): ${m["overallScoreV2Version"]}`,
+        `[${id}] overallScoreV2Version が無効 ("v2.2" 必須): ${m["overallScoreV2Version"]}`,
       );
     }
   }
@@ -1687,7 +1687,7 @@ function validateFloodV1(
   stats["flood.no-flood-data件数"]  = statusCounts["no-flood-data"] ?? 0;
   stats["flood.ward-averaged件数"]  = statusCounts["ward-averaged"] ?? 0;
   stats["flood.missing件数"]        = statusCounts.missing ?? 0;
-  stats["overallScoreV2.v2.1件数"] = v2Count;
+  stats["overallScoreV2.v2.2件数"] = v2Count;
 
   if (candidateCount !== EXPECTED_FLOOD_COUNTS.total) {
     errors.push(

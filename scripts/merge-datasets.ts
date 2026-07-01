@@ -321,8 +321,8 @@ function mergeDatasets(
   // -------------------------------------------------------
 
   const scoreFileKeys = [
-    "flood-scores", "earthquake-scores", "fire-scores",
-    "shelter-scores", "population-scores", "landslide-scores",
+    "earthquake-scores", "fire-scores",
+    "shelter-scores", "population-scores",
   ] as const;
 
   type ScoreFilePair = {

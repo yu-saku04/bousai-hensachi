@@ -4,7 +4,7 @@
  * 現行 overallScore は変更せず、新しい overallScoreV2 を試算する。
  *
  * カテゴリ（全て 0〜100 スケール、高いほど安全）:
- *   Hazard              (weight 0.40): earthquakeRisk
+ *   Hazard              (weight 0.40): nullSafeMean(earthquakeRisk, floodRiskCandidate, landslideRiskCandidate)
  *   Infrastructure      (weight 0.30): shelterScore (shelter-sufficiency-v1) ?? shelterCapacity
  *   Social Vulnerability (weight 0.30): mean(agingRisk, householdRisk)
  *   Accessibility       (weight 0.00): 将来追加
@@ -25,7 +25,7 @@ import path from "node:path";
 // Constants
 // ---------------------------------------------------------------------------
 
-const CALCULATION_VERSION = "v2.1" as const;
+const CALCULATION_VERSION = "v2.2" as const;
 
 const CATEGORY_WEIGHTS = {
   hazard:        0.40,
@@ -44,6 +44,7 @@ interface MunicipalityRow {
   overallScore: number;
   earthquakeRisk?: number;
   floodRiskCandidate?: number | null;
+  landslideRiskCandidate?: number | null;
   shelterScore?: number | null;
   shelterCapacity?: number;
   agingRisk?: number;
@@ -105,9 +106,9 @@ export function computeOverallScoreV2(m: MunicipalityRow): {
   score: number | null;
   breakdown: CategoryBreakdown;
 } {
-  // Hazard: null-safe mean(earthquakeRisk, floodRiskCandidate)
-  // earthquake:flood = 50:50。片方 null の場合は残方のみで算出。
-  const hazardScore = nullSafeMean([m.earthquakeRisk, m.floodRiskCandidate]);
+  // Hazard: null-safe mean(earthquakeRisk, floodRiskCandidate, landslideRiskCandidate)
+  // 三指標均等。null の場合は残りの指標のみで算出。
+  const hazardScore = nullSafeMean([m.earthquakeRisk, m.floodRiskCandidate, m.landslideRiskCandidate]);
 
   // Infrastructure: shelterScore (shelter-sufficiency-v1) → shelterCapacity (fallback)
   const rawInfra =
@@ -214,15 +215,22 @@ function main(): void {
   console.log(`overallScoreV2算出 : ${v2Scores.length}件`);
   console.log(`overallScoreV2=null: ${nullCount}件\n`);
 
-  const floodCount = data.filter(
-    (m) => typeof m.floodRiskCandidate === "number",
-  ).length;
-  const hazardBothCount = data.filter(
-    (m) => typeof m.earthquakeRisk === "number" && typeof m.floodRiskCandidate === "number",
+  const floodCount     = data.filter((m) => typeof m.floodRiskCandidate === "number").length;
+  const landslideCount = data.filter((m) => typeof m.landslideRiskCandidate === "number").length;
+  const hazardAllCount = data.filter(
+    (m) =>
+      typeof m.earthquakeRisk === "number" &&
+      typeof m.floodRiskCandidate === "number" &&
+      typeof m.landslideRiskCandidate === "number",
   ).length;
 
   console.log("カテゴリ別ソース:");
-  console.log(`  Hazard           : earthquakeRisk=${data.filter((m) => typeof m.earthquakeRisk === "number").length}件 / floodRiskCandidate=${floodCount}件 / 両方=${hazardBothCount}件`);
+  console.log(
+    `  Hazard           : earthquakeRisk=${data.filter((m) => typeof m.earthquakeRisk === "number").length}件` +
+    ` / floodRiskCandidate=${floodCount}件` +
+    ` / landslideRiskCandidate=${landslideCount}件` +
+    ` / 全3揃い=${hazardAllCount}件`,
+  );
   console.log(`  Infrastructure   : shelterScore=${shelterScoreUsed}件 / shelterCapacity(fallback)=${shelterCapacityUsed}件`);
   console.log(`  Social           : both(aging+household)=${socialBothUsed}件 / partial=${socialPartialUsed}件`);
 
