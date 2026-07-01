@@ -85,7 +85,7 @@ export interface Municipality {
   landslideSpecialAreaRatio?: number | null;
   landslideSource?: string;
   landslideUpdatedAt?: string;
-  // overallScoreV2 (v2.1 = earthquake + flood)
+  // overallScoreV2 (v2.2-ready = earthquake + flood + landslide when available)
   overallScoreV2?: number | null;
   overallScoreV2Version?: string;
 }

@@ -25,7 +25,7 @@ import path from "node:path";
 // Constants
 // ---------------------------------------------------------------------------
 
-const CALCULATION_VERSION = "v2.2" as const;
+const CALCULATION_VERSION = "v2.2-ready" as const;
 
 const CATEGORY_WEIGHTS = {
   hazard:        0.40,
