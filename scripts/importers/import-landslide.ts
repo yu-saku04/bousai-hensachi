@@ -155,6 +155,7 @@ export function importLandslide(
   let noLandCount      = 0;
   let wardAvgCount     = 0;
   let missingCount     = 0;
+  let notFoundCount    = 0;
   const warnings: string[] = [];
 
   for (const m of rawMuni) {
@@ -171,10 +172,27 @@ export function importLandslide(
         landslideAreaRatio:        null,
         landslideSpecialAreaRatio: null,
         landslideSource:           DEFAULT_LANDSLIDE_SOURCE,
-        landslideUpdatedAt:        "",
+        landslideUpdatedAt:        new Date().toISOString().slice(0, 10),
         calculationVersion:        CALC_VERSION,
       });
       missingCount++;
+      continue;
+    }
+
+    // not-found (A33 データなし / 既知欠損都道府県) → missing として出力
+    if (land.landslideDataStatus === "not-found") {
+      results.push({
+        jisCode,
+        landslideRiskCandidate:    null,
+        landslideDataStatus:       "missing",
+        landslideAreaRatio:        null,
+        landslideSpecialAreaRatio: null,
+        landslideSource:           land.landslideSource || DEFAULT_LANDSLIDE_SOURCE,
+        landslideUpdatedAt:        land.landslideUpdatedAt,
+        calculationVersion:        CALC_VERSION,
+      });
+      missingCount++;
+      notFoundCount++;
       continue;
     }
 
@@ -264,7 +282,7 @@ export function importLandslide(
   console.log(`scored              : ${scoredCount}件`);
   console.log(`no-landslide-data   : ${noLandCount}件`);
   console.log(`ward-averaged       : ${wardAvgCount}件`);
-  console.log(`missing             : ${missingCount}件`);
+  console.log(`missing             : ${missingCount}件 (うち not-found 由来: ${notFoundCount}件)`);
   console.log(`\nlandslideRiskCandidate: min=${cMin} max=${cMax} mean=${cMean}`);
 
   return results;

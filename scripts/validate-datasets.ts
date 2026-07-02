@@ -1448,6 +1448,7 @@ const VALID_LANDSLIDE_STATUSES = new Set([
   "scored",
   "no-landslide-data",
   "ward-averaged",
+  "missing",
 ]);
 
 function validateLandslideJson(
@@ -1479,7 +1480,7 @@ function validateLandslideJson(
   stats["landslide.json件数"] = landslide.length;
 
   const statusCounts: Record<string, number> = {
-    scored: 0, "no-landslide-data": 0, "ward-averaged": 0,
+    scored: 0, "no-landslide-data": 0, "ward-averaged": 0, missing: 0,
   };
 
   for (const l of landslide) {
@@ -1508,13 +1509,17 @@ function validateLandslideJson(
     statusCounts[status] = (statusCounts[status] ?? 0) + 1;
 
     const candidate = l["landslideRiskCandidate"];
-    if (
-      typeof candidate !== "number" ||
-      !Number.isInteger(candidate) ||
-      candidate < 10 ||
-      candidate > 90
-    ) {
-      errors.push(`[${id}] landslideRiskCandidate が無効 (10〜90 整数必須): ${candidate}`);
+    if (status !== "missing") {
+      if (
+        typeof candidate !== "number" ||
+        !Number.isInteger(candidate) ||
+        candidate < 10 ||
+        candidate > 90
+      ) {
+        errors.push(`[${id}] landslideRiskCandidate が無効 (10〜90 整数必須): ${candidate}`);
+      }
+    } else if (candidate !== null) {
+      errors.push(`[${id}] missing の landslideRiskCandidate は null 必須: ${candidate}`);
     }
 
     if (status === "scored") {
@@ -1537,6 +1542,7 @@ function validateLandslideJson(
   stats["landslide.json.scored件数"]           = statusCounts.scored;
   stats["landslide.json.no-landslide-data件数"] = statusCounts["no-landslide-data"];
   stats["landslide.json.ward-averaged件数"]     = statusCounts["ward-averaged"];
+  stats["landslide.json.missing件数"]           = statusCounts.missing;
 
   return { errors, warnings, stats };
 }
