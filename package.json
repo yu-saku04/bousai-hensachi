@@ -46,7 +46,13 @@
     "fetch:landslide:all": ".venv-flood/bin/python scripts/fetchers/fetch-nlftp-landslide.py --all-prefs --download",
     "score:landslide-v1:all": ".venv-flood/bin/python scripts/scoring/score-landslide-v1-all.py --output data/processed/landslide-scores.json",
     "score:landslide-v1:merge": ".venv-flood/bin/python scripts/scoring/score-landslide-v1-all.py --merge-only --output data/processed/landslide-scores.json",
-    "import:landslide": "tsx scripts/importers/import-landslide.ts"
+    "import:landslide": "tsx scripts/importers/import-landslide.ts",
+    "fetch:tsunami": ".venv-flood/bin/python scripts/fetchers/fetch-nlftp-tsunami.py --download",
+    "fetch:tsunami:all": ".venv-flood/bin/python scripts/fetchers/fetch-nlftp-tsunami.py --all-prefs --download",
+    "score:tsunami-v1": ".venv-flood/bin/python scripts/scoring/score-tsunami-v1.py --pref 08 --output data/processed/tsunami-sample-08.json",
+    "score:tsunami-v1:all": ".venv-flood/bin/python scripts/scoring/score-tsunami-v1-all.py --output data/processed/tsunami-scores.json",
+    "score:tsunami-v1:merge": ".venv-flood/bin/python scripts/scoring/score-tsunami-v1-all.py --merge-only --output data/processed/tsunami-scores.json",
+    "import:tsunami": "tsx scripts/importers/import-tsunami.ts"
   },
   "dependencies": {
     "next": "16.2.6",

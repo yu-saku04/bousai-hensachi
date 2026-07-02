@@ -1548,6 +1548,114 @@ function validateLandslideJson(
 }
 
 // -------------------------------------------------------
+// tsunami.json スキーマ検証（calculationVersion を含む中間データ）
+// -------------------------------------------------------
+
+const VALID_TSUNAMI_JSON_STATUSES = new Set([
+  "scored", "no-tsunami-data", "no-tsunami-risk", "ward-averaged", "missing",
+]);
+
+function validateTsunamiJson(
+  tsunamiPath: string,
+): { errors: string[]; warnings: string[]; stats: Record<string, number | string> } {
+  const errors:   string[] = [];
+  const warnings: string[] = [];
+  const stats: Record<string, number | string> = {};
+
+  if (!fs.existsSync(tsunamiPath)) {
+    warnings.push(
+      `tsunami.json が存在しません（スキップ）: ${tsunamiPath}` +
+      ` (npm run import:tsunami を実行してください)`,
+    );
+    return { errors, warnings, stats };
+  }
+
+  let tsunami: Array<Record<string, unknown>>;
+  try {
+    tsunami = JSON.parse(fs.readFileSync(tsunamiPath, "utf-8"));
+  } catch {
+    return { errors: [`tsunami.json JSON parse 失敗: ${tsunamiPath}`], warnings: [], stats: {} };
+  }
+
+  if (!Array.isArray(tsunami)) {
+    return { errors: [`tsunami.json は配列である必要があります: ${tsunamiPath}`], warnings: [], stats: {} };
+  }
+
+  stats["tsunami.json件数"] = tsunami.length;
+
+  const statusCounts: Record<string, number> = {
+    scored: 0, "no-tsunami-data": 0, "no-tsunami-risk": 0, "ward-averaged": 0, missing: 0,
+  };
+
+  for (const t of tsunami) {
+    const id = `${t["jisCode"] ?? "unknown"}`;
+
+    if (typeof t["jisCode"] !== "string" || !JIS_RE.test(t["jisCode"] as string)) {
+      errors.push(`[${id}] jisCode が無効 (5桁数字必須): ${t["jisCode"]}`);
+    }
+
+    if (t["calculationVersion"] !== "tsunami-v1") {
+      errors.push(`[${id}] calculationVersion は tsunami-v1 である必要があります (${t["calculationVersion"]})`);
+    }
+
+    const tsunUpdatedAt = t["tsunamiUpdatedAt"];
+    if (typeof tsunUpdatedAt !== "string" || (tsunUpdatedAt as string).trim() === "") {
+      errors.push(`[${id}] tsunamiUpdatedAt が未設定または空 (全エントリ必須): ${tsunUpdatedAt}`);
+    }
+
+    const status = t["tsunamiDataStatus"];
+    if (typeof status !== "string" || !VALID_TSUNAMI_JSON_STATUSES.has(status)) {
+      errors.push(
+        `[${id}] tsunamiDataStatus が無効 (${[...VALID_TSUNAMI_JSON_STATUSES].join("|")} 必須): ${status}`,
+      );
+      continue;
+    }
+    statusCounts[status] = (statusCounts[status] ?? 0) + 1;
+
+    const candidate = t["tsunamiRiskCandidate"];
+    if (status !== "missing") {
+      if (
+        typeof candidate !== "number" ||
+        !Number.isInteger(candidate) ||
+        candidate < 10 ||
+        candidate > 100
+      ) {
+        errors.push(`[${id}] tsunamiRiskCandidate が無効 (10〜100 整数必須): ${candidate}`);
+      }
+    } else if (candidate !== null) {
+      errors.push(`[${id}] missing の tsunamiRiskCandidate は null 必須: ${candidate}`);
+    }
+
+    if (status === "no-tsunami-risk" && candidate !== 100) {
+      errors.push(`[${id}] no-tsunami-risk の tsunamiRiskCandidate は 100 必須: ${candidate}`);
+    }
+    if (status === "no-tsunami-data" && candidate !== 90) {
+      errors.push(`[${id}] no-tsunami-data の tsunamiRiskCandidate は 90 必須: ${candidate}`);
+    }
+
+    if (status === "scored") {
+      const areaRatio = t["tsunamiAreaRatio"];
+      if (
+        typeof areaRatio !== "number" ||
+        !Number.isFinite(areaRatio) ||
+        areaRatio < 0 ||
+        areaRatio > 1
+      ) {
+        errors.push(`[${id}] scored の tsunamiAreaRatio が無効 (0.0〜1.0 必須): ${areaRatio}`);
+      }
+    }
+  }
+
+  stats["tsunami.json.scored件数"]          = statusCounts.scored;
+  stats["tsunami.json.no-tsunami-data件数"] = statusCounts["no-tsunami-data"];
+  stats["tsunami.json.no-tsunami-risk件数"] = statusCounts["no-tsunami-risk"];
+  stats["tsunami.json.ward-averaged件数"]   = statusCounts["ward-averaged"];
+  stats["tsunami.json.missing件数"]         = statusCounts.missing;
+
+  return { errors, warnings, stats };
+}
+
+// -------------------------------------------------------
 // flood-v1 フィールド検証
 // -------------------------------------------------------
 
@@ -1680,7 +1788,7 @@ function validateFloodV1(
       v2Count++;
     }
 
-    if (m["overallScoreV2Version"] !== "v2.2-ready") {
+    if (m["overallScoreV2Version"] !== "v2.3-ready") {
       errors.push(
         `[${id}] overallScoreV2Version が無効 ("v2.2-ready" 必須): ${m["overallScoreV2Version"]}`,
       );
@@ -1693,7 +1801,7 @@ function validateFloodV1(
   stats["flood.no-flood-data件数"]  = statusCounts["no-flood-data"] ?? 0;
   stats["flood.ward-averaged件数"]  = statusCounts["ward-averaged"] ?? 0;
   stats["flood.missing件数"]        = statusCounts.missing ?? 0;
-  stats["overallScoreV2.v2.2-ready件数"] = v2Count;
+  stats["overallScoreV2.v2.3-ready件数"] = v2Count;
 
   if (candidateCount !== EXPECTED_FLOOD_COUNTS.total) {
     errors.push(
@@ -1805,6 +1913,88 @@ function validateLandslideV1(
     stats["landslideRiskCandidate最小"] = Math.min(...candidateVals);
     stats["landslideRiskCandidate最大"] = Math.max(...candidateVals);
     stats["landslideRiskCandidate平均"] = Math.round(
+      candidateVals.reduce((s, v) => s + v, 0) / candidateVals.length,
+    );
+  }
+
+  return { errors, warnings, stats };
+}
+
+// -------------------------------------------------------
+// tsunami-v1 フィールド検証（municipalities.json）
+// -------------------------------------------------------
+
+const VALID_TSUNAMI_STATUSES = new Set([
+  "scored", "no-tsunami-data", "no-tsunami-risk", "ward-averaged", "missing",
+]);
+
+function validateTsunamiV1(
+  data: Municipality[],
+): { errors: string[]; warnings: string[]; stats: Record<string, number | string> } {
+  const errors:   string[] = [];
+  const warnings: string[] = [];
+  const stats: Record<string, number | string> = {};
+
+  const withTsunami = data.filter((m) => m["tsunamiRiskCandidate"] !== undefined);
+  if (withTsunami.length === 0) {
+    warnings.push(
+      "tsunamiRiskCandidate フィールド未投入 (npm run import:tsunami を実行してください)",
+    );
+    return { errors, warnings, stats };
+  }
+
+  stats["tsunami投入件数"] = withTsunami.length;
+
+  const statusCounts: Record<string, number> = {
+    scored: 0, "no-tsunami-data": 0, "no-tsunami-risk": 0, "ward-averaged": 0, missing: 0,
+  };
+  const candidateVals: number[] = [];
+  let sourceCount = 0;
+
+  for (const m of data) {
+    const id = String(m["jisCode"] ?? m["id"] ?? "unknown");
+    const candidate = m["tsunamiRiskCandidate"];
+    if (candidate === undefined) continue;
+
+    if (
+      typeof candidate !== "number" ||
+      !Number.isInteger(candidate) ||
+      candidate < 10 ||
+      candidate > 100
+    ) {
+      if (candidate !== null) {
+        errors.push(`[${id}] tsunamiRiskCandidate が無効 (10〜100 整数または null 必須): ${candidate}`);
+      }
+    } else {
+      candidateVals.push(candidate);
+    }
+
+    const status = m["tsunamiDataStatus"];
+    if (typeof status === "string" && VALID_TSUNAMI_STATUSES.has(status)) {
+      statusCounts[status] = (statusCounts[status] ?? 0) + 1;
+      const source = m["tsunamiSource"];
+      if (typeof source === "string" && source.trim() !== "") {
+        sourceCount++;
+      }
+    } else {
+      errors.push(
+        `[${id}] tsunamiDataStatus が無効 ` +
+        `(scored|no-tsunami-data|no-tsunami-risk|ward-averaged|missing 必須): ${status}`,
+      );
+    }
+  }
+
+  stats["tsunami.scored件数"]          = statusCounts.scored;
+  stats["tsunami.no-tsunami-data件数"] = statusCounts["no-tsunami-data"];
+  stats["tsunami.no-tsunami-risk件数"] = statusCounts["no-tsunami-risk"];
+  stats["tsunami.ward-averaged件数"]   = statusCounts["ward-averaged"];
+  stats["tsunami.missing件数"]         = statusCounts.missing;
+  stats["tsunamiSource件数"]           = sourceCount;
+
+  if (candidateVals.length > 0) {
+    stats["tsunamiRiskCandidate最小"] = Math.min(...candidateVals);
+    stats["tsunamiRiskCandidate最大"] = Math.max(...candidateVals);
+    stats["tsunamiRiskCandidate平均"] = Math.round(
       candidateVals.reduce((s, v) => s + v, 0) / candidateVals.length,
     );
   }
@@ -2253,6 +2443,18 @@ function validateDatasets(inputPath: string, strictMode = false, sheltersPath?: 
   errors.push(...landslideValidation.errors);
   warnings.push(...landslideValidation.warnings);
   Object.assign(stats, landslideValidation.stats);
+
+  // 21. tsunami.json スキーマ検証（calculationVersion ゲート）
+  const tsunamiJsonValidation = validateTsunamiJson("data/processed/tsunami.json");
+  errors.push(...tsunamiJsonValidation.errors);
+  warnings.push(...tsunamiJsonValidation.warnings);
+  Object.assign(stats, tsunamiJsonValidation.stats);
+
+  // 21b. tsunami-v1 フィールド検証（municipalities.json）
+  const tsunamiValidation = validateTsunamiV1(data);
+  errors.push(...tsunamiValidation.errors);
+  warnings.push(...tsunamiValidation.warnings);
+  Object.assign(stats, tsunamiValidation.stats);
 
   // 19. overallScoreV2 検証（dry-run）
   const v2Validation = validateOverallScoreV2(data);

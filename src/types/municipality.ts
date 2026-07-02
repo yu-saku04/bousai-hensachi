@@ -85,7 +85,14 @@ export interface Municipality {
   landslideSpecialAreaRatio?: number | null;
   landslideSource?: string;
   landslideUpdatedAt?: string;
-  // overallScoreV2 (v2.2-ready = earthquake + flood + landslide when available)
+  // tsunami-v1
+  tsunamiRiskCandidate?: number | null;
+  tsunamiDataStatus?: "scored" | "no-tsunami-data" | "no-tsunami-risk" | "ward-averaged" | "missing";
+  tsunamiAreaRatio?: number | null;
+  tsunamiMaxDepthM?: number | null;
+  tsunamiSource?: string;
+  tsunamiUpdatedAt?: string;
+  // overallScoreV2 (v2.3-ready = earthquake + flood + landslide + tsunami when available)
   overallScoreV2?: number | null;
   overallScoreV2Version?: string;
 }

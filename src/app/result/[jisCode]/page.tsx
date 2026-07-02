@@ -112,6 +112,10 @@ function buildAiAdviceComment(data: Municipality): string {
     sentences.push("土砂災害への備えを優先してください。");
   }
 
+  if (typeof data.tsunamiRiskCandidate === "number" && clampScore(data.tsunamiRiskCandidate) <= 40) {
+    sentences.push("津波への備えを優先してください。");
+  }
+
   const shelterVal =
     typeof data.shelterScore === "number"
       ? data.shelterScore
@@ -150,6 +154,23 @@ function getLandslideStatusLabel(status: Municipality["landslideDataStatus"]): s
 
 function formatLandslideAreaRatio(value: Municipality["landslideAreaRatio"]): string {
   return typeof value === "number" ? `${(value * 100).toFixed(1)}%` : "未算出";
+}
+
+function getTsunamiStatusLabel(status: Municipality["tsunamiDataStatus"]): string {
+  switch (status) {
+    case "scored":
+      return "津波リスク算出済み";
+    case "no-tsunami-data":
+      return "津波浸水想定区域データなし";
+    case "no-tsunami-risk":
+      return "内陸県（津波リスクなし）";
+    case "ward-averaged":
+      return "行政区データから市全体を平均";
+    case "missing":
+      return "津波データ未取得";
+    default:
+      return "未算出";
+  }
 }
 
 function getFloodStatusLabel(status: Municipality["floodDataStatus"]): string {
@@ -259,6 +280,7 @@ export default async function ResultPage({ params }: PageProps) {
   const levelLabel = getScoreLevelLabel(score);
   const floodStatusLabel     = getFloodStatusLabel(data.floodDataStatus);
   const landslideStatusLabel = getLandslideStatusLabel(data.landslideDataStatus);
+  const tsunamiStatusLabel   = getTsunamiStatusLabel(data.tsunamiDataStatus);
   const overallRanking = calculateRank(data, getAllMunicipalities());
   const shelterRadarScore =
     typeof data.shelterScore === "number"
@@ -270,6 +292,7 @@ export default async function ResultPage({ params }: PageProps) {
     { label: "地震", value: getOptionalScore(data.earthquakeRisk) },
     { label: "洪水", value: getOptionalScore(data.floodRiskCandidate) },
     { label: "土砂", value: getOptionalScore(data.landslideRiskCandidate) },
+    { label: "津波", value: getOptionalScore(data.tsunamiRiskCandidate) },
     { label: "避難所", value: getOptionalScore(shelterRadarScore) },
     { label: "高齢化", value: getOptionalScore(data.agingRisk) },
     { label: "世帯", value: getOptionalScore(data.householdRisk) },
@@ -573,6 +596,47 @@ export default async function ResultPage({ params }: PageProps) {
                   <div>
                     <p className="text-gray-400">特別警戒区域比</p>
                     <p className="font-medium text-gray-700 tabular-nums">{formatLandslideAreaRatio(data.landslideSpecialAreaRatio)}</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-400">スコア方向</p>
+                    <p className="font-medium text-gray-700">高いほど安全</p>
+                  </div>
+                </div>
+              </div>
+              <div className="rounded-xl bg-gray-50 px-3 py-3 space-y-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-base" aria-hidden="true">🌊</span>
+                  <span className="text-xs text-gray-600 flex-1">津波リスク</span>
+                  {typeof data.tsunamiRiskCandidate === "number" ? (
+                    <span className={`text-sm font-bold tabular-nums ${getScoreLevelColor(clampScore(data.tsunamiRiskCandidate))}`}>
+                      {clampScore(data.tsunamiRiskCandidate)}
+                    </span>
+                  ) : (
+                    <span className="text-xs text-gray-400">未算出</span>
+                  )}
+                </div>
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  <div>
+                    <p className="text-gray-400">データ状態</p>
+                    <p className="font-medium text-gray-700 leading-snug">{tsunamiStatusLabel}</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-400">浸水面積比率</p>
+                    <p className="font-medium text-gray-700 tabular-nums">
+                      {typeof data.tsunamiAreaRatio === "number"
+                        ? `${(data.tsunamiAreaRatio * 100).toFixed(1)}%`
+                        : "未算出"}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-gray-400">最大浸水深下限</p>
+                    <p className="font-medium text-gray-700 tabular-nums">
+                      {typeof data.tsunamiMaxDepthM === "number" && data.tsunamiMaxDepthM > 0
+                        ? `${data.tsunamiMaxDepthM}m以上`
+                        : typeof data.tsunamiMaxDepthM === "number"
+                        ? "0.3m未満"
+                        : "未算出"}
+                    </p>
                   </div>
                   <div>
                     <p className="text-gray-400">スコア方向</p>
