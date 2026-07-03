@@ -58,6 +58,9 @@ data/processed/landslide/
 data/processed/landslide-scores.json
 data/processed/landslide-sample-*.json
 
+# Tsunami raw ZIP data
+data/raw/tsunami/A40/*.zip
+
 # vercel
 .vercel
 
