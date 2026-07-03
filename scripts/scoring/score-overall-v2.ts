@@ -4,7 +4,7 @@
  * 現行 overallScore は変更せず、新しい overallScoreV2 を試算する。
  *
  * カテゴリ（全て 0〜100 スケール、高いほど安全）:
- *   Hazard              (weight 0.40): nullSafeMean(earthquakeRisk, floodRiskCandidate, landslideRiskCandidate)
+ *   Hazard              (weight 0.40): nullSafeMean(earthquakeRisk, floodRiskCandidate, landslideRiskCandidate, tsunamiRiskCandidate)
  *   Infrastructure      (weight 0.30): shelterScore (shelter-sufficiency-v1) ?? shelterCapacity
  *   Social Vulnerability (weight 0.30): mean(agingRisk, householdRisk)
  *   Accessibility       (weight 0.00): 将来追加
@@ -107,8 +107,8 @@ export function computeOverallScoreV2(m: MunicipalityRow): {
   score: number | null;
   breakdown: CategoryBreakdown;
 } {
-  // Hazard: null-safe mean(earthquakeRisk, floodRiskCandidate, landslideRiskCandidate, tsunamiRiskCandidate)
-  // 四指標均等。null の場合は残りの指標のみで算出。
+  // Hazard: earthquakeRisk, floodRiskCandidate, landslideRiskCandidate, tsunamiRiskCandidate の四指標均等。
+  // null の場合は残りの指標のみで算出。
   const hazardScore = nullSafeMean([m.earthquakeRisk, m.floodRiskCandidate, m.landslideRiskCandidate, m.tsunamiRiskCandidate]);
 
   // Infrastructure: shelterScore (shelter-sufficiency-v1) → shelterCapacity (fallback)

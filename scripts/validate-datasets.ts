@@ -1617,10 +1617,10 @@ function validateTsunamiJson(
       if (
         typeof candidate !== "number" ||
         !Number.isInteger(candidate) ||
-        candidate < 10 ||
+        candidate < 0 ||
         candidate > 100
       ) {
-        errors.push(`[${id}] tsunamiRiskCandidate が無効 (10〜100 整数必須): ${candidate}`);
+        errors.push(`[${id}] tsunamiRiskCandidate が無効 (0〜100 整数必須): ${candidate}`);
       }
     } else if (candidate !== null) {
       errors.push(`[${id}] missing の tsunamiRiskCandidate は null 必須: ${candidate}`);
@@ -1629,8 +1629,8 @@ function validateTsunamiJson(
     if (status === "no-tsunami-risk" && candidate !== 100) {
       errors.push(`[${id}] no-tsunami-risk の tsunamiRiskCandidate は 100 必須: ${candidate}`);
     }
-    if (status === "no-tsunami-data" && candidate !== 90) {
-      errors.push(`[${id}] no-tsunami-data の tsunamiRiskCandidate は 90 必須: ${candidate}`);
+    if (status === "no-tsunami-data" && candidate !== 90 && candidate !== 100) {
+      errors.push(`[${id}] no-tsunami-data の tsunamiRiskCandidate は 90 または 100 必須: ${candidate}`);
     }
 
     if (status === "scored") {
@@ -1959,11 +1959,11 @@ function validateTsunamiV1(
     if (
       typeof candidate !== "number" ||
       !Number.isInteger(candidate) ||
-      candidate < 10 ||
+      candidate < 0 ||
       candidate > 100
     ) {
       if (candidate !== null) {
-        errors.push(`[${id}] tsunamiRiskCandidate が無効 (10〜100 整数または null 必須): ${candidate}`);
+        errors.push(`[${id}] tsunamiRiskCandidate が無効 (0〜100 整数または null 必須): ${candidate}`);
       }
     } else {
       candidateVals.push(candidate);

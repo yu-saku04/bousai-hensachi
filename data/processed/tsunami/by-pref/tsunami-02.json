@@ -8,19 +8,19 @@
     "tsunamiAreaRatio": 0.006009,
     "tsunamiMaxDepthM": 2.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "02202",
     "prefecture": "青森県",
     "municipality": "弘前市",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -32,19 +32,19 @@
     "tsunamiAreaRatio": 0.130946,
     "tsunamiMaxDepthM": 20.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "02204",
     "prefecture": "青森県",
     "municipality": "黒石市",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -56,19 +56,19 @@
     "tsunamiAreaRatio": 0.014303,
     "tsunamiMaxDepthM": 5.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "02206",
     "prefecture": "青森県",
     "municipality": "十和田市",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -80,7 +80,7 @@
     "tsunamiAreaRatio": 0.31214,
     "tsunamiMaxDepthM": 10.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -92,7 +92,7 @@
     "tsunamiAreaRatio": 0.006667,
     "tsunamiMaxDepthM": 10.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -104,19 +104,19 @@
     "tsunamiAreaRatio": 0.010746,
     "tsunamiMaxDepthM": 10.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "02210",
     "prefecture": "青森県",
     "municipality": "平川市",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -128,7 +128,7 @@
     "tsunamiAreaRatio": 0.006218,
     "tsunamiMaxDepthM": 2.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -140,7 +140,7 @@
     "tsunamiAreaRatio": 0.004167,
     "tsunamiMaxDepthM": 2.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -152,7 +152,7 @@
     "tsunamiAreaRatio": 0.00759,
     "tsunamiMaxDepthM": 2.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -164,7 +164,7 @@
     "tsunamiAreaRatio": 0.005074,
     "tsunamiMaxDepthM": 10.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -176,7 +176,7 @@
     "tsunamiAreaRatio": 0.007348,
     "tsunamiMaxDepthM": 10.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -188,79 +188,79 @@
     "tsunamiAreaRatio": 0.017238,
     "tsunamiMaxDepthM": 20.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "02343",
     "prefecture": "青森県",
     "municipality": "西目屋村",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "02361",
     "prefecture": "青森県",
     "municipality": "藤崎町",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "02362",
     "prefecture": "青森県",
     "municipality": "大鰐町",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "02367",
     "prefecture": "青森県",
     "municipality": "田舎館村",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "02381",
     "prefecture": "青森県",
     "municipality": "板柳町",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "02384",
     "prefecture": "青森県",
     "municipality": "鶴田町",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -272,7 +272,7 @@
     "tsunamiAreaRatio": 0.018868,
     "tsunamiMaxDepthM": 20.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -284,31 +284,31 @@
     "tsunamiAreaRatio": 0.004274,
     "tsunamiMaxDepthM": 1.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "02402",
     "prefecture": "青森県",
     "municipality": "七戸町",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "02405",
     "prefecture": "青森県",
     "municipality": "六戸町",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -320,7 +320,7 @@
     "tsunamiAreaRatio": 0.003064,
     "tsunamiMaxDepthM": 2.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -332,7 +332,7 @@
     "tsunamiAreaRatio": 8e-05,
     "tsunamiMaxDepthM": 1.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -344,7 +344,7 @@
     "tsunamiAreaRatio": 0.086886,
     "tsunamiMaxDepthM": 10.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -356,7 +356,7 @@
     "tsunamiAreaRatio": 0.183704,
     "tsunamiMaxDepthM": 20.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -368,7 +368,7 @@
     "tsunamiAreaRatio": 0.019403,
     "tsunamiMaxDepthM": 5.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -380,7 +380,7 @@
     "tsunamiAreaRatio": 0.057318,
     "tsunamiMaxDepthM": 10.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -392,7 +392,7 @@
     "tsunamiAreaRatio": 0.017912,
     "tsunamiMaxDepthM": 10.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -404,19 +404,19 @@
     "tsunamiAreaRatio": 0.003329,
     "tsunamiMaxDepthM": 5.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "02441",
     "prefecture": "青森県",
     "municipality": "三戸町",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -428,19 +428,19 @@
     "tsunamiAreaRatio": 8e-06,
     "tsunamiMaxDepthM": 0.3,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "02443",
     "prefecture": "青森県",
     "municipality": "田子町",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -452,7 +452,7 @@
     "tsunamiAreaRatio": 0.00025,
     "tsunamiMaxDepthM": 2.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -464,19 +464,19 @@
     "tsunamiAreaRatio": 0.017788,
     "tsunamiMaxDepthM": 20.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "02450",
     "prefecture": "青森県",
     "municipality": "新郷村",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   }
 ]

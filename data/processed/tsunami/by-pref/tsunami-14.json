@@ -8,7 +8,7 @@
     "tsunamiAreaRatio": 0.451642,
     "tsunamiMaxDepthM": 5.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -20,7 +20,7 @@
     "tsunamiAreaRatio": 0.184143,
     "tsunamiMaxDepthM": 5.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -32,7 +32,7 @@
     "tsunamiAreaRatio": 0.381354,
     "tsunamiMaxDepthM": 5.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -44,7 +44,7 @@
     "tsunamiAreaRatio": 0.561266,
     "tsunamiMaxDepthM": 5.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -56,7 +56,7 @@
     "tsunamiAreaRatio": 0.103754,
     "tsunamiMaxDepthM": 3.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -68,7 +68,7 @@
     "tsunamiAreaRatio": 0.0101,
     "tsunamiMaxDepthM": 4.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -80,7 +80,7 @@
     "tsunamiAreaRatio": 0.270271,
     "tsunamiMaxDepthM": 5.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -92,127 +92,127 @@
     "tsunamiAreaRatio": 0.305209,
     "tsunamiMaxDepthM": 5.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "14109",
     "prefecture": "神奈川県",
     "municipality": "横浜市",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "14110",
     "prefecture": "神奈川県",
     "municipality": "横浜市",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "14111",
     "prefecture": "神奈川県",
     "municipality": "横浜市",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "14112",
     "prefecture": "神奈川県",
     "municipality": "横浜市",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "14113",
     "prefecture": "神奈川県",
     "municipality": "横浜市",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "14114",
     "prefecture": "神奈川県",
     "municipality": "横浜市",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "14115",
     "prefecture": "神奈川県",
     "municipality": "横浜市",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "14116",
     "prefecture": "神奈川県",
     "municipality": "横浜市",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "14117",
     "prefecture": "神奈川県",
     "municipality": "横浜市",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "14118",
     "prefecture": "神奈川県",
     "municipality": "横浜市",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -224,7 +224,7 @@
     "tsunamiAreaRatio": 0.808725,
     "tsunamiMaxDepthM": 5.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -236,103 +236,103 @@
     "tsunamiAreaRatio": 0.080908,
     "tsunamiMaxDepthM": 4.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "14133",
     "prefecture": "神奈川県",
     "municipality": "川崎市",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "14134",
     "prefecture": "神奈川県",
     "municipality": "川崎市",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "14135",
     "prefecture": "神奈川県",
     "municipality": "川崎市",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "14136",
     "prefecture": "神奈川県",
     "municipality": "川崎市",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "14137",
     "prefecture": "神奈川県",
     "municipality": "川崎市",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "14151",
     "prefecture": "神奈川県",
     "municipality": "相模原市",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "14152",
     "prefecture": "神奈川県",
     "municipality": "相模原市",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "14153",
     "prefecture": "神奈川県",
     "municipality": "相模原市",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -344,7 +344,7 @@
     "tsunamiAreaRatio": 0.204824,
     "tsunamiMaxDepthM": 10.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -356,7 +356,7 @@
     "tsunamiAreaRatio": 0.029737,
     "tsunamiMaxDepthM": 5.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -368,7 +368,7 @@
     "tsunamiAreaRatio": 0.075521,
     "tsunamiMaxDepthM": 10.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -380,7 +380,7 @@
     "tsunamiAreaRatio": 0.068625,
     "tsunamiMaxDepthM": 10.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -392,7 +392,7 @@
     "tsunamiAreaRatio": 0.017014,
     "tsunamiMaxDepthM": 10.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -404,7 +404,7 @@
     "tsunamiAreaRatio": 0.115126,
     "tsunamiMaxDepthM": 5.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -416,7 +416,7 @@
     "tsunamiAreaRatio": 0.133426,
     "tsunamiMaxDepthM": 10.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -428,103 +428,103 @@
     "tsunamiAreaRatio": 0.193035,
     "tsunamiMaxDepthM": 20.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "14211",
     "prefecture": "神奈川県",
     "municipality": "秦野市",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "14212",
     "prefecture": "神奈川県",
     "municipality": "厚木市",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "14213",
     "prefecture": "神奈川県",
     "municipality": "大和市",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "14214",
     "prefecture": "神奈川県",
     "municipality": "伊勢原市",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "14215",
     "prefecture": "神奈川県",
     "municipality": "海老名市",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "14216",
     "prefecture": "神奈川県",
     "municipality": "座間市",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "14217",
     "prefecture": "神奈川県",
     "municipality": "南足柄市",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "14218",
     "prefecture": "神奈川県",
     "municipality": "綾瀬市",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -536,19 +536,19 @@
     "tsunamiAreaRatio": 0.059088,
     "tsunamiMaxDepthM": 10.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "14321",
     "prefecture": "神奈川県",
     "municipality": "寒川町",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -560,7 +560,7 @@
     "tsunamiAreaRatio": 0.100305,
     "tsunamiMaxDepthM": 10.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -572,79 +572,79 @@
     "tsunamiAreaRatio": 0.039001,
     "tsunamiMaxDepthM": 10.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "14361",
     "prefecture": "神奈川県",
     "municipality": "中井町",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "14362",
     "prefecture": "神奈川県",
     "municipality": "大井町",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "14363",
     "prefecture": "神奈川県",
     "municipality": "松田町",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "14364",
     "prefecture": "神奈川県",
     "municipality": "山北町",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "14366",
     "prefecture": "神奈川県",
     "municipality": "開成町",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "14382",
     "prefecture": "神奈川県",
     "municipality": "箱根町",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -656,7 +656,7 @@
     "tsunamiAreaRatio": 0.067693,
     "tsunamiMaxDepthM": 10.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -668,31 +668,31 @@
     "tsunamiAreaRatio": 0.013549,
     "tsunamiMaxDepthM": 10.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "14401",
     "prefecture": "神奈川県",
     "municipality": "愛川町",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "14402",
     "prefecture": "神奈川県",
     "municipality": "清川村",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   }
 ]

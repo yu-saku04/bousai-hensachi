@@ -8,7 +8,7 @@
     "tsunamiAreaRatio": 0.626724,
     "tsunamiMaxDepthM": 5.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -20,7 +20,7 @@
     "tsunamiAreaRatio": 0.037208,
     "tsunamiMaxDepthM": 5.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -32,7 +32,7 @@
     "tsunamiAreaRatio": 0.507208,
     "tsunamiMaxDepthM": 5.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -44,31 +44,31 @@
     "tsunamiAreaRatio": 0.244209,
     "tsunamiMaxDepthM": 4.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "34105",
     "prefecture": "広島県",
     "municipality": "広島市",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "34106",
     "prefecture": "広島県",
     "municipality": "広島市",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -80,7 +80,7 @@
     "tsunamiAreaRatio": 0.022645,
     "tsunamiMaxDepthM": 5.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -92,7 +92,7 @@
     "tsunamiAreaRatio": 0.012594,
     "tsunamiMaxDepthM": 3.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -104,7 +104,7 @@
     "tsunamiAreaRatio": 0.033935,
     "tsunamiMaxDepthM": 5.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -116,7 +116,7 @@
     "tsunamiAreaRatio": 0.035864,
     "tsunamiMaxDepthM": 4.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -128,7 +128,7 @@
     "tsunamiAreaRatio": 0.015155,
     "tsunamiMaxDepthM": 4.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -140,7 +140,7 @@
     "tsunamiAreaRatio": 0.041236,
     "tsunamiMaxDepthM": 5.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -152,43 +152,43 @@
     "tsunamiAreaRatio": 0.0647,
     "tsunamiMaxDepthM": 5.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "34208",
     "prefecture": "広島県",
     "municipality": "府中市",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "34209",
     "prefecture": "広島県",
     "municipality": "三次市",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "34210",
     "prefecture": "広島県",
     "municipality": "庄原市",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -200,7 +200,7 @@
     "tsunamiAreaRatio": 0.047654,
     "tsunamiMaxDepthM": 3.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -212,7 +212,7 @@
     "tsunamiAreaRatio": 0.001736,
     "tsunamiMaxDepthM": 3.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -224,19 +224,19 @@
     "tsunamiAreaRatio": 0.006877,
     "tsunamiMaxDepthM": 5.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "34214",
     "prefecture": "広島県",
     "municipality": "安芸高田市",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -248,7 +248,7 @@
     "tsunamiAreaRatio": 0.058173,
     "tsunamiMaxDepthM": 4.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -260,7 +260,7 @@
     "tsunamiAreaRatio": 0.065514,
     "tsunamiMaxDepthM": 3.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -272,19 +272,19 @@
     "tsunamiAreaRatio": 0.181038,
     "tsunamiMaxDepthM": 5.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "34307",
     "prefecture": "広島県",
     "municipality": "熊野町",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -296,31 +296,31 @@
     "tsunamiAreaRatio": 0.078651,
     "tsunamiMaxDepthM": 4.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "34368",
     "prefecture": "広島県",
     "municipality": "安芸太田町",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "34369",
     "prefecture": "広島県",
     "municipality": "北広島町",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -332,31 +332,31 @@
     "tsunamiAreaRatio": 0.056651,
     "tsunamiMaxDepthM": 4.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "34462",
     "prefecture": "広島県",
     "municipality": "世羅町",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "34545",
     "prefecture": "広島県",
     "municipality": "神石高原町",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   }
 ]

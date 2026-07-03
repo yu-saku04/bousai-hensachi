@@ -21,8 +21,8 @@ A40_003 浸水深テキスト例:
   depth_risk_from_lower(lower_m): 0/20/35/55/70/85/100
   score_candidate(area_ratio, max_depth_lower_m):
     combined = 0.6 * min(100, area_ratio*100) + 0.4 * drisk
-    → max(10, min(90, round(100 - combined)))
-  no-tsunami-data → 90, no-tsunami-risk → 100
+    → clamp(round(100 - combined), 0, 100)
+  no-tsunami-data → 100, no-tsunami-risk → 100
 
 使い方:
   .venv-flood/bin/python scripts/scoring/score-tsunami-v1-all.py
@@ -88,6 +88,7 @@ INLAND_PREFS = frozenset(["09", "10", "11", "19", "20", "25", "29"])
 
 VALID_STATUSES = frozenset([
     "scored", "no-tsunami-data", "no-tsunami-risk", "not-found", "not-processed",
+    "ward-averaged", "missing",
 ])
 JIS_DIGITS = frozenset("0123456789")
 
@@ -103,15 +104,31 @@ MUNI_JSON = Path("src/data/municipalities.json")
 # Depth parsing
 # ---------------------------------------------------------------------------
 
-_DEPTH_RE = re.compile(r"(\d+(?:\.\d+)?)\s*m以上")
+_DEPTH_LOWER_RE = re.compile(r"(?P<lower>\d+(?:\.\d+)?)\s*(?:m|メートル)?\s*以上")
+_DEPTH_EXACT_RE = re.compile(r"(?P<value>\d+(?:\.\d+)?)\s*(?:m|メートル)?")
 
 
-def parse_depth_lower_m(raw: str | None) -> float:
-    if not raw:
+def parse_tsunami_depth(raw: str | None) -> float:
+    if raw is None:
         return 0.0
     normalized = unicodedata.normalize("NFKC", str(raw)).strip()
-    m = _DEPTH_RE.search(normalized)
-    return float(m.group(1)) if m else 0.0
+    normalized = re.sub(r"\s+", "", normalized)
+    if normalized == "" or normalized.lower() in {"nan", "none", "null"} or normalized in {"-", "－", "—"}:
+        return 0.0
+
+    m = _DEPTH_LOWER_RE.search(normalized)
+    if m:
+        return float(m.group("lower"))
+
+    # 上限のみの階級（例: "0.3m未満"）は下限0mとして扱う。
+    if "未満" in normalized or "以下" in normalized:
+        return 0.0
+
+    m = _DEPTH_EXACT_RE.fullmatch(normalized)
+    return float(m.group("value")) if m else 0.0
+
+
+parse_depth_lower_m = parse_tsunami_depth
 
 
 # ---------------------------------------------------------------------------
@@ -134,11 +151,15 @@ def depth_risk_from_lower(lower_m: float) -> int:
     return 100
 
 
+def clamp(value: float, lower: float, upper: float) -> float:
+    return max(lower, min(upper, value))
+
+
 def score_candidate(area_ratio: float, max_depth_lower_m: float) -> int:
-    area_risk = min(100.0, area_ratio * 100.0)
+    area_risk = clamp(area_ratio * 100.0, 0.0, 100.0)
     drisk     = depth_risk_from_lower(max_depth_lower_m)
     combined  = 0.6 * area_risk + 0.4 * drisk
-    return max(10, min(90, round(100 - combined)))
+    return int(clamp(round(100.0 - combined), 0, 100))
 
 
 # ---------------------------------------------------------------------------
@@ -364,7 +385,7 @@ def compute_pref(pref: str) -> list[dict]:
     # A40_003 → 浸水深下限値
     if "A40_003" in a40.columns:
         a40 = a40.copy()
-        a40["depth_lower_m"] = a40["A40_003"].apply(parse_depth_lower_m)
+        a40["depth_lower_m"] = a40["A40_003"].apply(parse_tsunami_depth)
     else:
         a40 = a40.copy()
         a40["depth_lower_m"] = 0.0
@@ -418,7 +439,7 @@ def compute_pref(pref: str) -> list[dict]:
             cand   = score_candidate(float(r["tsunami_area_ratio"]), float(r["max_depth_lower_m"]))
             status = "scored"
         else:
-            cand   = 90
+            cand   = score_candidate(0.0, 0.0)
             status = "no-tsunami-data"
 
         rows.append(_make_row(

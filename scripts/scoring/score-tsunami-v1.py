@@ -14,7 +14,7 @@ score-tsunami-v1.py — A40×N03 空間結合 → tsunamiRiskCandidate 算出 (P
   score_candidate(area_ratio, max_depth_lower_m):
     area_risk = min(100, area_ratio * 100)
     combined  = 0.6 * area_risk + 0.4 * depth_risk_from_lower(max_depth_lower_m)
-    → max(10, min(90, round(100 - combined)))
+    → clamp(round(100 - combined), 0, 100)
 
 A40_003 浸水深フィールド（自由テキスト）:
   例: "0.3m以上1.0m未満", "10.0m以上", "0m以上0.3m未満", "0.3m以上", etc.
@@ -54,23 +54,43 @@ def find_a40_zip(pref: str) -> Path | None:
 # Depth parsing
 # ---------------------------------------------------------------------------
 
-_DEPTH_RE = re.compile(r"(\d+(?:\.\d+)?)\s*m以上")
+_DEPTH_LOWER_RE = re.compile(r"(?P<lower>\d+(?:\.\d+)?)\s*(?:m|メートル)?\s*以上")
+_DEPTH_EXACT_RE = re.compile(r"(?P<value>\d+(?:\.\d+)?)\s*(?:m|メートル)?")
 
 
-def parse_depth_lower_m(raw: str | None) -> float:
+def parse_tsunami_depth(raw: str | None) -> float:
     """A40_003 テキストから浸水深下限値 (m) を返す。解析不能 → 0.0。"""
-    if not raw:
+    if raw is None:
         return 0.0
     normalized = unicodedata.normalize("NFKC", str(raw)).strip()
-    m = _DEPTH_RE.search(normalized)
+    normalized = re.sub(r"\s+", "", normalized)
+    if normalized == "" or normalized.lower() in {"nan", "none", "null"} or normalized in {"-", "－", "—"}:
+        return 0.0
+
+    m = _DEPTH_LOWER_RE.search(normalized)
     if m:
-        return float(m.group(1))
+        return float(m.group("lower"))
+
+    # "0.3m未満" のような上限のみの階級は下限0mとして扱う。
+    if "未満" in normalized or "以下" in normalized:
+        return 0.0
+
+    # 念のため "3m" / "3.0メートル" / "3.0" のような単独値も扱う。
+    m = _DEPTH_EXACT_RE.fullmatch(normalized)
+    if m:
+        return float(m.group("value"))
     return 0.0
+
+
+parse_depth_lower_m = parse_tsunami_depth
 
 
 # ---------------------------------------------------------------------------
 # Score formula
 # ---------------------------------------------------------------------------
+
+def clamp(value: float, lower: float, upper: float) -> float:
+    return max(lower, min(upper, value))
 
 def depth_risk_from_lower(lower_m: float) -> int:
     if lower_m <= 0:
@@ -89,10 +109,10 @@ def depth_risk_from_lower(lower_m: float) -> int:
 
 
 def score_candidate(area_ratio: float, max_depth_lower_m: float) -> int:
-    area_risk = min(100.0, area_ratio * 100.0)
+    area_risk = clamp(area_ratio * 100.0, 0.0, 100.0)
     drisk     = depth_risk_from_lower(max_depth_lower_m)
     combined  = 0.6 * area_risk + 0.4 * drisk
-    return max(10, min(90, round(100 - combined)))
+    return int(clamp(round(100.0 - combined), 0, 100))
 
 
 # ---------------------------------------------------------------------------
@@ -158,7 +178,7 @@ def compute_tsunami_scores(a40_path: Path, n03_path: Path, log_depth_values: boo
         unique_vals = sorted(a40["A40_003"].dropna().unique().tolist(), key=str)
         print(f"\n--- A40_003 ユニーク値 ({len(unique_vals)}種) ---", flush=True)
         for v in unique_vals:
-            parsed = parse_depth_lower_m(str(v))
+            parsed = parse_tsunami_depth(str(v))
             print(f"  {v!r:40s} → {parsed} m (下限)", flush=True)
         print("", flush=True)
     elif log_depth_values:
@@ -174,7 +194,7 @@ def compute_tsunami_scores(a40_path: Path, n03_path: Path, log_depth_values: boo
     # A40_003 → 浸水深下限値
     if "A40_003" in a40.columns:
         a40 = a40.copy()
-        a40["depth_lower_m"] = a40["A40_003"].apply(parse_depth_lower_m)
+        a40["depth_lower_m"] = a40["A40_003"].apply(parse_tsunami_depth)
     else:
         a40 = a40.copy()
         a40["depth_lower_m"] = 0.0
@@ -228,7 +248,7 @@ def compute_tsunami_scores(a40_path: Path, n03_path: Path, log_depth_values: boo
         has_tsunami = r["max_depth_lower_m"] > 0 or r["tsunami_poly_count"] > 0
         candidate = score_candidate(float(r["tsunami_area_ratio"]), float(r["max_depth_lower_m"]))
         if not has_tsunami:
-            candidate = 90
+            candidate = score_candidate(0.0, 0.0)
         rows.append({
             "jisCode":               r[jis_col],
             "prefecture":            r.get("prefecture", ""),
@@ -252,7 +272,10 @@ def compute_tsunami_scores(a40_path: Path, n03_path: Path, log_depth_values: boo
 
 JIS_DIGITS = frozenset("0123456789")
 
-VALID_STATUSES = frozenset(["scored", "no-tsunami-data"])
+VALID_STATUSES = frozenset([
+    "scored", "no-tsunami-risk", "no-tsunami-data", "not-found",
+    "not-processed", "ward-averaged", "missing",
+])
 
 
 def validate(rows: list[dict]) -> list[str]:
@@ -270,8 +293,8 @@ def validate(rows: list[dict]) -> list[str]:
             seen[jis] = i
 
         cand = r.get("tsunamiRiskCandidate")
-        if not (isinstance(cand, int) and 10 <= cand <= 90):
-            errors.append(f"{tag} tsunamiRiskCandidate: 10〜90整数必須: {cand!r}")
+        if not (isinstance(cand, int) and 0 <= cand <= 100):
+            errors.append(f"{tag} tsunamiRiskCandidate: 0〜100整数必須: {cand!r}")
 
         ratio = r.get("tsunamiAreaRatio", -1)
         if not (0.0 <= ratio <= 1.0):
@@ -281,8 +304,8 @@ def validate(rows: list[dict]) -> list[str]:
         if status not in VALID_STATUSES:
             errors.append(f"{tag} tsunamiDataStatus: 不正な値: {status!r}")
 
-        if status == "no-tsunami-data" and cand != 90:
-            errors.append(f"{tag} no-tsunami-data の tsunamiRiskCandidate は 90 必須: {cand!r}")
+        if status == "no-tsunami-data" and cand != 100:
+            errors.append(f"{tag} no-tsunami-data の tsunamiRiskCandidate は 100 必須: {cand!r}")
 
         if r.get("calculationVersion") != CALC_VERSION:
             errors.append(f"{tag} calculationVersion: {CALC_VERSION!r} 必須")
