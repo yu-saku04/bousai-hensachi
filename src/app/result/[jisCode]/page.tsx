@@ -515,7 +515,7 @@ export default async function ResultPage({ params }: PageProps) {
           </section>
         )}
 
-        {/* 総合防災偏差値 v2.1 の内訳 */}
+        {/* 総合防災偏差値 v2.2 の内訳 */}
         {typeof data.overallScoreV2 === "number" && (
           <section className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm space-y-4">
             <div className="flex items-center gap-2">

@@ -4,7 +4,7 @@
  * 現行 overallScore は変更せず、新しい overallScoreV2 を試算する。
  *
  * カテゴリ（全て 0〜100 スケール、高いほど安全）:
- *   Hazard              (weight 0.40): nullSafeMean(earthquakeRisk, floodRiskCandidate, landslideRiskCandidate, tsunamiRiskCandidate)
+ *   Hazard              (weight 0.40): nullSafeMean(earthquakeRisk, floodRiskCandidate, landslideRiskCandidate)
  *   Infrastructure      (weight 0.30): shelterScore (shelter-sufficiency-v1) ?? shelterCapacity
  *   Social Vulnerability (weight 0.30): mean(agingRisk, householdRisk)
  *   Accessibility       (weight 0.00): 将来追加
@@ -25,7 +25,7 @@ import path from "node:path";
 // Constants
 // ---------------------------------------------------------------------------
 
-const CALCULATION_VERSION = "v2.3-ready" as const;
+const CALCULATION_VERSION = "v2.2" as const;
 
 const CATEGORY_WEIGHTS = {
   hazard:        0.40,

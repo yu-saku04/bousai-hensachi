@@ -567,13 +567,13 @@ npm run build
 
 ---
 
-## 全国防災偏差値 v2.1（overallScoreV2）
+## 全国防災偏差値 v2.2（overallScoreV2）
 
 ### 概要
 
-v2.1 は **ハザード・インフラ・社会脆弱性** の 3 軸を実データで算出する統合スコアです。
+v2.2 は **ハザード・インフラ・社会脆弱性** の 3 軸を実データで算出する統合スコアです。
 旧スコア（`overallScore`）は引き続き並走しており、ランキング・検索は旧スコア基準のままです。
-v2.1 の結果ページへの表示切り替えは完了済みです。
+v2.2 の結果ページへの表示切り替えは完了済みです。
 
 ### 対応データ（全 1,918 自治体）
 
@@ -581,6 +581,7 @@ v2.1 の結果ページへの表示切り替えは完了済みです。
 |---|---|---|---|
 | ハザード（40%） | 地震リスク | `earthquakeRisk` | 20% |
 | ハザード（40%） | 洪水リスク | `floodRiskCandidate` | 20% |
+| ハザード（40%） | 土砂災害リスク | `landslideRiskCandidate` | null-safe mean |
 | インフラ（30%） | 避難所充足度 | `shelterScore` / `shelterCapacity` | 30% |
 | 社会脆弱性（30%） | 高齢化リスク | `agingRisk` | 15% |
 | 社会脆弱性（30%） | 世帯脆弱リスク | `householdRisk` | 15% |
@@ -589,8 +590,7 @@ v2.1 の結果ページへの表示切り替えは完了済みです。
 
 ```
 overallScoreV2 = round(
-  earthquakeRisk    × 0.20 +
-  floodRiskCandidate × 0.20 +
+  hazardScore        × 0.40 +
   shelterScore      × 0.30 +
   agingRisk         × 0.15 +
   householdRisk     × 0.15
@@ -599,7 +599,8 @@ overallScoreV2 = round(
 
 - スコア範囲: 10〜90（整数）
 - 高いほど安全・余裕あり
-- `overallScoreV2Version === "v2.1"` を全自治体に付与
+- `hazardScore` は `earthquakeRisk` / `floodRiskCandidate` / `landslideRiskCandidate` の null-safe mean
+- `overallScoreV2Version === "v2.2"` を全自治体に付与
 - 算出ロジック: `scripts/scoring/score-overall-v2.ts`
 
 ### Flood ETL 再生成手順
