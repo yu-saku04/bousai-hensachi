@@ -161,16 +161,28 @@ function getTsunamiStatusLabel(status: Municipality["tsunamiDataStatus"]): strin
     case "scored":
       return "津波リスク算出済み";
     case "no-tsunami-data":
-      return "津波浸水想定区域データなし";
+      return "津波浸水想定区域なし";
     case "no-tsunami-risk":
-      return "内陸県（津波リスクなし）";
+      return "内陸県（津波リスク対象外）";
     case "ward-averaged":
       return "行政区データから市全体を平均";
     case "missing":
-      return "津波データ未取得";
+      return "津波データ未算出";
     default:
       return "未算出";
   }
+}
+
+function formatTsunamiMaxDepth(
+  status: Municipality["tsunamiDataStatus"],
+  value: Municipality["tsunamiMaxDepthM"],
+): string {
+  if (status === "no-tsunami-data") return "該当なし";
+  if (status === "no-tsunami-risk") return "対象外";
+  if (status === "missing") return "未算出";
+  if (status !== "scored" && status !== "ward-averaged") return "未算出";
+  if (typeof value !== "number") return "未算出";
+  return value > 0 ? `${value}m以上` : "0.3m未満";
 }
 
 function getFloodStatusLabel(status: Municipality["floodDataStatus"]): string {
@@ -515,7 +527,7 @@ export default async function ResultPage({ params }: PageProps) {
           </section>
         )}
 
-        {/* 総合防災偏差値 v2.2 の内訳 */}
+        {/* 総合防災偏差値 v2.3 の内訳 */}
         {typeof data.overallScoreV2 === "number" && (
           <section className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm space-y-4">
             <div className="flex items-center gap-2">
@@ -631,11 +643,7 @@ export default async function ResultPage({ params }: PageProps) {
                   <div>
                     <p className="text-gray-400">最大浸水深下限</p>
                     <p className="font-medium text-gray-700 tabular-nums">
-                      {typeof data.tsunamiMaxDepthM === "number" && data.tsunamiMaxDepthM > 0
-                        ? `${data.tsunamiMaxDepthM}m以上`
-                        : typeof data.tsunamiMaxDepthM === "number"
-                        ? "0.3m未満"
-                        : "未算出"}
+                      {formatTsunamiMaxDepth(data.tsunamiDataStatus, data.tsunamiMaxDepthM)}
                     </p>
                   </div>
                   <div>
@@ -643,6 +651,9 @@ export default async function ResultPage({ params }: PageProps) {
                     <p className="font-medium text-gray-700">高いほど安全</p>
                   </div>
                 </div>
+                <p className="text-[11px] leading-relaxed text-gray-500">
+                  津波スコアは国土数値情報A40を基に算出しています。データ未提供地域は津波項目を総合スコア計算から除外しています。
+                </p>
               </div>
             </div>
 

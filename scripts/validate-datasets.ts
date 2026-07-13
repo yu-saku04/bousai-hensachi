@@ -36,7 +36,7 @@
  *      - status 別: scored(maxDepthDanger 1〜5 / floodAreaRatio 0〜1)
  *                   no-flood-data(maxDepthDanger=0 / floodAreaRatio=0)
  *                   ward-averaged(floodRiskCandidate number / floodSource string)
- * 18b. flood-v1 フィールド検証（municipalities.json / overallScoreV2 v2.2）
+ * 18b. flood-v1 フィールド検証（municipalities.json / overallScoreV2 v2.3）
  *      - floodRiskCandidate 10〜90 整数（全自治体必須）
  *      - floodUpdatedAt 非空 string（全自治体必須）
  *      - 件数: scored=1429 / no-flood-data=469 / ward-averaged=20 / missing=0
@@ -1788,9 +1788,9 @@ function validateFloodV1(
       v2Count++;
     }
 
-    if (m["overallScoreV2Version"] !== "v2.2") {
+    if (m["overallScoreV2Version"] !== "v2.3") {
       errors.push(
-        `[${id}] overallScoreV2Version が無効 ("v2.2" 必須): ${m["overallScoreV2Version"]}`,
+        `[${id}] overallScoreV2Version が無効 ("v2.3" 必須): ${m["overallScoreV2Version"]}`,
       );
     }
   }
@@ -1801,7 +1801,7 @@ function validateFloodV1(
   stats["flood.no-flood-data件数"]  = statusCounts["no-flood-data"] ?? 0;
   stats["flood.ward-averaged件数"]  = statusCounts["ward-averaged"] ?? 0;
   stats["flood.missing件数"]        = statusCounts.missing ?? 0;
-  stats["overallScoreV2.v2.2件数"] = v2Count;
+  stats["overallScoreV2.v2.3件数"] = v2Count;
 
   if (candidateCount !== EXPECTED_FLOOD_COUNTS.total) {
     errors.push(
