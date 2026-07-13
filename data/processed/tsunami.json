@@ -15306,7 +15306,7 @@
     "tsunamiAreaRatio": 0.269999,
     "tsunamiMaxDepthM": 10,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -15316,7 +15316,7 @@
     "tsunamiAreaRatio": 0.253132,
     "tsunamiMaxDepthM": 10,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -15326,7 +15326,7 @@
     "tsunamiAreaRatio": 0.619535,
     "tsunamiMaxDepthM": 10,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -15336,77 +15336,77 @@
     "tsunamiAreaRatio": 0.145985,
     "tsunamiMaxDepthM": 10,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "36205",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "36206",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "36207",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "36208",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "36301",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "36302",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "36321",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -15416,27 +15416,27 @@
     "tsunamiAreaRatio": 0.000007,
     "tsunamiMaxDepthM": 0.3,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "36342",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "36368",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -15446,7 +15446,7 @@
     "tsunamiAreaRatio": 0.042764,
     "tsunamiMaxDepthM": 10,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -15456,7 +15456,7 @@
     "tsunamiAreaRatio": 0.035437,
     "tsunamiMaxDepthM": 10,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -15466,7 +15466,7 @@
     "tsunamiAreaRatio": 0.022322,
     "tsunamiMaxDepthM": 10,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -15476,7 +15476,7 @@
     "tsunamiAreaRatio": 0.787063,
     "tsunamiMaxDepthM": 10,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -15486,7 +15486,7 @@
     "tsunamiAreaRatio": 0.884205,
     "tsunamiMaxDepthM": 4,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -15496,17 +15496,17 @@
     "tsunamiAreaRatio": 0.090381,
     "tsunamiMaxDepthM": 3,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "36404",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 92,
     "tsunamiDataStatus": "scored",
     "tsunamiAreaRatio": 0.000003,
     "tsunamiMaxDepthM": 0.01,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -15516,27 +15516,27 @@
     "tsunamiAreaRatio": 0.000006,
     "tsunamiMaxDepthM": 0.3,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "36468",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "36489",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -15546,7 +15546,7 @@
     "tsunamiAreaRatio": null,
     "tsunamiMaxDepthM": null,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -15556,7 +15556,7 @@
     "tsunamiAreaRatio": null,
     "tsunamiMaxDepthM": null,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -15566,7 +15566,7 @@
     "tsunamiAreaRatio": null,
     "tsunamiMaxDepthM": null,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -15576,7 +15576,7 @@
     "tsunamiAreaRatio": null,
     "tsunamiMaxDepthM": null,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -15586,7 +15586,7 @@
     "tsunamiAreaRatio": null,
     "tsunamiMaxDepthM": null,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -15596,7 +15596,7 @@
     "tsunamiAreaRatio": null,
     "tsunamiMaxDepthM": null,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -15606,7 +15606,7 @@
     "tsunamiAreaRatio": null,
     "tsunamiMaxDepthM": null,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -15616,7 +15616,7 @@
     "tsunamiAreaRatio": null,
     "tsunamiMaxDepthM": null,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -15626,7 +15626,7 @@
     "tsunamiAreaRatio": null,
     "tsunamiMaxDepthM": null,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -15636,7 +15636,7 @@
     "tsunamiAreaRatio": null,
     "tsunamiMaxDepthM": null,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -15646,7 +15646,7 @@
     "tsunamiAreaRatio": null,
     "tsunamiMaxDepthM": null,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -15656,7 +15656,7 @@
     "tsunamiAreaRatio": null,
     "tsunamiMaxDepthM": null,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -15666,7 +15666,7 @@
     "tsunamiAreaRatio": null,
     "tsunamiMaxDepthM": null,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -15676,7 +15676,7 @@
     "tsunamiAreaRatio": null,
     "tsunamiMaxDepthM": null,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -15686,7 +15686,7 @@
     "tsunamiAreaRatio": null,
     "tsunamiMaxDepthM": null,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -15696,7 +15696,7 @@
     "tsunamiAreaRatio": null,
     "tsunamiMaxDepthM": null,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -15706,7 +15706,7 @@
     "tsunamiAreaRatio": null,
     "tsunamiMaxDepthM": null,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -15716,7 +15716,7 @@
     "tsunamiAreaRatio": 0.024085,
     "tsunamiMaxDepthM": 5,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -15726,7 +15726,7 @@
     "tsunamiAreaRatio": 0.033228,
     "tsunamiMaxDepthM": 4,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -15736,7 +15736,7 @@
     "tsunamiAreaRatio": 0.034789,
     "tsunamiMaxDepthM": 5,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -15746,7 +15746,7 @@
     "tsunamiAreaRatio": 0.035541,
     "tsunamiMaxDepthM": 5,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -15756,7 +15756,7 @@
     "tsunamiAreaRatio": 0.040622,
     "tsunamiMaxDepthM": 3,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -15766,7 +15766,7 @@
     "tsunamiAreaRatio": 0.065854,
     "tsunamiMaxDepthM": 4,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -15776,7 +15776,7 @@
     "tsunamiAreaRatio": 0.002124,
     "tsunamiMaxDepthM": 2,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -15786,7 +15786,7 @@
     "tsunamiAreaRatio": 0.014233,
     "tsunamiMaxDepthM": 2,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -15796,7 +15796,7 @@
     "tsunamiAreaRatio": 0.01493,
     "tsunamiMaxDepthM": 4,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -15806,17 +15806,17 @@
     "tsunamiAreaRatio": 0.006878,
     "tsunamiMaxDepthM": 5,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "38215",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -15826,17 +15826,17 @@
     "tsunamiAreaRatio": 0.042205,
     "tsunamiMaxDepthM": 4,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "38386",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -15846,27 +15846,27 @@
     "tsunamiAreaRatio": 0.238718,
     "tsunamiMaxDepthM": 3,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "38402",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "38422",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -15876,27 +15876,27 @@
     "tsunamiAreaRatio": 0.033527,
     "tsunamiMaxDepthM": 20,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "38484",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "38488",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -15906,7 +15906,7 @@
     "tsunamiAreaRatio": 0.032151,
     "tsunamiMaxDepthM": 10,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -16011,7 +16011,7 @@
   },
   {
     "jisCode": "39212",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16071,7 +16071,7 @@
   },
   {
     "jisCode": "39306",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16091,7 +16091,7 @@
   },
   {
     "jisCode": "39341",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16101,7 +16101,7 @@
   },
   {
     "jisCode": "39344",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16111,7 +16111,7 @@
   },
   {
     "jisCode": "39363",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16121,7 +16121,7 @@
   },
   {
     "jisCode": "39364",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16131,7 +16131,7 @@
   },
   {
     "jisCode": "39386",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16141,7 +16141,7 @@
   },
   {
     "jisCode": "39387",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16161,7 +16161,7 @@
   },
   {
     "jisCode": "39402",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16171,7 +16171,7 @@
   },
   {
     "jisCode": "39403",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16181,7 +16181,7 @@
   },
   {
     "jisCode": "39405",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16191,7 +16191,7 @@
   },
   {
     "jisCode": "39410",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16201,7 +16201,7 @@
   },
   {
     "jisCode": "39411",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16231,7 +16231,7 @@
   },
   {
     "jisCode": "39427",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16251,7 +16251,7 @@
   },
   {
     "jisCode": "40100",
-    "tsunamiRiskCandidate": 80,
+    "tsunamiRiskCandidate": 82,
     "tsunamiDataStatus": "ward-averaged",
     "tsunamiAreaRatio": null,
     "tsunamiMaxDepthM": null,
@@ -16311,7 +16311,7 @@
   },
   {
     "jisCode": "40108",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16331,7 +16331,7 @@
   },
   {
     "jisCode": "40130",
-    "tsunamiRiskCandidate": 80,
+    "tsunamiRiskCandidate": 82,
     "tsunamiDataStatus": "ward-averaged",
     "tsunamiAreaRatio": null,
     "tsunamiMaxDepthM": null,
@@ -16371,7 +16371,7 @@
   },
   {
     "jisCode": "40134",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16431,7 +16431,7 @@
   },
   {
     "jisCode": "40204",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16441,7 +16441,7 @@
   },
   {
     "jisCode": "40205",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16451,7 +16451,7 @@
   },
   {
     "jisCode": "40206",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16471,7 +16471,7 @@
   },
   {
     "jisCode": "40210",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16481,7 +16481,7 @@
   },
   {
     "jisCode": "40211",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16521,7 +16521,7 @@
   },
   {
     "jisCode": "40215",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16531,7 +16531,7 @@
   },
   {
     "jisCode": "40216",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16541,7 +16541,7 @@
   },
   {
     "jisCode": "40217",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16551,7 +16551,7 @@
   },
   {
     "jisCode": "40218",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16561,7 +16561,7 @@
   },
   {
     "jisCode": "40219",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16581,7 +16581,7 @@
   },
   {
     "jisCode": "40221",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16611,7 +16611,7 @@
   },
   {
     "jisCode": "40225",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16621,7 +16621,7 @@
   },
   {
     "jisCode": "40226",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16631,7 +16631,7 @@
   },
   {
     "jisCode": "40227",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16641,7 +16641,7 @@
   },
   {
     "jisCode": "40228",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16671,7 +16671,7 @@
   },
   {
     "jisCode": "40231",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16681,7 +16681,7 @@
   },
   {
     "jisCode": "40341",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16691,7 +16691,7 @@
   },
   {
     "jisCode": "40342",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16701,7 +16701,7 @@
   },
   {
     "jisCode": "40343",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16711,7 +16711,7 @@
   },
   {
     "jisCode": "40344",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16731,7 +16731,7 @@
   },
   {
     "jisCode": "40348",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16741,7 +16741,7 @@
   },
   {
     "jisCode": "40349",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16761,7 +16761,7 @@
   },
   {
     "jisCode": "40382",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16791,7 +16791,7 @@
   },
   {
     "jisCode": "40401",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16801,7 +16801,7 @@
   },
   {
     "jisCode": "40402",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16811,7 +16811,7 @@
   },
   {
     "jisCode": "40421",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16821,7 +16821,7 @@
   },
   {
     "jisCode": "40447",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16831,7 +16831,7 @@
   },
   {
     "jisCode": "40448",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16841,7 +16841,7 @@
   },
   {
     "jisCode": "40503",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16851,7 +16851,7 @@
   },
   {
     "jisCode": "40522",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16861,7 +16861,7 @@
   },
   {
     "jisCode": "40544",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16871,7 +16871,7 @@
   },
   {
     "jisCode": "40601",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16881,7 +16881,7 @@
   },
   {
     "jisCode": "40602",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16891,7 +16891,7 @@
   },
   {
     "jisCode": "40604",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16901,7 +16901,7 @@
   },
   {
     "jisCode": "40605",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16911,7 +16911,7 @@
   },
   {
     "jisCode": "40608",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16921,7 +16921,7 @@
   },
   {
     "jisCode": "40609",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16931,7 +16931,7 @@
   },
   {
     "jisCode": "40610",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16951,7 +16951,7 @@
   },
   {
     "jisCode": "40625",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -16971,7 +16971,7 @@
   },
   {
     "jisCode": "40646",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -17011,7 +17011,7 @@
   },
   {
     "jisCode": "41203",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -17021,7 +17021,7 @@
   },
   {
     "jisCode": "41204",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -17041,7 +17041,7 @@
   },
   {
     "jisCode": "41206",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -17081,7 +17081,7 @@
   },
   {
     "jisCode": "41210",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -17091,7 +17091,7 @@
   },
   {
     "jisCode": "41327",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -17101,7 +17101,7 @@
   },
   {
     "jisCode": "41341",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -17111,7 +17111,7 @@
   },
   {
     "jisCode": "41345",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -17121,7 +17121,7 @@
   },
   {
     "jisCode": "41346",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -17141,7 +17141,7 @@
   },
   {
     "jisCode": "41401",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -17151,7 +17151,7 @@
   },
   {
     "jisCode": "41423",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -17361,7 +17361,7 @@
   },
   {
     "jisCode": "42323",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -17931,7 +17931,7 @@
   },
   {
     "jisCode": "44204",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -17971,7 +17971,7 @@
   },
   {
     "jisCode": "44208",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -18011,7 +18011,7 @@
   },
   {
     "jisCode": "44212",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -18021,7 +18021,7 @@
   },
   {
     "jisCode": "44213",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -18061,7 +18061,7 @@
   },
   {
     "jisCode": "44461",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -18071,7 +18071,7 @@
   },
   {
     "jisCode": "44462",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -18091,7 +18091,7 @@
   },
   {
     "jisCode": "45202",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -18121,7 +18121,7 @@
   },
   {
     "jisCode": "45205",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -18151,7 +18151,7 @@
   },
   {
     "jisCode": "45208",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -18161,7 +18161,7 @@
   },
   {
     "jisCode": "45209",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -18171,7 +18171,7 @@
   },
   {
     "jisCode": "45341",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -18181,7 +18181,7 @@
   },
   {
     "jisCode": "45361",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -18191,7 +18191,7 @@
   },
   {
     "jisCode": "45382",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -18201,7 +18201,7 @@
   },
   {
     "jisCode": "45383",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -18231,7 +18231,7 @@
   },
   {
     "jisCode": "45403",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -18241,7 +18241,7 @@
   },
   {
     "jisCode": "45404",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -18281,7 +18281,7 @@
   },
   {
     "jisCode": "45429",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -18291,7 +18291,7 @@
   },
   {
     "jisCode": "45430",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -18301,7 +18301,7 @@
   },
   {
     "jisCode": "45431",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -18311,7 +18311,7 @@
   },
   {
     "jisCode": "45441",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -18321,7 +18321,7 @@
   },
   {
     "jisCode": "45442",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -18331,7 +18331,7 @@
   },
   {
     "jisCode": "45443",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -18441,7 +18441,7 @@
   },
   {
     "jisCode": "46217",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -18511,7 +18511,7 @@
   },
   {
     "jisCode": "46224",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -18551,7 +18551,7 @@
   },
   {
     "jisCode": "46392",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,
@@ -18571,7 +18571,7 @@
   },
   {
     "jisCode": "46452",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0,
     "tsunamiMaxDepthM": 0,

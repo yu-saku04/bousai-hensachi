@@ -1629,8 +1629,8 @@ function validateTsunamiJson(
     if (status === "no-tsunami-risk" && candidate !== 100) {
       errors.push(`[${id}] no-tsunami-risk の tsunamiRiskCandidate は 100 必須: ${candidate}`);
     }
-    if (status === "no-tsunami-data" && candidate !== 90 && candidate !== 100) {
-      errors.push(`[${id}] no-tsunami-data の tsunamiRiskCandidate は 90 または 100 必須: ${candidate}`);
+    if (status === "no-tsunami-data" && candidate !== 100) {
+      errors.push(`[${id}] no-tsunami-data の tsunamiRiskCandidate は 100 必須: ${candidate}`);
     }
 
     if (status === "scored") {

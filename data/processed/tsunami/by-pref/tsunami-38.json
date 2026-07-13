@@ -8,7 +8,7 @@
     "tsunamiAreaRatio": 0.024085,
     "tsunamiMaxDepthM": 5.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -20,7 +20,7 @@
     "tsunamiAreaRatio": 0.033228,
     "tsunamiMaxDepthM": 4.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -32,7 +32,7 @@
     "tsunamiAreaRatio": 0.034789,
     "tsunamiMaxDepthM": 5.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -44,7 +44,7 @@
     "tsunamiAreaRatio": 0.035541,
     "tsunamiMaxDepthM": 5.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -56,7 +56,7 @@
     "tsunamiAreaRatio": 0.040622,
     "tsunamiMaxDepthM": 3.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -68,7 +68,7 @@
     "tsunamiAreaRatio": 0.065854,
     "tsunamiMaxDepthM": 4.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -80,7 +80,7 @@
     "tsunamiAreaRatio": 0.002124,
     "tsunamiMaxDepthM": 2.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -92,7 +92,7 @@
     "tsunamiAreaRatio": 0.014233,
     "tsunamiMaxDepthM": 2.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -104,7 +104,7 @@
     "tsunamiAreaRatio": 0.01493,
     "tsunamiMaxDepthM": 4.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -116,19 +116,19 @@
     "tsunamiAreaRatio": 0.006878,
     "tsunamiMaxDepthM": 5.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "38215",
     "prefecture": "愛媛県",
     "municipality": "東温市",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -140,19 +140,19 @@
     "tsunamiAreaRatio": 0.042205,
     "tsunamiMaxDepthM": 4.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "38386",
     "prefecture": "愛媛県",
     "municipality": "久万高原町",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -164,31 +164,31 @@
     "tsunamiAreaRatio": 0.238718,
     "tsunamiMaxDepthM": 3.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "38402",
     "prefecture": "愛媛県",
     "municipality": "砥部町",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "38422",
     "prefecture": "愛媛県",
     "municipality": "内子町",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -200,31 +200,31 @@
     "tsunamiAreaRatio": 0.033527,
     "tsunamiMaxDepthM": 20.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "38484",
     "prefecture": "愛媛県",
     "municipality": "松野町",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
     "jisCode": "38488",
     "prefecture": "愛媛県",
     "municipality": "鬼北町",
-    "tsunamiRiskCandidate": 90,
+    "tsunamiRiskCandidate": 100,
     "tsunamiDataStatus": "no-tsunami-data",
     "tsunamiAreaRatio": 0.0,
     "tsunamiMaxDepthM": 0.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   },
   {
@@ -236,7 +236,7 @@
     "tsunamiAreaRatio": 0.032151,
     "tsunamiMaxDepthM": 10.0,
     "tsunamiSource": "国土交通省 国土数値情報 津波浸水想定データ",
-    "tsunamiUpdatedAt": "2026-07-02",
+    "tsunamiUpdatedAt": "2026-07-03",
     "calculationVersion": "tsunami-v1"
   }
 ]
