@@ -61,6 +61,10 @@ data/processed/landslide-sample-*.json
 # Tsunami raw ZIP data
 data/raw/tsunami/A40/*.zip
 
+# Storm Surge raw ZIP data
+data/raw/storm-surge/A49/*.zip
+data/raw/storm-surge/A49/**/*.zip
+
 # vercel
 .vercel
 

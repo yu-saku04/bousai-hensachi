@@ -141,6 +141,17 @@ interface TsunamiEntry {
   calculationVersion:   string;
 }
 
+interface StormSurgeEntry {
+  jisCode:                 string;
+  stormSurgeRiskCandidate: number | null;
+  stormSurgeDataStatus:    string;
+  stormSurgeAreaRatio:     number | null;
+  stormSurgeMaxDepthM:     number | null;
+  stormSurgeSource:        string;
+  stormSurgeUpdatedAt:     string;
+  calculationVersion:      string;
+}
+
 interface MunicipalityBase {
   id: string;
   jisCode?: string;
@@ -515,6 +526,23 @@ function mergeDatasets(
     console.warn(`スキップ (未生成): ${tsunamiPath}`);
   }
 
+  // -------------------------------------------------------
+  // storm-surge.json を読み込み（高潮ハザード・stormSurgeRiskCandidate standalone 指標）
+  // -------------------------------------------------------
+
+  const stormSurgePath      = path.join(processedDir, "storm-surge.json");
+  const stormSurgeData      = loadJsonIfExists<StormSurgeEntry>(stormSurgePath);
+  const stormSurgeByJisCode = new Map<string, StormSurgeEntry>();
+
+  if (stormSurgeData.length > 0) {
+    console.log(`読み込み: ${stormSurgePath} (${stormSurgeData.length}件)`);
+    for (const s of stormSurgeData) {
+      stormSurgeByJisCode.set(s.jisCode, s);
+    }
+  } else {
+    console.warn(`スキップ (未生成): ${stormSurgePath}`);
+  }
+
   let householdJoinCount    = 0;
   let householdMissingCount = 0;
 
@@ -529,6 +557,9 @@ function mergeDatasets(
 
   let tsunamiJoinCount    = 0;
   let tsunamiMissingCount = 0;
+
+  let stormSurgeJoinCount    = 0;
+  let stormSurgeMissingCount = 0;
 
   let landslideJoinCount    = 0;
   let landslideMissingCount = 0;
@@ -609,6 +640,14 @@ function mergeDatasets(
     delete result["tsunamiMaxDepthM"];
     delete result["tsunamiSource"];
     delete result["tsunamiUpdatedAt"];
+
+    // storm-surge 系フィールドをすべてクリア（storm-surge.json JOIN 成功時のみ再設定）
+    delete result["stormSurgeRiskCandidate"];
+    delete result["stormSurgeDataStatus"];
+    delete result["stormSurgeAreaRatio"];
+    delete result["stormSurgeMaxDepthM"];
+    delete result["stormSurgeSource"];
+    delete result["stormSurgeUpdatedAt"];
 
     // 汎用スコアファイルから JOIN
     for (const pair of scoreFilePairs) {
@@ -774,6 +813,24 @@ function mergeDatasets(
       }
     }
 
+    // storm-surge データを JOIN（jisCode のみ）
+    // stormSurgeRiskCandidate は overallScoreV2 の Hazard 指標。
+    // 欠損自治体（missing）は stormSurgeRiskCandidate=null のまま。
+    if (stormSurgeData.length > 0) {
+      const ss = m.jisCode ? stormSurgeByJisCode.get(m.jisCode) : undefined;
+      if (ss) {
+        result["stormSurgeRiskCandidate"] = ss.stormSurgeRiskCandidate;
+        result["stormSurgeDataStatus"]    = ss.stormSurgeDataStatus;
+        result["stormSurgeAreaRatio"]     = ss.stormSurgeAreaRatio;
+        result["stormSurgeMaxDepthM"]     = ss.stormSurgeMaxDepthM;
+        if (ss.stormSurgeSource)    result["stormSurgeSource"]    = ss.stormSurgeSource;
+        if (ss.stormSurgeUpdatedAt) result["stormSurgeUpdatedAt"] = ss.stormSurgeUpdatedAt;
+        stormSurgeJoinCount++;
+      } else {
+        stormSurgeMissingCount++;
+      }
+    }
+
     // dataUpdatedAt = max(shelterUpdatedAt, populationUpdatedAt, agingUpdatedAt, householdUpdatedAt, earthquakeUpdatedAt, floodUpdatedAt, landslideUpdatedAt)
     // 最新データ更新日を全体の dataUpdatedAt として保持
     const sDate  = result["shelterUpdatedAt"];
@@ -784,7 +841,8 @@ function mergeDatasets(
     const fDate  = result["floodUpdatedAt"];
     const lsDate = result["landslideUpdatedAt"];
     const tsDate = result["tsunamiUpdatedAt"];
-    const dateCandidates = [sDate, pDate, aDate, hDate, eDate, fDate, lsDate, tsDate].filter((d): d is string => typeof d === "string");
+    const ssDate = result["stormSurgeUpdatedAt"];
+    const dateCandidates = [sDate, pDate, aDate, hDate, eDate, fDate, lsDate, tsDate, ssDate].filter((d): d is string => typeof d === "string");
     if (dateCandidates.length > 0) {
       result["dataUpdatedAt"] = dateCandidates.sort().at(-1)!;
     }
@@ -1005,6 +1063,32 @@ function mergeDatasets(
       ` no-tsunami-risk=${byTsStatus("no-tsunami-risk")}` +
       ` ward-averaged=${byTsStatus("ward-averaged")}` +
       ` missing=${byTsStatus("missing")}`,
+    );
+  }
+
+  // storm-surge.json 統合結果ログ
+  if (stormSurgeData.length > 0) {
+    console.log(
+      `\nstorm-surge.json 使用状況: ${stormSurgeJoinCount}/${stormSurgeData.length}件 JOIN済` +
+      ` / 未反映 ${stormSurgeMissingCount}件（stormSurgeRiskCandidate=null）`,
+    );
+    const ssVals = merged
+      .map((m) => m["stormSurgeRiskCandidate"])
+      .filter((v): v is number => typeof v === "number");
+    if (ssVals.length > 0) {
+      const ssMin  = Math.min(...ssVals);
+      const ssMax  = Math.max(...ssVals);
+      const ssMean = ssVals.reduce((s, v) => s + v, 0) / ssVals.length;
+      console.log(`  stormSurgeRiskCandidate range: ${ssMin} 〜 ${ssMax} (mean: ${ssMean.toFixed(2)})`);
+    }
+    const bySsStatus = (s: string) =>
+      merged.filter((m) => m["stormSurgeDataStatus"] === s).length;
+    console.log(
+      `  scored=${bySsStatus("scored")}` +
+      ` no-storm-surge-data=${bySsStatus("no-storm-surge-data")}` +
+      ` no-storm-surge-risk=${bySsStatus("no-storm-surge-risk")}` +
+      ` ward-averaged=${bySsStatus("ward-averaged")}` +
+      ` missing=${bySsStatus("missing")}`,
     );
   }
 

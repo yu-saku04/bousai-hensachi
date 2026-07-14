@@ -52,7 +52,12 @@
     "score:tsunami-v1": ".venv-flood/bin/python scripts/scoring/score-tsunami-v1.py --pref 08 --output data/processed/tsunami-sample-08.json",
     "score:tsunami-v1:all": ".venv-flood/bin/python scripts/scoring/score-tsunami-v1-all.py --output data/processed/tsunami-scores.json",
     "score:tsunami-v1:merge": ".venv-flood/bin/python scripts/scoring/score-tsunami-v1-all.py --merge-only --output data/processed/tsunami-scores.json",
-    "import:tsunami": "tsx scripts/importers/import-tsunami.ts"
+    "import:tsunami": "tsx scripts/importers/import-tsunami.ts",
+    "fetch:storm-surge": ".venv-flood/bin/python scripts/fetchers/fetch-nlftp-storm-surge.py",
+    "score:storm-surge-v1": ".venv-flood/bin/python scripts/scoring/score-storm-surge-v1.py --pref 14 --output data/processed/storm-surge-sample-14.json",
+    "score:storm-surge-v1:all": ".venv-flood/bin/python scripts/scoring/score-storm-surge-v1-all.py --output data/processed/storm-surge-scores.json",
+    "score:storm-surge-v1:merge": ".venv-flood/bin/python scripts/scoring/score-storm-surge-v1-all.py --merge-only --output data/processed/storm-surge-scores.json",
+    "import:storm-surge": "tsx scripts/importers/import-storm-surge.ts"
   },
   "dependencies": {
     "next": "16.2.6",

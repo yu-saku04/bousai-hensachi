@@ -116,6 +116,10 @@ function buildAiAdviceComment(data: Municipality): string {
     sentences.push("津波への備えを優先してください。");
   }
 
+  if (typeof data.stormSurgeRiskCandidate === "number" && clampScore(data.stormSurgeRiskCandidate) <= 40) {
+    sentences.push("高潮への備えを優先してください。");
+  }
+
   const shelterVal =
     typeof data.shelterScore === "number"
       ? data.shelterScore
@@ -179,6 +183,35 @@ function formatTsunamiMaxDepth(
 ): string {
   if (status === "no-tsunami-data") return "該当なし";
   if (status === "no-tsunami-risk") return "対象外";
+  if (status === "missing") return "未算出";
+  if (status !== "scored" && status !== "ward-averaged") return "未算出";
+  if (typeof value !== "number") return "未算出";
+  return value > 0 ? `${value}m以上` : "0.3m未満";
+}
+
+function getStormSurgeStatusLabel(status: Municipality["stormSurgeDataStatus"]): string {
+  switch (status) {
+    case "scored":
+      return "高潮浸水リスク算出済み";
+    case "no-storm-surge-data":
+      return "高潮浸水想定区域なし";
+    case "no-storm-surge-risk":
+      return "内陸県（高潮リスク対象外）";
+    case "ward-averaged":
+      return "行政区データから市全体を平均";
+    case "missing":
+      return "高潮データ未整備";
+    default:
+      return "未算出";
+  }
+}
+
+function formatStormSurgeMaxDepth(
+  status: Municipality["stormSurgeDataStatus"],
+  value: Municipality["stormSurgeMaxDepthM"],
+): string {
+  if (status === "no-storm-surge-data") return "該当なし";
+  if (status === "no-storm-surge-risk") return "対象外";
   if (status === "missing") return "未算出";
   if (status !== "scored" && status !== "ward-averaged") return "未算出";
   if (typeof value !== "number") return "未算出";
@@ -290,9 +323,10 @@ export default async function ResultPage({ params }: PageProps) {
     ? (data.overallScoreV2Version ?? "v2")
     : "旧スコア";
   const levelLabel = getScoreLevelLabel(score);
-  const floodStatusLabel     = getFloodStatusLabel(data.floodDataStatus);
-  const landslideStatusLabel = getLandslideStatusLabel(data.landslideDataStatus);
-  const tsunamiStatusLabel   = getTsunamiStatusLabel(data.tsunamiDataStatus);
+  const floodStatusLabel      = getFloodStatusLabel(data.floodDataStatus);
+  const landslideStatusLabel  = getLandslideStatusLabel(data.landslideDataStatus);
+  const tsunamiStatusLabel    = getTsunamiStatusLabel(data.tsunamiDataStatus);
+  const stormSurgeStatusLabel = getStormSurgeStatusLabel(data.stormSurgeDataStatus);
   const overallRanking = calculateRank(data, getAllMunicipalities());
   const shelterRadarScore =
     typeof data.shelterScore === "number"
@@ -305,6 +339,7 @@ export default async function ResultPage({ params }: PageProps) {
     { label: "洪水", value: getOptionalScore(data.floodRiskCandidate) },
     { label: "土砂", value: getOptionalScore(data.landslideRiskCandidate) },
     { label: "津波", value: getOptionalScore(data.tsunamiRiskCandidate) },
+    { label: "高潮", value: getOptionalScore(data.stormSurgeRiskCandidate) },
     { label: "避難所", value: getOptionalScore(shelterRadarScore) },
     { label: "高齢化", value: getOptionalScore(data.agingRisk) },
     { label: "世帯", value: getOptionalScore(data.householdRisk) },
@@ -527,7 +562,7 @@ export default async function ResultPage({ params }: PageProps) {
           </section>
         )}
 
-        {/* 総合防災偏差値 v2.3 の内訳 */}
+        {/* 総合防災偏差値 v2.4 の内訳 */}
         {typeof data.overallScoreV2 === "number" && (
           <section className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm space-y-4">
             <div className="flex items-center gap-2">
@@ -653,6 +688,46 @@ export default async function ResultPage({ params }: PageProps) {
                 </div>
                 <p className="text-[11px] leading-relaxed text-gray-500">
                   津波スコアは国土数値情報A40を基に算出しています。データ未提供地域は津波項目を総合スコア計算から除外しています。
+                </p>
+              </div>
+              <div className="rounded-xl bg-gray-50 px-3 py-3 space-y-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-base" aria-hidden="true">🌀</span>
+                  <span className="text-xs text-gray-600 flex-1">高潮リスク</span>
+                  {typeof data.stormSurgeRiskCandidate === "number" ? (
+                    <span className={`text-sm font-bold tabular-nums ${getScoreLevelColor(clampScore(data.stormSurgeRiskCandidate))}`}>
+                      {clampScore(data.stormSurgeRiskCandidate)}
+                    </span>
+                  ) : (
+                    <span className="text-xs text-gray-400">未算出</span>
+                  )}
+                </div>
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  <div>
+                    <p className="text-gray-400">データ状態</p>
+                    <p className="font-medium text-gray-700 leading-snug">{stormSurgeStatusLabel}</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-400">浸水面積比率</p>
+                    <p className="font-medium text-gray-700 tabular-nums">
+                      {typeof data.stormSurgeAreaRatio === "number"
+                        ? `${(data.stormSurgeAreaRatio * 100).toFixed(1)}%`
+                        : "未算出"}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-gray-400">最大浸水深下限</p>
+                    <p className="font-medium text-gray-700 tabular-nums">
+                      {formatStormSurgeMaxDepth(data.stormSurgeDataStatus, data.stormSurgeMaxDepthM)}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-gray-400">スコア方向</p>
+                    <p className="font-medium text-gray-700">高いほど安全</p>
+                  </div>
+                </div>
+                <p className="text-[11px] leading-relaxed text-gray-500">
+                  高潮スコアは国土数値情報A49を基に算出しています。データ未整備地域は高潮項目を総合スコア計算から除外しています。
                 </p>
               </div>
             </div>

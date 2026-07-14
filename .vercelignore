@@ -14,3 +14,6 @@ data/raw/landslide/
 
 # Python 仮想環境
 .venv-flood/
+
+# Storm Surge 生データ
+data/raw/storm-surge/
