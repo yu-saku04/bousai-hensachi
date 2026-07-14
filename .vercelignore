@@ -17,3 +17,6 @@ data/raw/landslide/
 
 # Storm Surge 生データ
 data/raw/storm-surge/
+
+# J-SHIS Liquefaction 生データ
+data/raw/liquefaction/

@@ -1,16 +1,21 @@
 /**
- * score-overall-v2.ts — overallScoreV2 dry-run
+ * score-overall-v2.ts — overallScoreV2 dry-run / write
  *
  * 現行 overallScore は変更せず、新しい overallScoreV2 を試算する。
  *
  * カテゴリ（全て 0〜100 スケール、高いほど安全）:
- *   Hazard              (weight 0.40): nullSafeMean(earthquakeRisk, floodRiskCandidate, landslideRiskCandidate, tsunamiRiskCandidate)
+ *   Hazard              (weight 0.40): nullSafeMean(6指標均等)
+ *     earthquakeRisk, floodRiskCandidate, landslideRiskCandidate,
+ *     tsunamiRiskCandidate, stormSurgeRiskCandidate, liquefactionRiskCandidate
+ *     ※地震と液状化は別指標として扱う（液状化は微地形由来の地表面条件指標）
  *   Infrastructure      (weight 0.30): shelterScore (shelter-sufficiency-v1) ?? shelterCapacity
  *   Social Vulnerability (weight 0.30): mean(agingRisk, householdRisk)
  *   Accessibility       (weight 0.00): 将来追加
  *
  * カテゴリが null の場合は残りカテゴリの重みで再正規化（null-safe weighted average）。
  * 最終値は clamp(round(weighted_avg), 10, 90)。
+ *
+ * v2.5: Hazard に liquefactionRiskCandidate を追加（6指標均等平均）
  *
  * Usage:
  *   tsx scripts/scoring/score-overall-v2.ts [--output PATH]
@@ -25,7 +30,7 @@ import path from "node:path";
 // Constants
 // ---------------------------------------------------------------------------
 
-const CALCULATION_VERSION = "v2.4" as const;
+const CALCULATION_VERSION = "v2.5" as const;
 
 const CATEGORY_WEIGHTS = {
   hazard:        0.40,
@@ -47,6 +52,7 @@ interface MunicipalityRow {
   landslideRiskCandidate?: number | null;
   tsunamiRiskCandidate?: number | null;
   stormSurgeRiskCandidate?: number | null;
+  liquefactionRiskCandidate?: number | null;
   shelterScore?: number | null;
   shelterCapacity?: number;
   agingRisk?: number;
@@ -108,9 +114,16 @@ export function computeOverallScoreV2(m: MunicipalityRow): {
   score: number | null;
   breakdown: CategoryBreakdown;
 } {
-  // Hazard: earthquakeRisk, floodRiskCandidate, landslideRiskCandidate, tsunamiRiskCandidate, stormSurgeRiskCandidate の五指標均等。
-  // null の場合は残りの指標のみで算出。
-  const hazardScore = nullSafeMean([m.earthquakeRisk, m.floodRiskCandidate, m.landslideRiskCandidate, m.tsunamiRiskCandidate, m.stormSurgeRiskCandidate]);
+  // Hazard: 6指標均等平均（null は除外して残り指標で再正規化）
+  // 地震と液状化は別指標として扱う（液状化は微地形由来の地表面条件指標）
+  const hazardScore = nullSafeMean([
+    m.earthquakeRisk,
+    m.floodRiskCandidate,
+    m.landslideRiskCandidate,
+    m.tsunamiRiskCandidate,
+    m.stormSurgeRiskCandidate,
+    m.liquefactionRiskCandidate,
+  ]);
 
   // Infrastructure: shelterScore (shelter-sufficiency-v1) → shelterCapacity (fallback)
   const rawInfra =
@@ -217,17 +230,19 @@ function main(): void {
   console.log(`overallScoreV2算出 : ${v2Scores.length}件`);
   console.log(`overallScoreV2=null: ${nullCount}件\n`);
 
-  const floodCount      = data.filter((m) => typeof m.floodRiskCandidate      === "number").length;
-  const landslideCount  = data.filter((m) => typeof m.landslideRiskCandidate  === "number").length;
-  const tsunamiCount    = data.filter((m) => typeof m.tsunamiRiskCandidate    === "number").length;
-  const stormSurgeCount = data.filter((m) => typeof m.stormSurgeRiskCandidate === "number").length;
-  const hazardAllCount  = data.filter(
+  const floodCount        = data.filter((m) => typeof m.floodRiskCandidate        === "number").length;
+  const landslideCount    = data.filter((m) => typeof m.landslideRiskCandidate    === "number").length;
+  const tsunamiCount      = data.filter((m) => typeof m.tsunamiRiskCandidate      === "number").length;
+  const stormSurgeCount   = data.filter((m) => typeof m.stormSurgeRiskCandidate   === "number").length;
+  const liquefactionCount = data.filter((m) => typeof m.liquefactionRiskCandidate === "number").length;
+  const hazardAllCount    = data.filter(
     (m) =>
-      typeof m.earthquakeRisk           === "number" &&
-      typeof m.floodRiskCandidate       === "number" &&
-      typeof m.landslideRiskCandidate   === "number" &&
-      typeof m.tsunamiRiskCandidate     === "number" &&
-      typeof m.stormSurgeRiskCandidate  === "number",
+      typeof m.earthquakeRisk            === "number" &&
+      typeof m.floodRiskCandidate        === "number" &&
+      typeof m.landslideRiskCandidate    === "number" &&
+      typeof m.tsunamiRiskCandidate      === "number" &&
+      typeof m.stormSurgeRiskCandidate   === "number" &&
+      typeof m.liquefactionRiskCandidate === "number",
   ).length;
 
   console.log("カテゴリ別ソース:");
@@ -237,7 +252,8 @@ function main(): void {
     ` / landslideRiskCandidate=${landslideCount}件` +
     ` / tsunamiRiskCandidate=${tsunamiCount}件` +
     ` / stormSurgeRiskCandidate=${stormSurgeCount}件` +
-    ` / 全5揃い=${hazardAllCount}件`,
+    ` / liquefactionRiskCandidate=${liquefactionCount}件` +
+    ` / 全6揃い=${hazardAllCount}件`,
   );
   console.log(`  Infrastructure   : shelterScore=${shelterScoreUsed}件 / shelterCapacity(fallback)=${shelterCapacityUsed}件`);
   console.log(`  Social           : both(aging+household)=${socialBothUsed}件 / partial=${socialPartialUsed}件`);

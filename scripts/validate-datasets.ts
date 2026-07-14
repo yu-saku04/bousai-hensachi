@@ -1788,9 +1788,9 @@ function validateFloodV1(
       v2Count++;
     }
 
-    if (m["overallScoreV2Version"] !== "v2.4") {
+    if (m["overallScoreV2Version"] !== "v2.5") {
       errors.push(
-        `[${id}] overallScoreV2Version が無効 ("v2.4" 必須): ${m["overallScoreV2Version"]}`,
+        `[${id}] overallScoreV2Version が無効 ("v2.5" 必須): ${m["overallScoreV2Version"]}`,
       );
     }
   }
@@ -1801,7 +1801,7 @@ function validateFloodV1(
   stats["flood.no-flood-data件数"]  = statusCounts["no-flood-data"] ?? 0;
   stats["flood.ward-averaged件数"]  = statusCounts["ward-averaged"] ?? 0;
   stats["flood.missing件数"]        = statusCounts.missing ?? 0;
-  stats["overallScoreV2.v2.4件数"] = v2Count;
+  stats["overallScoreV2.v2.5件数"] = v2Count;
 
   if (candidateCount !== EXPECTED_FLOOD_COUNTS.total) {
     errors.push(
@@ -1995,6 +1995,225 @@ function validateTsunamiV1(
     stats["tsunamiRiskCandidate最小"] = Math.min(...candidateVals);
     stats["tsunamiRiskCandidate最大"] = Math.max(...candidateVals);
     stats["tsunamiRiskCandidate平均"] = Math.round(
+      candidateVals.reduce((s, v) => s + v, 0) / candidateVals.length,
+    );
+  }
+
+  return { errors, warnings, stats };
+}
+
+// -------------------------------------------------------
+// liquefaction.json スキーマ検証（calculationVersion を含む中間データ）
+// -------------------------------------------------------
+
+const VALID_LIQUEFACTION_JSON_STATUSES = new Set([
+  "scored", "no-liquefaction-risk", "no-liquefaction-area", "ward-averaged", "missing",
+]);
+
+function validateLiquefactionJson(
+  liquefactionPath: string,
+): { errors: string[]; warnings: string[]; stats: Record<string, number | string> } {
+  const errors:   string[] = [];
+  const warnings: string[] = [];
+  const stats: Record<string, number | string> = {};
+
+  if (!fs.existsSync(liquefactionPath)) {
+    warnings.push(
+      `liquefaction.json が存在しません（スキップ）: ${liquefactionPath}` +
+      ` (npm run import:liquefaction を実行してください)`,
+    );
+    return { errors, warnings, stats };
+  }
+
+  let liquefaction: Array<Record<string, unknown>>;
+  try {
+    liquefaction = JSON.parse(fs.readFileSync(liquefactionPath, "utf-8"));
+  } catch {
+    return { errors: [`liquefaction.json JSON parse 失敗: ${liquefactionPath}`], warnings: [], stats: {} };
+  }
+
+  if (!Array.isArray(liquefaction)) {
+    return { errors: [`liquefaction.json は配列である必要があります: ${liquefactionPath}`], warnings: [], stats: {} };
+  }
+
+  stats["liquefaction.json件数"] = liquefaction.length;
+
+  const statusCounts: Record<string, number> = {
+    scored: 0, "no-liquefaction-risk": 0, "no-liquefaction-area": 0, "ward-averaged": 0, missing: 0,
+  };
+
+  for (const l of liquefaction) {
+    const id = `${l["jisCode"] ?? "unknown"}`;
+
+    if (typeof l["jisCode"] !== "string" || !JIS_RE.test(l["jisCode"] as string)) {
+      errors.push(`[${id}] jisCode が無効 (5桁数字必須): ${l["jisCode"]}`);
+    }
+
+    if (l["calculationVersion"] !== "liquefaction-v1") {
+      errors.push(`[${id}] calculationVersion は liquefaction-v1 である必要があります (${l["calculationVersion"]})`);
+    }
+
+    const updatedAt = l["liquefactionUpdatedAt"];
+    if (typeof updatedAt !== "string" || (updatedAt as string).trim() === "") {
+      errors.push(`[${id}] liquefactionUpdatedAt が未設定または空 (全エントリ必須): ${updatedAt}`);
+    }
+
+    const status = l["liquefactionDataStatus"];
+    if (typeof status !== "string" || !VALID_LIQUEFACTION_JSON_STATUSES.has(status)) {
+      errors.push(
+        `[${id}] liquefactionDataStatus が無効 (${[...VALID_LIQUEFACTION_JSON_STATUSES].join("|")} 必須): ${status}`,
+      );
+      continue;
+    }
+    statusCounts[status] = (statusCounts[status] ?? 0) + 1;
+
+    const candidate = l["liquefactionRiskCandidate"];
+    if (status === "missing") {
+      if (candidate !== null) {
+        errors.push(`[${id}] missing の liquefactionRiskCandidate は null 必須: ${candidate}`);
+      }
+    } else {
+      if (
+        typeof candidate !== "number" ||
+        !Number.isInteger(candidate) ||
+        candidate < 0 ||
+        candidate > 100
+      ) {
+        errors.push(`[${id}] liquefactionRiskCandidate が無効 (0〜100 整数必須): ${candidate}`);
+      }
+      if (status === "no-liquefaction-risk" && candidate !== 100) {
+        errors.push(`[${id}] no-liquefaction-risk の liquefactionRiskCandidate は 100 必須: ${candidate}`);
+      }
+    }
+
+    const susceptible = l["liquefactionSusceptibleAreaRatio"];
+    const highRisk    = l["liquefactionHighRiskAreaRatio"];
+    if (status === "scored" || status === "ward-averaged") {
+      if (typeof susceptible !== "number" || susceptible < 0 || susceptible > 1) {
+        errors.push(`[${id}] ${status} の liquefactionSusceptibleAreaRatio が無効 (0〜1 必須): ${susceptible}`);
+      }
+      if (typeof highRisk !== "number" || highRisk < 0 || highRisk > 1) {
+        errors.push(`[${id}] ${status} の liquefactionHighRiskAreaRatio が無効 (0〜1 必須): ${highRisk}`);
+      }
+    }
+  }
+
+  stats["liquefaction.json.scored件数"]              = statusCounts.scored;
+  stats["liquefaction.json.no-liquefaction-risk件数"] = statusCounts["no-liquefaction-risk"];
+  stats["liquefaction.json.no-liquefaction-area件数"] = statusCounts["no-liquefaction-area"];
+  stats["liquefaction.json.ward-averaged件数"]        = statusCounts["ward-averaged"];
+  stats["liquefaction.json.missing件数"]              = statusCounts.missing;
+
+  return { errors, warnings, stats };
+}
+
+// -------------------------------------------------------
+// liquefaction-v1 フィールド検証（municipalities.json）
+// -------------------------------------------------------
+
+const VALID_LIQUEFACTION_STATUSES = new Set([
+  "scored", "no-liquefaction-risk", "no-liquefaction-area", "ward-averaged", "missing",
+]);
+
+const EXPECTED_LIQUEFACTION_COUNTS = {
+  scored:                  1890,
+  "no-liquefaction-risk":  8,
+  "no-liquefaction-area":  0,
+  "ward-averaged":         20,
+  missing:                 0,
+  total:                   1918,
+} as const;
+
+function validateLiquefactionV1(
+  data: Municipality[],
+): { errors: string[]; warnings: string[]; stats: Record<string, number | string> } {
+  const errors:   string[] = [];
+  const warnings: string[] = [];
+  const stats: Record<string, number | string> = {};
+
+  const withLiquefaction = data.filter((m) => m["liquefactionRiskCandidate"] !== undefined);
+  if (withLiquefaction.length === 0) {
+    warnings.push(
+      "liquefactionRiskCandidate フィールド未投入 (npm run import:liquefaction を実行してください)",
+    );
+    return { errors, warnings, stats };
+  }
+
+  stats["liquefaction投入件数"] = withLiquefaction.length;
+
+  const statusCounts: Record<string, number> = {
+    scored: 0, "no-liquefaction-risk": 0, "no-liquefaction-area": 0, "ward-averaged": 0, missing: 0,
+  };
+  const candidateVals: number[] = [];
+
+  for (const m of data) {
+    const id = String(m["jisCode"] ?? m["id"] ?? "unknown");
+    const candidate = m["liquefactionRiskCandidate"];
+    if (candidate === undefined) continue;
+
+    if (candidate !== null) {
+      if (
+        typeof candidate !== "number" ||
+        !Number.isInteger(candidate) ||
+        candidate < 0 ||
+        candidate > 100
+      ) {
+        errors.push(`[${id}] liquefactionRiskCandidate が無効 (0〜100 整数または null 必須): ${candidate}`);
+      } else {
+        candidateVals.push(candidate);
+      }
+    }
+
+    const status = m["liquefactionDataStatus"];
+    if (typeof status === "string" && VALID_LIQUEFACTION_STATUSES.has(status)) {
+      statusCounts[status] = (statusCounts[status] ?? 0) + 1;
+    } else {
+      errors.push(
+        `[${id}] liquefactionDataStatus が無効 ` +
+        `(scored|no-liquefaction-risk|no-liquefaction-area|ward-averaged|missing 必須): ${status}`,
+      );
+    }
+
+    // liquefactionUpdatedAt: 非空 string 必須
+    const updatedAt = m["liquefactionUpdatedAt"];
+    if (typeof updatedAt !== "string" || (updatedAt as string).trim() === "") {
+      errors.push(`[${id}] liquefactionUpdatedAt が未設定または空: ${updatedAt}`);
+    }
+
+    // liquefactionSource: 非空 string 必須
+    const source = m["liquefactionSource"];
+    if (typeof source !== "string" || (source as string).trim() === "") {
+      errors.push(`[${id}] liquefactionSource が未設定または空: ${source}`);
+    }
+  }
+
+  stats["liquefaction.scored件数"]              = statusCounts.scored;
+  stats["liquefaction.no-liquefaction-risk件数"] = statusCounts["no-liquefaction-risk"];
+  stats["liquefaction.no-liquefaction-area件数"] = statusCounts["no-liquefaction-area"];
+  stats["liquefaction.ward-averaged件数"]        = statusCounts["ward-averaged"];
+  stats["liquefaction.missing件数"]              = statusCounts.missing;
+
+  const total = Object.values(statusCounts).reduce((s, n) => s + n, 0);
+  if (total !== EXPECTED_LIQUEFACTION_COUNTS.total) {
+    errors.push(
+      `liquefaction 合計件数が期待値と異なります: ${total}件 (期待: ${EXPECTED_LIQUEFACTION_COUNTS.total}件)`,
+    );
+  }
+
+  for (const [status, expected] of Object.entries(EXPECTED_LIQUEFACTION_COUNTS)) {
+    if (status === "total") continue;
+    const actual = statusCounts[status] ?? 0;
+    if (actual !== expected) {
+      errors.push(
+        `liquefactionDataStatus="${status}" 件数が期待値と異なります: ${actual}件 (期待: ${expected}件)`,
+      );
+    }
+  }
+
+  if (candidateVals.length > 0) {
+    stats["liquefactionRiskCandidate最小"] = Math.min(...candidateVals);
+    stats["liquefactionRiskCandidate最大"] = Math.max(...candidateVals);
+    stats["liquefactionRiskCandidate平均"] = Math.round(
       candidateVals.reduce((s, v) => s + v, 0) / candidateVals.length,
     );
   }
@@ -2455,6 +2674,18 @@ function validateDatasets(inputPath: string, strictMode = false, sheltersPath?: 
   errors.push(...tsunamiValidation.errors);
   warnings.push(...tsunamiValidation.warnings);
   Object.assign(stats, tsunamiValidation.stats);
+
+  // 22. liquefaction.json スキーマ検証（calculationVersion ゲート）
+  const liquefactionJsonValidation = validateLiquefactionJson("data/processed/liquefaction.json");
+  errors.push(...liquefactionJsonValidation.errors);
+  warnings.push(...liquefactionJsonValidation.warnings);
+  Object.assign(stats, liquefactionJsonValidation.stats);
+
+  // 22b. liquefaction-v1 フィールド検証（municipalities.json）
+  const liquefactionValidation = validateLiquefactionV1(data);
+  errors.push(...liquefactionValidation.errors);
+  warnings.push(...liquefactionValidation.warnings);
+  Object.assign(stats, liquefactionValidation.stats);
 
   // 19. overallScoreV2 検証（dry-run）
   const v2Validation = validateOverallScoreV2(data);

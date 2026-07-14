@@ -152,6 +152,18 @@ interface StormSurgeEntry {
   calculationVersion:      string;
 }
 
+interface LiquefactionEntry {
+  jisCode:                          string;
+  liquefactionRiskCandidate:        number | null;
+  liquefactionDataStatus:           string;
+  liquefactionSusceptibleAreaRatio: number | null;
+  liquefactionHighRiskAreaRatio:    number | null;
+  liquefactionMaxRiskClass:         string | null;
+  liquefactionUpdatedAt:            string;
+  liquefactionSource:               string | null;
+  liquefactionMethod:               string | null;
+}
+
 interface MunicipalityBase {
   id: string;
   jisCode?: string;
@@ -543,6 +555,23 @@ function mergeDatasets(
     console.warn(`スキップ (未生成): ${stormSurgePath}`);
   }
 
+  // -------------------------------------------------------
+  // liquefaction.json を読み込み（液状化リスク・liquefactionRiskCandidate standalone 指標）
+  // -------------------------------------------------------
+
+  const liquefactionPath      = path.join(processedDir, "liquefaction.json");
+  const liquefactionData      = loadJsonIfExists<LiquefactionEntry>(liquefactionPath);
+  const liquefactionByJisCode = new Map<string, LiquefactionEntry>();
+
+  if (liquefactionData.length > 0) {
+    console.log(`読み込み: ${liquefactionPath} (${liquefactionData.length}件)`);
+    for (const l of liquefactionData) {
+      liquefactionByJisCode.set(l.jisCode, l);
+    }
+  } else {
+    console.warn(`スキップ (未生成): ${liquefactionPath}`);
+  }
+
   let householdJoinCount    = 0;
   let householdMissingCount = 0;
 
@@ -560,6 +589,9 @@ function mergeDatasets(
 
   let stormSurgeJoinCount    = 0;
   let stormSurgeMissingCount = 0;
+
+  let liquefactionJoinCount    = 0;
+  let liquefactionMissingCount = 0;
 
   let landslideJoinCount    = 0;
   let landslideMissingCount = 0;
@@ -648,6 +680,16 @@ function mergeDatasets(
     delete result["stormSurgeMaxDepthM"];
     delete result["stormSurgeSource"];
     delete result["stormSurgeUpdatedAt"];
+
+    // liquefaction 系フィールドをすべてクリア（liquefaction.json JOIN 成功時のみ再設定）
+    delete result["liquefactionRiskCandidate"];
+    delete result["liquefactionDataStatus"];
+    delete result["liquefactionSusceptibleAreaRatio"];
+    delete result["liquefactionHighRiskAreaRatio"];
+    delete result["liquefactionMaxRiskClass"];
+    delete result["liquefactionUpdatedAt"];
+    delete result["liquefactionSource"];
+    delete result["liquefactionMethod"];
 
     // 汎用スコアファイルから JOIN
     for (const pair of scoreFilePairs) {
@@ -831,8 +873,27 @@ function mergeDatasets(
       }
     }
 
-    // dataUpdatedAt = max(shelterUpdatedAt, populationUpdatedAt, agingUpdatedAt, householdUpdatedAt, earthquakeUpdatedAt, floodUpdatedAt, landslideUpdatedAt)
-    // 最新データ更新日を全体の dataUpdatedAt として保持
+    // liquefaction データを JOIN（jisCode のみ）
+    // liquefactionRiskCandidate は overallScoreV2 v2.5 の Hazard 指標。
+    // 欠損自治体（missing）は liquefactionRiskCandidate=null のまま。
+    if (liquefactionData.length > 0) {
+      const lq = m.jisCode ? liquefactionByJisCode.get(m.jisCode) : undefined;
+      if (lq) {
+        result["liquefactionRiskCandidate"]        = lq.liquefactionRiskCandidate;
+        result["liquefactionDataStatus"]           = lq.liquefactionDataStatus;
+        result["liquefactionSusceptibleAreaRatio"] = lq.liquefactionSusceptibleAreaRatio;
+        result["liquefactionHighRiskAreaRatio"]    = lq.liquefactionHighRiskAreaRatio;
+        result["liquefactionMaxRiskClass"]         = lq.liquefactionMaxRiskClass;
+        if (lq.liquefactionSource)    result["liquefactionSource"]    = lq.liquefactionSource;
+        if (lq.liquefactionMethod)    result["liquefactionMethod"]    = lq.liquefactionMethod;
+        if (lq.liquefactionUpdatedAt) result["liquefactionUpdatedAt"] = lq.liquefactionUpdatedAt;
+        liquefactionJoinCount++;
+      } else {
+        liquefactionMissingCount++;
+      }
+    }
+
+    // dataUpdatedAt = max(all dataset update dates)
     const sDate  = result["shelterUpdatedAt"];
     const pDate  = result["populationUpdatedAt"];
     const aDate  = result["agingUpdatedAt"];
@@ -842,7 +903,8 @@ function mergeDatasets(
     const lsDate = result["landslideUpdatedAt"];
     const tsDate = result["tsunamiUpdatedAt"];
     const ssDate = result["stormSurgeUpdatedAt"];
-    const dateCandidates = [sDate, pDate, aDate, hDate, eDate, fDate, lsDate, tsDate, ssDate].filter((d): d is string => typeof d === "string");
+    const lqDate = result["liquefactionUpdatedAt"];
+    const dateCandidates = [sDate, pDate, aDate, hDate, eDate, fDate, lsDate, tsDate, ssDate, lqDate].filter((d): d is string => typeof d === "string");
     if (dateCandidates.length > 0) {
       result["dataUpdatedAt"] = dateCandidates.sort().at(-1)!;
     }
@@ -1089,6 +1151,32 @@ function mergeDatasets(
       ` no-storm-surge-risk=${bySsStatus("no-storm-surge-risk")}` +
       ` ward-averaged=${bySsStatus("ward-averaged")}` +
       ` missing=${bySsStatus("missing")}`,
+    );
+  }
+
+  // liquefaction.json 統合結果ログ
+  if (liquefactionData.length > 0) {
+    console.log(
+      `\nliquefaction.json 使用状況: ${liquefactionJoinCount}/${liquefactionData.length}件 JOIN済` +
+      ` / 未反映 ${liquefactionMissingCount}件（liquefactionRiskCandidate=null）`,
+    );
+    const lqVals = merged
+      .map((m) => m["liquefactionRiskCandidate"])
+      .filter((v): v is number => typeof v === "number");
+    if (lqVals.length > 0) {
+      const lqMin  = Math.min(...lqVals);
+      const lqMax  = Math.max(...lqVals);
+      const lqMean = lqVals.reduce((s, v) => s + v, 0) / lqVals.length;
+      console.log(`  liquefactionRiskCandidate range: ${lqMin} 〜 ${lqMax} (mean: ${lqMean.toFixed(2)})`);
+    }
+    const byLqStatus = (s: string) =>
+      merged.filter((m) => m["liquefactionDataStatus"] === s).length;
+    console.log(
+      `  scored=${byLqStatus("scored")}` +
+      ` no-liquefaction-risk=${byLqStatus("no-liquefaction-risk")}` +
+      ` no-liquefaction-area=${byLqStatus("no-liquefaction-area")}` +
+      ` ward-averaged=${byLqStatus("ward-averaged")}` +
+      ` missing=${byLqStatus("missing")}`,
     );
   }
 

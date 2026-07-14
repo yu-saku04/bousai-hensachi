@@ -57,7 +57,12 @@
     "score:storm-surge-v1": ".venv-flood/bin/python scripts/scoring/score-storm-surge-v1.py --pref 14 --output data/processed/storm-surge-sample-14.json",
     "score:storm-surge-v1:all": ".venv-flood/bin/python scripts/scoring/score-storm-surge-v1-all.py --output data/processed/storm-surge-scores.json",
     "score:storm-surge-v1:merge": ".venv-flood/bin/python scripts/scoring/score-storm-surge-v1-all.py --merge-only --output data/processed/storm-surge-scores.json",
-    "import:storm-surge": "tsx scripts/importers/import-storm-surge.ts"
+    "import:storm-surge": "tsx scripts/importers/import-storm-surge.ts",
+    "fetch:jshis-liquefaction": ".venv-flood/bin/python scripts/fetchers/fetch-jshis-liquefaction.py",
+    "score:liquefaction-v1": ".venv-flood/bin/python scripts/scoring/score-liquefaction-v1.py --pref 12 --output data/processed/liquefaction-sample-12.json",
+    "score:liquefaction-v1:all": ".venv-flood/bin/python scripts/scoring/score-liquefaction-v1-all.py --output data/processed/liquefaction-scores.json",
+    "score:liquefaction-v1:merge": ".venv-flood/bin/python scripts/scoring/score-liquefaction-v1-all.py --merge-only --output data/processed/liquefaction-scores.json",
+    "import:liquefaction": "tsx scripts/importers/import-liquefaction.ts"
   },
   "dependencies": {
     "next": "16.2.6",

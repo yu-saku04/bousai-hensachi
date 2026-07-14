@@ -120,6 +120,10 @@ function buildAiAdviceComment(data: Municipality): string {
     sentences.push("高潮への備えを優先してください。");
   }
 
+  if (typeof data.liquefactionRiskCandidate === "number" && clampScore(data.liquefactionRiskCandidate) <= 40) {
+    sentences.push("地形由来の液状化発生傾向が高い地域です。地盤状況の確認を推奨します。");
+  }
+
   const shelterVal =
     typeof data.shelterScore === "number"
       ? data.shelterScore
@@ -216,6 +220,23 @@ function formatStormSurgeMaxDepth(
   if (status !== "scored" && status !== "ward-averaged") return "未算出";
   if (typeof value !== "number") return "未算出";
   return value > 0 ? `${value}m以上` : "0.3m未満";
+}
+
+function getLiquefactionStatusLabel(status: Municipality["liquefactionDataStatus"]): string {
+  switch (status) {
+    case "scored":
+      return "液状化発生傾向算出済み";
+    case "no-liquefaction-risk":
+      return "液状化発生傾向なし（低リスク地形）";
+    case "no-liquefaction-area":
+      return "陸域メッシュなし";
+    case "ward-averaged":
+      return "行政区データから市全体を平均";
+    case "missing":
+      return "液状化データ未算出";
+    default:
+      return "未算出";
+  }
 }
 
 function getFloodStatusLabel(status: Municipality["floodDataStatus"]): string {
@@ -323,10 +344,11 @@ export default async function ResultPage({ params }: PageProps) {
     ? (data.overallScoreV2Version ?? "v2")
     : "旧スコア";
   const levelLabel = getScoreLevelLabel(score);
-  const floodStatusLabel      = getFloodStatusLabel(data.floodDataStatus);
-  const landslideStatusLabel  = getLandslideStatusLabel(data.landslideDataStatus);
-  const tsunamiStatusLabel    = getTsunamiStatusLabel(data.tsunamiDataStatus);
-  const stormSurgeStatusLabel = getStormSurgeStatusLabel(data.stormSurgeDataStatus);
+  const floodStatusLabel        = getFloodStatusLabel(data.floodDataStatus);
+  const landslideStatusLabel    = getLandslideStatusLabel(data.landslideDataStatus);
+  const tsunamiStatusLabel      = getTsunamiStatusLabel(data.tsunamiDataStatus);
+  const stormSurgeStatusLabel   = getStormSurgeStatusLabel(data.stormSurgeDataStatus);
+  const liquefactionStatusLabel = getLiquefactionStatusLabel(data.liquefactionDataStatus);
   const overallRanking = calculateRank(data, getAllMunicipalities());
   const shelterRadarScore =
     typeof data.shelterScore === "number"
@@ -340,6 +362,7 @@ export default async function ResultPage({ params }: PageProps) {
     { label: "土砂", value: getOptionalScore(data.landslideRiskCandidate) },
     { label: "津波", value: getOptionalScore(data.tsunamiRiskCandidate) },
     { label: "高潮", value: getOptionalScore(data.stormSurgeRiskCandidate) },
+    { label: "液状化", value: getOptionalScore(data.liquefactionRiskCandidate) },
     { label: "避難所", value: getOptionalScore(shelterRadarScore) },
     { label: "高齢化", value: getOptionalScore(data.agingRisk) },
     { label: "世帯", value: getOptionalScore(data.householdRisk) },
@@ -562,7 +585,7 @@ export default async function ResultPage({ params }: PageProps) {
           </section>
         )}
 
-        {/* 総合防災偏差値 v2.4 の内訳 */}
+        {/* 総合防災偏差値 v2.5 の内訳 */}
         {typeof data.overallScoreV2 === "number" && (
           <section className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm space-y-4">
             <div className="flex items-center gap-2">
@@ -728,6 +751,48 @@ export default async function ResultPage({ params }: PageProps) {
                 </div>
                 <p className="text-[11px] leading-relaxed text-gray-500">
                   高潮スコアは国土数値情報A49を基に算出しています。データ未整備地域は高潮項目を総合スコア計算から除外しています。
+                </p>
+              </div>
+              <div className="rounded-xl bg-gray-50 px-3 py-3 space-y-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-base" aria-hidden="true">🌱</span>
+                  <span className="text-xs text-gray-600 flex-1">液状化発生傾向</span>
+                  {typeof data.liquefactionRiskCandidate === "number" ? (
+                    <span className={`text-sm font-bold tabular-nums ${getScoreLevelColor(clampScore(data.liquefactionRiskCandidate))}`}>
+                      {clampScore(data.liquefactionRiskCandidate)}
+                    </span>
+                  ) : (
+                    <span className="text-xs text-gray-400">未算出</span>
+                  )}
+                </div>
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  <div>
+                    <p className="text-gray-400">データ状態</p>
+                    <p className="font-medium text-gray-700 leading-snug">{liquefactionStatusLabel}</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-400">液状化傾向地面積比</p>
+                    <p className="font-medium text-gray-700 tabular-nums">
+                      {typeof data.liquefactionSusceptibleAreaRatio === "number"
+                        ? `${(data.liquefactionSusceptibleAreaRatio * 100).toFixed(1)}%`
+                        : "未算出"}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-gray-400">高リスク地面積比</p>
+                    <p className="font-medium text-gray-700 tabular-nums">
+                      {typeof data.liquefactionHighRiskAreaRatio === "number"
+                        ? `${(data.liquefactionHighRiskAreaRatio * 100).toFixed(1)}%`
+                        : "未算出"}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-gray-400">代表地形</p>
+                    <p className="font-medium text-gray-700">{data.liquefactionMaxRiskClass ?? "—"}</p>
+                  </div>
+                </div>
+                <p className="text-[11px] leading-relaxed text-gray-500">
+                  液状化スコアはJ-SHIS 250mメッシュ微地形区分（若松・松岡2020）に基づく地形由来の発生傾向指標です。個別地点の地盤状態や実際の液状化被害を保証するものではありません。
                 </p>
               </div>
             </div>

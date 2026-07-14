@@ -65,6 +65,18 @@ data/raw/tsunami/A40/*.zip
 data/raw/storm-surge/A49/*.zip
 data/raw/storm-surge/A49/**/*.zip
 
+# J-SHIS Liquefaction raw ZIP (原データ複製禁止・再配布禁止)
+data/raw/liquefaction/
+
+# Liquefaction generated outputs
+data/processed/liquefaction/
+data/processed/liquefaction-scores.json
+data/processed/liquefaction-sample-*.json
+
+# Python cache
+__pycache__/
+*.pyc
+
 # vercel
 .vercel
 

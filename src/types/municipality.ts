@@ -99,7 +99,16 @@ export interface Municipality {
   stormSurgeMaxDepthM?: number | null;
   stormSurgeSource?: string;
   stormSurgeUpdatedAt?: string;
-  // overallScoreV2 (v2.4 = earthquake + flood + landslide + tsunami + storm surge)
+  // liquefaction-v1 (地形由来の液状化発生傾向)
+  liquefactionRiskCandidate?: number | null;
+  liquefactionDataStatus?: "scored" | "no-liquefaction-risk" | "no-liquefaction-area" | "ward-averaged" | "missing";
+  liquefactionSusceptibleAreaRatio?: number | null;
+  liquefactionHighRiskAreaRatio?: number | null;
+  liquefactionMaxRiskClass?: string | null;
+  liquefactionSource?: string;
+  liquefactionMethod?: string;
+  liquefactionUpdatedAt?: string;
+  // overallScoreV2 (v2.5 = earthquake + flood + landslide + tsunami + storm surge + liquefaction)
   overallScoreV2?: number | null;
   overallScoreV2Version?: string;
 }
