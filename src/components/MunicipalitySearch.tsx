@@ -9,6 +9,10 @@ import type { MunicipalityIndex } from "@/lib/search-index";
 const MAX_KEYWORD_LENGTH = 50;
 const MAX_RESULTS = 20;
 
+function getDisplayOverallScore(m: MunicipalityIndex): number {
+  return typeof m.overallScoreV2 === "number" ? m.overallScoreV2 : m.overallScore;
+}
+
 export default function MunicipalitySearch() {
   const [keyword, setKeyword] = useState("");
   const [results, setResults] = useState<MunicipalityIndex[]>([]);
@@ -71,7 +75,7 @@ export default function MunicipalitySearch() {
         {results.map((m) => {
           const path = buildResultPath(m.jisCode);
           if (!path) return null;
-          const score = clampScore(m.overallScore);
+          const score = clampScore(getDisplayOverallScore(m));
           return (
             <li key={m.id}>
               <Link

@@ -298,6 +298,7 @@ interface SearchIndexEntry {
   prefecture: string;
   municipality: string;
   overallScore: number;
+  overallScoreV2?: number | null;
 }
 
 function generateSearchIndex(
@@ -310,6 +311,7 @@ function generateSearchIndex(
     prefecture:   m.prefecture   as string,
     municipality: m.municipality as string,
     overallScore: m.overallScore as number,
+    overallScoreV2: typeof m.overallScoreV2 === "number" ? m.overallScoreV2 : null,
   }));
 
   // 1行1エントリのコンパクト形式で出力

@@ -36,7 +36,7 @@
  *      - status 別: scored(maxDepthDanger 1〜5 / floodAreaRatio 0〜1)
  *                   no-flood-data(maxDepthDanger=0 / floodAreaRatio=0)
  *                   ward-averaged(floodRiskCandidate number / floodSource string)
- * 18b. flood-v1 フィールド検証（municipalities.json / overallScoreV2 v2.3）
+ * 18b. flood-v1 フィールド検証（municipalities.json / overallScoreV2 v2.5）
  *      - floodRiskCandidate 10〜90 整数（全自治体必須）
  *      - floodUpdatedAt 非空 string（全自治体必須）
  *      - 件数: scored=1429 / no-flood-data=469 / ward-averaged=20 / missing=0
@@ -2507,6 +2507,7 @@ function validateDatasets(inputPath: string, strictMode = false, sheltersPath?: 
         prefecture: string;
         municipality: string;
         overallScore: number;
+        overallScoreV2?: number | null;
       }>;
 
       if (searchIndex.length !== data.length) {
@@ -2547,6 +2548,14 @@ function validateDatasets(inputPath: string, strictMode = false, sheltersPath?: 
             errors.push(
               `search-index overallScore 不一致 [${entry.id}]: ` +
               `index=${entry.overallScore} vs municipalities=${m.overallScore}`
+            );
+          }
+          const expectedOverallScoreV2 = typeof m.overallScoreV2 === "number" ? m.overallScoreV2 : null;
+          const indexOverallScoreV2 = typeof entry.overallScoreV2 === "number" ? entry.overallScoreV2 : null;
+          if (indexOverallScoreV2 !== expectedOverallScoreV2) {
+            errors.push(
+              `search-index overallScoreV2 不一致 [${entry.id}]: ` +
+              `index=${indexOverallScoreV2} vs municipalities=${expectedOverallScoreV2}`
             );
           }
         }

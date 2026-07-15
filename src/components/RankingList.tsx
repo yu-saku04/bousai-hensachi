@@ -7,6 +7,10 @@ interface RankingListProps {
   ranking: Municipality[];
 }
 
+function getDisplayOverallScore(m: Municipality): number {
+  return typeof m.overallScoreV2 === "number" ? m.overallScoreV2 : m.overallScore;
+}
+
 export default function RankingList({ ranking }: RankingListProps) {
   if (ranking.length === 0) {
     return (
@@ -25,7 +29,7 @@ export default function RankingList({ ranking }: RankingListProps) {
       </div>
       <ol>
         {ranking.map((m, i) => {
-          const score = clampScore(m.overallScore);
+          const score = clampScore(getDisplayOverallScore(m));
           const color = getScoreLevelColor(score);
           const label = getScoreLevelLabel(score);
           const bg = getScoreLevelBg(score);

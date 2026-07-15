@@ -6,6 +6,7 @@ export interface MunicipalityIndex {
   prefecture: string;
   municipality: string;
   overallScore: number;
+  overallScoreV2?: number | null;
 }
 
 const index = rawIndex as MunicipalityIndex[];

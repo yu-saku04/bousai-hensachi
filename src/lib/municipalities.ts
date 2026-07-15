@@ -47,14 +47,24 @@ export function getMunicipalitiesByPrefecture(prefecture: string): Municipality[
   return data.filter((m) => m.prefecture === prefecture);
 }
 
+export function getDisplayOverallScore(m: Municipality): number {
+  return typeof m.overallScoreV2 === "number" ? m.overallScoreV2 : m.overallScore;
+}
+
 export function getRanking(): Municipality[] {
-  return [...data].sort((a, b) => b.overallScore - a.overallScore);
+  return [...data].sort((a, b) => {
+    const scoreDiff = getDisplayOverallScore(b) - getDisplayOverallScore(a);
+    if (scoreDiff !== 0) return scoreDiff;
+    return a.jisCode.localeCompare(b.jisCode);
+  });
 }
 
 export function getPrefectureRanking(prefecture: string): Municipality[] {
-  return getMunicipalitiesByPrefecture(prefecture).sort(
-    (a, b) => b.overallScore - a.overallScore
-  );
+  return getMunicipalitiesByPrefecture(prefecture).sort((a, b) => {
+    const scoreDiff = getDisplayOverallScore(b) - getDisplayOverallScore(a);
+    if (scoreDiff !== 0) return scoreDiff;
+    return a.jisCode.localeCompare(b.jisCode);
+  });
 }
 
 export function getShelterRanking(): Municipality[] {

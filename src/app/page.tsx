@@ -1,7 +1,7 @@
 import Link from "next/link";
 import SearchForm from "@/components/SearchForm";
 import AdPlaceholder from "@/components/AdPlaceholder";
-import { buildResultPath, getRanking } from "@/lib/municipalities";
+import { buildResultPath, getDisplayOverallScore, getRanking } from "@/lib/municipalities";
 import { getScoreLevelLabel, getScoreLevelColor } from "@/lib/score";
 
 export default function HomePage() {
@@ -48,6 +48,7 @@ export default function HomePage() {
             {topRanking.map((m, i) => {
               const path = buildResultPath(m.jisCode);
               if (!path) return null;
+              const score = getDisplayOverallScore(m);
               return (
                 <li key={m.id}>
                   <Link
@@ -64,11 +65,11 @@ export default function HomePage() {
                       <p className="text-xs text-gray-400">{m.prefecture}</p>
                     </div>
                     <div className="text-right">
-                      <p className={`text-xl font-extrabold tabular-nums ${getScoreLevelColor(m.overallScore)}`}>
-                        {m.overallScore}
+                      <p className={`text-xl font-extrabold tabular-nums ${getScoreLevelColor(score)}`}>
+                        {score}
                       </p>
-                      <p className={`text-xs ${getScoreLevelColor(m.overallScore)}`}>
-                        {getScoreLevelLabel(m.overallScore)}
+                      <p className={`text-xs ${getScoreLevelColor(score)}`}>
+                        {getScoreLevelLabel(score)}
                       </p>
                     </div>
                   </Link>

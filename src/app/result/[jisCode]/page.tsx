@@ -855,7 +855,7 @@ export default async function ResultPage({ params }: PageProps) {
             </div>
 
             <p className="text-xs text-gray-400 leading-relaxed pt-1 border-t border-gray-50">
-              ランキング・検索の並び順は現時点では旧スコア基準です。一部詳細指標は旧v1項目を含みます。
+              ランキング・検索候補の表示は総合防災偏差値 {scoreVersionLabel} を優先します。一部詳細指標は旧v1項目を含みます。
             </p>
           </section>
         )}
