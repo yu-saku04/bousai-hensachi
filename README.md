@@ -2,7 +2,8 @@
 
 > あなたの街の災害リスクを、わかりやすく数値化
 
-市区町村ごとの防災リスクを偏差値形式でわかりやすく数値化するWebサービスのMVPです。
+全国1,918自治体を対象に、オープンデータを用いて自然災害リスクを総合評価するWebアプリです。
+各自治体について複数の災害リスクを統合し、独自指標 **overallScoreV2** を算出しています。
 
 ---
 
@@ -83,9 +84,26 @@ src/
 │   ├── municipalities.ts                   # データアクセス・検索・ランキングロジック
 │   └── score.ts                            # スコア判定ロジック
 ├── types/
-│   └── municipality.ts                     # 型定義・定数（Phase2/3フィールド含む）
+│   └── municipality.ts                     # 型定義・定数（Phase2/3フィールド・液状化フィールド含む）
 scripts/
-└── csv-to-json.ts                          # [Phase2] CSV→JSON変換スクリプト雛形
+├── csv-to-json.ts                          # [Phase2] CSV→JSON変換スクリプト雛形
+├── merge-datasets.ts                       # processed/ データを municipalities.json に統合
+├── validate-datasets.ts                    # 投入後の品質チェック
+├── fetchers/
+│   ├── fetch-estat-population-2020.ts      # e-Stat 人口APIフェッチャー
+│   └── fetch-jshis-liquefaction.py         # J-SHIS 液状化メッシュデータ取得
+├── scoring/
+│   ├── score-overall-v2.ts                 # overallScoreV2 算出
+│   ├── score-liquefaction-v1.py            # 液状化リスク v1 単一自治体スコアリング
+│   └── score-liquefaction-v1-all.py        # 液状化リスク v1 全国一括スコアリング
+└── importers/
+    ├── import-shelters.ts
+    ├── import-population.ts
+    ├── import-flood.ts
+    ├── import-landslide.ts
+    ├── import-tsunami.ts
+    ├── import-storm-surge.ts
+    └── import-liquefaction.ts              # 液状化 JSON → data/processed/liquefaction.json
 ```
 
 ---
@@ -122,6 +140,14 @@ interface Municipality {
   familyDisasterIndex?: number;
   postDisasterLivingRisk?: number;
   aiComment?: string;
+  // 液状化リスク v1（optional）
+  liquefactionRiskCandidate?: number | null;
+  liquefactionDataStatus?: "scored" | "no-liquefaction-risk" | "no-liquefaction-area" | "ward-averaged" | "missing";
+  liquefactionSusceptibleAreaRatio?: number | null;
+  liquefactionHighRiskAreaRatio?: number | null;
+  liquefactionMaxRiskClass?: string | null;
+  liquefactionSource?: string;
+  liquefactionUpdatedAt?: string;
 }
 ```
 
@@ -180,7 +206,7 @@ interface Municipality {
 - `src/data/data-sources.json` — 14件のデータソースカタログ（ステータス管理付き）
 - `src/app/sources/page.tsx` — データ収集状況を可視化するカタログページ
 - `src/lib/normalize.ts` — スコア正規化ユーティリティ（パーセンタイル/偏差/線形）
-- `scripts/importers/` — 6種のデータインポータースクリプト
+- `scripts/importers/` — 7種のデータインポータースクリプト
 - `scripts/merge-datasets.ts` — processed/ データを municipalities.json に統合
 - `scripts/validate-datasets.ts` — 投入後の品質チェック（必須フィールド/範囲/重複/乖離）
 - `data/raw/tokyo-23/README.md` — 東京23区データ収集ガイド
@@ -190,14 +216,18 @@ interface Municipality {
 # 1. 各インポーター実行
 npm run import:shelters:national   # → data/processed/shelters.json
 npm run import:population          # → data/processed/population.json
+npm run import:liquefaction        # → data/processed/liquefaction.json
 
 # 2. 統合（processed/*.json を municipalities.json にマージ）
 npm run merge:data:strict
 
-# 3. 検証
+# 3. overallScoreV2 v2.5 を書き込み
+npm run score:overall-v2:write
+
+# 4. 検証
 npm run validate:data -- --strict
 
-# 4. ビルド確認
+# 5. ビルド確認
 npm run build
 ```
 
@@ -339,12 +369,12 @@ npm run validate:data
 #   --input src/data/municipalities.json
 ```
 
-検証内容: 必須フィールド、スコア範囲、重複ID、overallScore乖離、Phase3カバレッジ、避難所関連フィールド
+検証内容: 必須フィールド、スコア範囲、重複ID、overallScore乖離、Phase3カバレッジ、避難所関連フィールド、液状化フィールド、overallScoreV2 v2.5 再計算整合性
 
 ### まとめてのデータ投入フロー
 
 ```bash
-npm run import:shelters   # 1. CSVを変換
+npm run import:shelters    # 1. CSVを変換
 npm run merge:data         # 2. municipalities.json に統合
 npm run validate:data      # 3. 品質確認
 npm run build             # 4. ビルド確認
@@ -567,22 +597,24 @@ npm run build
 
 ---
 
-## 全国防災偏差値 v2.3（overallScoreV2）
+## 全国防災偏差値 v2.5（overallScoreV2）
 
 ### 概要
 
-v2.3 は **ハザード・インフラ・社会脆弱性** の 3 軸を実データで算出する統合スコアです。
+v2.5 は **ハザード・インフラ・社会脆弱性** の 3 軸を実データで算出する統合スコアです。
 旧スコア（`overallScore`）は引き続き並走しており、ランキング・検索は旧スコア基準のままです。
-v2.3 の結果ページへの表示切り替えは完了済みです。
+v2.5 の結果ページへの表示切り替えは完了済みです。
 
 ### 対応データ（全 1,918 自治体）
 
 | 軸 | 指標 | フィールド | ウェイト |
 |---|---|---|---|
-| ハザード（40%） | 地震リスク | `earthquakeRisk` | 20% |
-| ハザード（40%） | 洪水リスク | `floodRiskCandidate` | 20% |
+| ハザード（40%） | 地震リスク | `earthquakeRisk` | null-safe mean |
+| ハザード（40%） | 洪水リスク | `floodRiskCandidate` | null-safe mean |
 | ハザード（40%） | 土砂災害リスク | `landslideRiskCandidate` | null-safe mean |
 | ハザード（40%） | 津波リスク | `tsunamiRiskCandidate` | null-safe mean |
+| ハザード（40%） | 高潮リスク | `stormSurgeRiskCandidate` | null-safe mean |
+| ハザード（40%） | 液状化発生傾向 | `liquefactionRiskCandidate` | null-safe mean |
 | インフラ（30%） | 避難所充足度 | `shelterScore` / `shelterCapacity` | 30% |
 | 社会脆弱性（30%） | 高齢化リスク | `agingRisk` | 15% |
 | 社会脆弱性（30%） | 世帯脆弱リスク | `householdRisk` | 15% |
@@ -590,20 +622,135 @@ v2.3 の結果ページへの表示切り替えは完了済みです。
 ### overallScoreV2 の説明
 
 ```
-overallScoreV2 = round(
-  hazardScore        × 0.40 +
-  shelterScore      × 0.30 +
-  agingRisk         × 0.15 +
-  householdRisk     × 0.15
+hazardScore = nullSafeMean(
+  earthquakeRisk, floodRiskCandidate, landslideRiskCandidate,
+  tsunamiRiskCandidate, stormSurgeRiskCandidate, liquefactionRiskCandidate
+)
+
+overallScoreV2 = clamp(
+  round(
+    hazardScore        × 0.40 +
+    shelterScore       × 0.30 +
+    socialScore        × 0.30
+  ),
+  10, 90
 )
 ```
 
 - スコア範囲: 10〜90（整数）
 - 高いほど安全・余裕あり
-- `hazardScore` は `earthquakeRisk` / `floodRiskCandidate` / `landslideRiskCandidate` / `tsunamiRiskCandidate` の null-safe mean
-- 津波データ未提供地域は `tsunamiRiskCandidate = null` とし、津波項目を総合スコア計算から除外
-- `overallScoreV2Version === "v2.3"` を全自治体に付与
+- `hazardScore` は 6 指標の null-safe 均等平均（データがない指標は除外して残り指標で再正規化）
+- `socialScore` は `mean(agingRisk, householdRisk)`
+- `overallScoreV2Version === "v2.5"` を全自治体に付与
 - 算出ロジック: `scripts/scoring/score-overall-v2.ts`
+
+### バージョン履歴
+
+| バージョン | 変更内容 |
+|---|---|
+| v2.5 | 液状化リスク v1 を追加。Hazard を 6 指標均等平均化。 |
+| v2.4 | 高潮リスクを Hazard に追加。 |
+| v2.3 | 津波・土砂・洪水を統合。Hazard 4 指標体制に移行。 |
+
+---
+
+## 液状化リスク v1
+
+### 概要
+
+v2.5 で新たに追加した、**地形由来の液状化発生傾向** を示す参考指標です。
+
+| 項目 | 内容 |
+|---|---|
+| データソース | J-SHIS 全国 250m メッシュ微地形区分（防災科学技術研究所） |
+| 参照文献 | 若松・松岡（2020）WM2020 |
+| スコア範囲 | 0〜100（高いほど安全） |
+| 全国件数 | 1,918 自治体 |
+| フィールド名 | `liquefactionRiskCandidate` |
+
+### 評価方法
+
+自治体内の 250m メッシュを集計し、微地形区分ごとのリスク係数（0〜100）を面積加重平均して算出します。
+
+```
+liquefactionRiskCandidate = clamp(round(100 - Σ(area_ratio_i × risk_i)), 0, 100)
+```
+
+主な微地形区分とリスク傾向:
+
+| 地形区分 | リスク傾向 |
+|---------|-----------|
+| 山地・丘陵・台地 | 低リスク |
+| 扇状地・砂礫質低地 | 低〜中リスク |
+| 低地（一般）・自然堤防 | 中リスク |
+| 後背湿地・旧河道 | 高リスク |
+| 三角州・干拓地・埋立地 | 最高リスク |
+
+### 付属フィールド
+
+| フィールド | 内容 |
+|---|---|
+| `liquefactionDataStatus` | `scored` / `no-liquefaction-risk` / `no-liquefaction-area` / `ward-averaged` / `missing` |
+| `liquefactionSusceptibleAreaRatio` | 液状化発生傾向あり地形の面積比（0〜1） |
+| `liquefactionHighRiskAreaRatio` | 高リスク地形の面積比（0〜1） |
+| `liquefactionMaxRiskClass` | 市内最大リスク微地形区分名 |
+| `liquefactionSource` | データ出典 |
+| `liquefactionUpdatedAt` | データ更新日 |
+
+### データ状況（全国 1,918 自治体）
+
+| ステータス | 件数 | 内容 |
+|---|---|---|
+| `scored` | 1,890 | 実データから算出済み |
+| `no-liquefaction-risk` | 8 | 液状化発生傾向なし（低リスク地形のみ） |
+| `ward-averaged` | 20 | 政令市・区データを validLandMeshCount 加重平均 |
+| `missing` | 0 | — |
+
+### 注意事項
+
+本指標は **地形由来の液状化発生傾向** を示す参考値です。以下は評価対象ではありません。
+
+- PL値（液状化危険度の強度指標）
+- ボーリング調査・地盤調査結果
+- 地盤改良状況
+- 個別敷地の液状化危険度
+
+土地購入・建築等の判断には、自治体液状化ハザードマップ・地盤調査・専門家の調査結果を必ず併せて確認してください。
+
+### 液状化 ETL パイプライン
+
+生データ（J-SHIS ZIP）は `.gitignore` で除外しています。再生成が必要な場合は以下の順で実行してください。
+
+```bash
+# 1. J-SHIS から全国メッシュデータを取得（要: 防災科研の利用規約に同意）
+npm run fetch:jshis-liquefaction
+# → data/raw/liquefaction/ に ZIP を保存（.gitignore対象）
+
+# 2. 全国スコアを一括算出（Python / geopandas 環境が必要）
+npm run score:liquefaction-v1:all
+# → data/processed/liquefaction-scores.json（.gitignore対象）
+
+# 3. municipalities.json 向けに正規化
+npm run import:liquefaction
+# → data/processed/liquefaction.json（コミット対象）
+
+# 4. municipalities.json にマージ
+npm run merge:data:strict
+
+# 5. overallScoreV2 v2.5 を書き込み
+npm run score:overall-v2:write
+
+# 6. 検証
+npm run validate:data -- --strict
+```
+
+`data/processed/liquefaction.json` をコミット対象とした理由は、Shapefile 再生成（数分）なしでも `merge:data` を再現可能にするためです。`data/raw/liquefaction/` と `data/processed/liquefaction-scores.json` は `.gitignore` 対象です。
+
+### Python 環境について
+
+全国スコアリングには `geopandas` が必要です。現在は `.venv-flood/` に geopandas 1.0.1 が導入されており、`score-liquefaction-v1-all.py` はこの仮想環境を使用します。
+
+---
 
 ### Flood ETL 再生成手順
 
@@ -662,7 +809,7 @@ npm run validate:data -- --strict
 # 2. Lint
 npm run lint
 
-# 3. ビルド（1,918ページの SSG が成功することを確認）
+# 3. ビルド（1,977ページの SSG が成功することを確認）
 npm run build
 ```
 
@@ -683,7 +830,7 @@ npm run build
 ## Vercelデプロイ
 
 ```bash
-npx vercel
+npx vercel --prod
 ```
 
 または GitHubリポジトリをVercelに接続して自動デプロイ。
@@ -694,5 +841,6 @@ npx vercel
 ## 注意事項
 
 - GSI指定避難所CSV 83,148施設 / 1,714自治体は投入済みです。一部指標は初期値・設計値を含みます
+- 液状化スコアは地形由来の発生傾向指標です。PL値・ボーリング調査結果ではありません
 - 防災情報の最終確認は必ず自治体・国土交通省・消防庁等の公的機関の情報をご確認ください
 - 本サービスの情報は防災意識向上を目的としており、正確性・完全性を保証するものではありません
