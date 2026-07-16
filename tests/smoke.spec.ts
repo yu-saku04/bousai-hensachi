@@ -4,9 +4,10 @@
  * - 自治体詳細: 名称・スコア・レーダー・液状化・出典
  * - ランキング: 一覧・スコア数値・フィルター・リンク
  * - トップ: TOP3・検索フォーム
- * - スコア整合性: ランキング表示スコア == 詳細ページスコア
+ * - スコア整合性: JSONデータ == 詳細ページ == 都道府県ランキング
  */
 import { test, expect, Page } from "@playwright/test";
+import { getExpectedScore, getMunicipality, normalizeScoreText } from "./helpers/municipalities";
 
 const ANOMALY_RE = /\bNaN\b|\bInfinity\b|\bundefined\b|Application error|Internal Server Error/;
 
@@ -154,13 +155,13 @@ test.describe("ランキングページ", () => {
 // ---------------------------------------------------------------------------
 
 const MUNICIPALITY_CASES = [
-  { jis: "23220", name: "稲沢市",       score: 44, liqStatus: "scored",              liqScore: 22, expectAdvice: true },
-  { jis: "23237", name: "あま市",       score: 44, liqStatus: "scored",              liqScore: 46, expectAdvice: false },
-  { jis: "12227", name: "浦安市",       score: 53, liqStatus: "scored",              liqScore: 56, expectAdvice: false },
-  { jis: "12106", name: "千葉市美浜区", score: 56, liqStatus: "scored",              liqScore: 58, expectAdvice: false },
-  { jis: "27100", name: "大阪市",       score: 52, liqStatus: "ward-averaged",       liqScore: 42, expectAdvice: false },
-  { jis: "07407", name: "磐梯町",       score: 64, liqStatus: "no-liquefaction-risk",liqScore: 100, expectAdvice: false },
-  { jis: "20201", name: "長野市",       score: 72, liqStatus: "scored",              liqScore: 89, expectAdvice: false },
+  { jis: "23220", name: "稲沢市",       liqStatus: "scored",               expectAdvice: true  },
+  { jis: "23237", name: "あま市",       liqStatus: "scored",               expectAdvice: false },
+  { jis: "12227", name: "浦安市",       liqStatus: "scored",               expectAdvice: false },
+  { jis: "12106", name: "千葉市美浜区", liqStatus: "scored",               expectAdvice: false },
+  { jis: "27100", name: "大阪市",       liqStatus: "ward-averaged",        expectAdvice: false },
+  { jis: "07407", name: "磐梯町",       liqStatus: "no-liquefaction-risk", expectAdvice: false },
+  { jis: "20201", name: "長野市",       liqStatus: "scored",               expectAdvice: false },
 ] as const;
 
 for (const m of MUNICIPALITY_CASES) {
@@ -174,9 +175,10 @@ for (const m of MUNICIPALITY_CASES) {
     });
 
     test("総合スコアが正しい値で表示される", async ({ page }) => {
+      const expected = getExpectedScore(m.jis);
       const scoreEl = page.locator(".text-7xl");
       await expect(scoreEl).toBeVisible();
-      await expect(scoreEl).toHaveText(String(m.score));
+      await expect(scoreEl).toHaveText(String(expected));
     });
 
     test("v2.5表記が存在する", async ({ page }) => {
@@ -226,25 +228,39 @@ for (const m of MUNICIPALITY_CASES) {
 }
 
 // ---------------------------------------------------------------------------
-// スコア整合性: ランキング表示スコア == 詳細ページスコア
+// スコア整合性: JSONデータ == 詳細ページ == 都道府県ランキング
 // ---------------------------------------------------------------------------
 
+const CONSISTENCY_CASES = [
+  { jis: "23220", name: "稲沢市" },
+  { jis: "12227", name: "浦安市" },
+  { jis: "20201", name: "長野市" },
+  { jis: "27100", name: "大阪市" },
+] as const;
+
 test.describe("スコア整合性", () => {
-  test("稲沢市: ランキングのスコアと詳細ページのスコアが一致する", async ({ page }) => {
-    // 1. ランキングページで稲沢市のスコアを取得
-    await page.goto("/ranking");
-    const nagoRow = page.locator("ol li a[href='/result/23220']");
-    await expect(nagoRow).toBeVisible();
-    await nagoRow.scrollIntoViewIfNeeded();
-    // RankingList スコアバッジは rounded-lg font-semibold text-xs の div
-    const rankingScore = await nagoRow.locator(".rounded-lg.font-semibold").first().innerText();
+  for (const { jis, name } of CONSISTENCY_CASES) {
+    test(`${name}: JSONデータ・詳細ページ・都道府県ランキングのスコアが一致する`, async ({ page }) => {
+      const expected = getExpectedScore(jis);
+      const prefecture = getMunicipality(jis).prefecture;
 
-    // 2. 詳細ページのスコアと比較
-    await page.goto("/result/23220");
-    const detailScore = await page.locator(".text-7xl").innerText();
+      // 1. 都道府県ランキングページでスコアを取得
+      await page.goto(`/ranking/${encodeURIComponent(prefecture)}`);
+      const row = page.locator(`ol li a[href="/result/${jis}"]`);
+      await expect(row).toBeVisible();
+      const rankingScoreText = await row.locator(".rounded-lg.font-semibold").first().innerText();
+      const rankingScore = normalizeScoreText(rankingScoreText);
 
-    expect(detailScore.trim(), "詳細ページのスコアがランキングと一致すること").toBe(rankingScore.trim());
-  });
+      expect(rankingScore, `[${name}] 都道府県ランキングのスコアがJSONデータと一致`).toBe(expected);
+
+      // 2. 詳細ページのスコアと比較
+      await page.goto(`/result/${jis}`);
+      const detailScoreText = await page.locator(".text-7xl").innerText();
+      const detailScore = normalizeScoreText(detailScoreText);
+
+      expect(detailScore, `[${name}] 詳細ページのスコアがJSONデータと一致`).toBe(expected);
+    });
+  }
 
   test("TOP3筆頭自治体: トップページとランキングページのスコアが一致する", async ({ page }) => {
     // トップページのTOP1のスコアとリンク先
