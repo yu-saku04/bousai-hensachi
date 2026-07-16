@@ -16,6 +16,7 @@
  * 最終値は clamp(round(weighted_avg), 10, 90)。
  *
  * v2.5: Hazard に liquefactionRiskCandidate を追加（6指標均等平均）
+ *        stormSurgeRiskCandidate は A49 全国データ統合済み（298自治体 scored, 11 ward-averaged）
  *
  * Usage:
  *   tsx scripts/scoring/score-overall-v2.ts [--output PATH]

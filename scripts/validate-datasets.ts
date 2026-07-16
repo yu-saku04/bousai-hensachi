@@ -2222,6 +2222,187 @@ function validateLiquefactionV1(
 }
 
 // -------------------------------------------------------
+// storm-surge.json スキーマ検証（calculationVersion を含む中間データ）
+// -------------------------------------------------------
+
+const VALID_STORM_SURGE_JSON_STATUSES = new Set([
+  "scored", "no-storm-surge-data", "no-storm-surge-risk", "ward-averaged", "missing",
+]);
+
+function validateStormSurgeJson(
+  surgePath: string,
+): { errors: string[]; warnings: string[]; stats: Record<string, number | string> } {
+  const errors:   string[] = [];
+  const warnings: string[] = [];
+  const stats: Record<string, number | string> = {};
+
+  if (!fs.existsSync(surgePath)) {
+    warnings.push(
+      `storm-surge.json が存在しません（スキップ）: ${surgePath}` +
+      ` (npm run import:storm-surge を実行してください)`,
+    );
+    return { errors, warnings, stats };
+  }
+
+  let surge: Array<Record<string, unknown>>;
+  try {
+    surge = JSON.parse(fs.readFileSync(surgePath, "utf-8"));
+  } catch {
+    return { errors: [`storm-surge.json JSON parse 失敗: ${surgePath}`], warnings: [], stats: {} };
+  }
+
+  if (!Array.isArray(surge)) {
+    return { errors: [`storm-surge.json は配列である必要があります: ${surgePath}`], warnings: [], stats: {} };
+  }
+
+  stats["storm-surge.json件数"] = surge.length;
+
+  const statusCounts: Record<string, number> = {
+    scored: 0, "no-storm-surge-data": 0, "no-storm-surge-risk": 0, "ward-averaged": 0, missing: 0,
+  };
+
+  for (const s of surge) {
+    const id = `${s["jisCode"] ?? "unknown"}`;
+
+    if (typeof s["jisCode"] !== "string" || !JIS_RE.test(s["jisCode"] as string)) {
+      errors.push(`[${id}] jisCode が無効 (5桁数字必須): ${s["jisCode"]}`);
+    }
+
+    const status = s["stormSurgeDataStatus"];
+    if (typeof status !== "string" || !VALID_STORM_SURGE_JSON_STATUSES.has(status)) {
+      errors.push(
+        `[${id}] stormSurgeDataStatus が無効 (${[...VALID_STORM_SURGE_JSON_STATUSES].join("|")} 必須): ${status}`,
+      );
+      continue;
+    }
+    statusCounts[status] = (statusCounts[status] ?? 0) + 1;
+
+    const candidate = s["stormSurgeRiskCandidate"];
+    if (status !== "missing") {
+      if (
+        typeof candidate !== "number" ||
+        !Number.isInteger(candidate) ||
+        candidate < 0 ||
+        candidate > 100
+      ) {
+        errors.push(`[${id}] stormSurgeRiskCandidate が無効 (0〜100 整数必須): ${candidate}`);
+      }
+    } else if (candidate !== null) {
+      errors.push(`[${id}] missing の stormSurgeRiskCandidate は null 必須: ${candidate}`);
+    }
+
+    if (status === "no-storm-surge-risk" && candidate !== 100) {
+      errors.push(`[${id}] no-storm-surge-risk の stormSurgeRiskCandidate は 100 必須: ${candidate}`);
+    }
+    if (status === "no-storm-surge-data" && candidate !== 100) {
+      errors.push(`[${id}] no-storm-surge-data の stormSurgeRiskCandidate は 100 必須: ${candidate}`);
+    }
+
+    if (status === "scored") {
+      const areaRatio = s["stormSurgeAreaRatio"];
+      if (
+        typeof areaRatio !== "number" ||
+        !Number.isFinite(areaRatio) ||
+        areaRatio < 0 ||
+        areaRatio > 1
+      ) {
+        errors.push(`[${id}] scored の stormSurgeAreaRatio が無効 (0.0〜1.0 必須): ${areaRatio}`);
+      }
+    }
+  }
+
+  stats["storm-surge.json.scored件数"]              = statusCounts.scored;
+  stats["storm-surge.json.no-storm-surge-data件数"] = statusCounts["no-storm-surge-data"];
+  stats["storm-surge.json.no-storm-surge-risk件数"] = statusCounts["no-storm-surge-risk"];
+  stats["storm-surge.json.ward-averaged件数"]        = statusCounts["ward-averaged"];
+  stats["storm-surge.json.missing件数"]              = statusCounts.missing;
+
+  return { errors, warnings, stats };
+}
+
+// -------------------------------------------------------
+// storm-surge-v1 フィールド検証（municipalities.json）
+// -------------------------------------------------------
+
+const VALID_STORM_SURGE_STATUSES = new Set([
+  "scored", "no-storm-surge-data", "no-storm-surge-risk", "ward-averaged", "missing",
+]);
+
+function validateStormSurgeV1(
+  data: Municipality[],
+): { errors: string[]; warnings: string[]; stats: Record<string, number | string> } {
+  const errors:   string[] = [];
+  const warnings: string[] = [];
+  const stats: Record<string, number | string> = {};
+
+  const withSurge = data.filter((m) => m["stormSurgeRiskCandidate"] !== undefined);
+  if (withSurge.length === 0) {
+    warnings.push(
+      "stormSurgeRiskCandidate フィールド未投入 (npm run import:storm-surge を実行してください)",
+    );
+    return { errors, warnings, stats };
+  }
+
+  stats["stormSurge投入件数"] = withSurge.length;
+
+  const statusCounts: Record<string, number> = {
+    scored: 0, "no-storm-surge-data": 0, "no-storm-surge-risk": 0, "ward-averaged": 0, missing: 0,
+  };
+  const candidateVals: number[] = [];
+  let sourceCount = 0;
+
+  for (const m of data) {
+    const id = String(m["jisCode"] ?? m["id"] ?? "unknown");
+    const candidate = m["stormSurgeRiskCandidate"];
+    if (candidate === undefined) continue;
+
+    if (
+      typeof candidate !== "number" ||
+      !Number.isInteger(candidate) ||
+      candidate < 0 ||
+      candidate > 100
+    ) {
+      if (candidate !== null) {
+        errors.push(`[${id}] stormSurgeRiskCandidate が無効 (0〜100 整数または null 必須): ${candidate}`);
+      }
+    } else {
+      candidateVals.push(candidate);
+    }
+
+    const status = m["stormSurgeDataStatus"];
+    if (typeof status === "string" && VALID_STORM_SURGE_STATUSES.has(status)) {
+      statusCounts[status] = (statusCounts[status] ?? 0) + 1;
+      const source = m["stormSurgeSource"];
+      if (typeof source === "string" && source.trim() !== "") {
+        sourceCount++;
+      }
+    } else {
+      errors.push(
+        `[${id}] stormSurgeDataStatus が無効 ` +
+        `(scored|no-storm-surge-data|no-storm-surge-risk|ward-averaged|missing 必須): ${status}`,
+      );
+    }
+  }
+
+  stats["stormSurge.scored件数"]              = statusCounts.scored;
+  stats["stormSurge.no-storm-surge-data件数"] = statusCounts["no-storm-surge-data"];
+  stats["stormSurge.no-storm-surge-risk件数"] = statusCounts["no-storm-surge-risk"];
+  stats["stormSurge.ward-averaged件数"]        = statusCounts["ward-averaged"];
+  stats["stormSurge.missing件数"]              = statusCounts.missing;
+  stats["stormSurgeSource件数"]                = sourceCount;
+
+  if (candidateVals.length > 0) {
+    stats["stormSurgeRiskCandidate最小"] = Math.min(...candidateVals);
+    stats["stormSurgeRiskCandidate最大"] = Math.max(...candidateVals);
+    stats["stormSurgeRiskCandidate平均"] = Math.round(
+      candidateVals.reduce((s, v) => s + v, 0) / candidateVals.length,
+    );
+  }
+
+  return { errors, warnings, stats };
+}
+
+// -------------------------------------------------------
 // overallScoreV2 検証（dry-run）
 // -------------------------------------------------------
 
@@ -2695,6 +2876,18 @@ function validateDatasets(inputPath: string, strictMode = false, sheltersPath?: 
   errors.push(...liquefactionValidation.errors);
   warnings.push(...liquefactionValidation.warnings);
   Object.assign(stats, liquefactionValidation.stats);
+
+  // 23. storm-surge.json スキーマ検証
+  const stormSurgeJsonValidation = validateStormSurgeJson("data/processed/storm-surge.json");
+  errors.push(...stormSurgeJsonValidation.errors);
+  warnings.push(...stormSurgeJsonValidation.warnings);
+  Object.assign(stats, stormSurgeJsonValidation.stats);
+
+  // 23b. storm-surge-v1 フィールド検証（municipalities.json）
+  const stormSurgeValidation = validateStormSurgeV1(data);
+  errors.push(...stormSurgeValidation.errors);
+  warnings.push(...stormSurgeValidation.warnings);
+  Object.assign(stats, stormSurgeValidation.stats);
 
   // 19. overallScoreV2 検証（dry-run）
   const v2Validation = validateOverallScoreV2(data);
