@@ -228,6 +228,47 @@ for (const m of MUNICIPALITY_CASES) {
 }
 
 // ---------------------------------------------------------------------------
+// 高潮セクション表示検証
+// ---------------------------------------------------------------------------
+
+test.describe("高潮セクション表示", () => {
+  test("千葉市美浜区(scored): 高潮スコアと浸水面積率が表示される", async ({ page }) => {
+    await page.goto("/result/12106");
+    await expect(page.getByText("高潮リスク", { exact: false }).first()).toBeVisible();
+    // scored: スコア数値バッジが表示される
+    const badge = page.locator(".text-sm.font-bold.tabular-nums").filter({ hasText: /^\d+$/ }).first();
+    await expect(badge).toBeVisible();
+    // 浸水面積率表示
+    await expect(page.getByText(/%/, { exact: false }).first()).toBeVisible();
+  });
+
+  test("千葉市美浜区(scored, candidate=10): 高潮アドバイスが表示される", async ({ page }) => {
+    await page.goto("/result/12106");
+    await expect(page.getByText("高潮への備えを優先", { exact: false })).toBeVisible();
+  });
+
+  test("長野市(no-storm-surge-risk): 内陸県表記が表示される", async ({ page }) => {
+    await page.goto("/result/20201");
+    await expect(page.getByText("高潮リスク", { exact: false }).first()).toBeVisible();
+    await expect(page.getByText("高潮リスク対象外", { exact: false }).first()).toBeVisible();
+  });
+
+  test("大阪市(ward-averaged): 高潮スコアが表示される", async ({ page }) => {
+    await page.goto("/result/27100");
+    await expect(page.getByText("高潮リスク", { exact: false }).first()).toBeVisible();
+    // ward-averaged のスコアは存在する（44）
+    const stormSection = page.getByText("高潮リスク", { exact: false }).first();
+    await expect(stormSection).toBeVisible();
+  });
+
+  test("磐梯町(missing): 高潮データ未整備が表示される", async ({ page }) => {
+    await page.goto("/result/07407");
+    await expect(page.getByText("高潮リスク", { exact: false }).first()).toBeVisible();
+    await expect(page.getByText("高潮データ未整備", { exact: false })).toBeVisible();
+  });
+});
+
+// ---------------------------------------------------------------------------
 // スコア整合性: JSONデータ == 詳細ページ == 都道府県ランキング
 // ---------------------------------------------------------------------------
 
