@@ -7813,19 +7813,6 @@
     "calculationVersion": "storm-surge-v1"
   },
   {
-    "jisCode": "12000",
-    "prefectureCode": "12",
-    "prefectureName": "千葉県",
-    "municipalityName": "所属未定地",
-    "stormSurgeRiskCandidate": 10,
-    "stormSurgeAreaRatio": 0.931893,
-    "stormSurgeMaxDepthM": 5.0,
-    "stormSurgeDataStatus": "scored",
-    "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
-    "calculationVersion": "storm-surge-v1"
-  },
-  {
     "jisCode": "12101",
     "prefectureCode": "12",
     "prefectureName": "千葉県",
@@ -7835,7 +7822,7 @@
     "stormSurgeMaxDepthM": 10.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -7848,7 +7835,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -7861,7 +7848,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -7874,7 +7861,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -7887,7 +7874,7 @@
     "stormSurgeMaxDepthM": 1.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -7900,7 +7887,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -7913,7 +7900,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -7926,7 +7913,7 @@
     "stormSurgeMaxDepthM": 10.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -7939,7 +7926,7 @@
     "stormSurgeMaxDepthM": 10.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -7952,7 +7939,7 @@
     "stormSurgeMaxDepthM": 1.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -7965,7 +7952,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -7978,7 +7965,7 @@
     "stormSurgeMaxDepthM": 10.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -7991,7 +7978,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8004,7 +7991,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8017,7 +8004,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8030,7 +8017,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8043,7 +8030,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8056,7 +8043,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8069,7 +8056,7 @@
     "stormSurgeMaxDepthM": 10.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8082,7 +8069,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8095,7 +8082,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8108,7 +8095,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8121,7 +8108,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8134,7 +8121,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8147,7 +8134,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8160,7 +8147,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8173,7 +8160,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8186,7 +8173,7 @@
     "stormSurgeMaxDepthM": 1.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8199,7 +8186,7 @@
     "stormSurgeMaxDepthM": 1.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8212,7 +8199,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8225,7 +8212,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8238,7 +8225,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8251,7 +8238,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8264,7 +8251,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8277,7 +8264,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8290,7 +8277,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8303,7 +8290,7 @@
     "stormSurgeMaxDepthM": 3.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8316,7 +8303,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8329,7 +8316,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8342,7 +8329,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8355,7 +8342,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8368,7 +8355,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8381,7 +8368,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8394,7 +8381,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8407,7 +8394,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8420,7 +8407,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8433,7 +8420,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8446,7 +8433,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8459,7 +8446,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8472,7 +8459,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8485,7 +8472,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8498,7 +8485,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8511,7 +8498,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8524,7 +8511,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8537,7 +8524,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8550,7 +8537,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8563,7 +8550,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8576,7 +8563,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8589,20 +8576,7 @@
     "stormSurgeMaxDepthM": 3.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
-    "calculationVersion": "storm-surge-v1"
-  },
-  {
-    "jisCode": "13000",
-    "prefectureCode": "13",
-    "prefectureName": "東京都",
-    "municipalityName": "所属未定地",
-    "stormSurgeRiskCandidate": 69,
-    "stormSurgeAreaRatio": 0.042724,
-    "stormSurgeMaxDepthM": 3.0,
-    "stormSurgeDataStatus": "scored",
-    "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8615,7 +8589,7 @@
     "stormSurgeMaxDepthM": 3.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8628,7 +8602,7 @@
     "stormSurgeMaxDepthM": 10.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8641,7 +8615,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8654,7 +8628,7 @@
     "stormSurgeMaxDepthM": 3.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8667,7 +8641,7 @@
     "stormSurgeMaxDepthM": 3.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8680,7 +8654,7 @@
     "stormSurgeMaxDepthM": 1.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8693,7 +8667,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8706,7 +8680,7 @@
     "stormSurgeMaxDepthM": 10.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8719,7 +8693,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8732,7 +8706,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8745,7 +8719,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8758,7 +8732,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8771,7 +8745,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8784,7 +8758,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8797,7 +8771,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8810,7 +8784,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8823,7 +8797,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8836,7 +8810,7 @@
     "stormSurgeMaxDepthM": 3.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8849,7 +8823,7 @@
     "stormSurgeMaxDepthM": 3.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8862,7 +8836,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8875,7 +8849,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8888,7 +8862,7 @@
     "stormSurgeMaxDepthM": 10.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8901,7 +8875,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8914,7 +8888,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8927,7 +8901,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8940,7 +8914,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8953,7 +8927,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8966,7 +8940,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8979,7 +8953,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -8992,7 +8966,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -9005,7 +8979,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -9018,7 +8992,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -9031,7 +9005,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -9044,7 +9018,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -9057,7 +9031,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -9070,7 +9044,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -9083,7 +9057,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -9096,7 +9070,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -9109,7 +9083,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -9122,7 +9096,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -9135,7 +9109,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -9148,7 +9122,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -9161,7 +9135,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -9174,7 +9148,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -9187,7 +9161,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -9200,7 +9174,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -9213,7 +9187,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -9226,7 +9200,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -9239,7 +9213,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -9252,7 +9226,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -9265,7 +9239,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -9278,7 +9252,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -9291,7 +9265,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -9304,7 +9278,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -9317,7 +9291,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -9330,7 +9304,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -9343,7 +9317,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -9356,7 +9330,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -9369,7 +9343,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -9382,7 +9356,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -9395,7 +9369,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -9408,7 +9382,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -13715,19 +13689,6 @@
     "calculationVersion": "storm-surge-v1"
   },
   {
-    "jisCode": "23000",
-    "prefectureCode": "23",
-    "prefectureName": "愛知県",
-    "municipalityName": "所属未定地",
-    "stormSurgeRiskCandidate": 55,
-    "stormSurgeAreaRatio": 0.175353,
-    "stormSurgeMaxDepthM": 5.0,
-    "stormSurgeDataStatus": "scored",
-    "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
-    "calculationVersion": "storm-surge-v1"
-  },
-  {
     "jisCode": "23101",
     "prefectureCode": "23",
     "prefectureName": "愛知県",
@@ -13737,7 +13698,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -13750,7 +13711,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -13763,7 +13724,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -13776,7 +13737,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -13789,7 +13750,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -13802,7 +13763,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -13815,7 +13776,7 @@
     "stormSurgeMaxDepthM": 1.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -13828,7 +13789,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -13841,7 +13802,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -13854,7 +13815,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -13867,7 +13828,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -13880,7 +13841,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -13893,7 +13854,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -13906,7 +13867,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -13919,7 +13880,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -13932,7 +13893,7 @@
     "stormSurgeMaxDepthM": 1.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -13945,7 +13906,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -13958,7 +13919,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -13971,7 +13932,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -13984,7 +13945,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -13997,7 +13958,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14010,7 +13971,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14023,7 +13984,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14036,7 +13997,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14049,7 +14010,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14062,7 +14023,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14075,7 +14036,7 @@
     "stormSurgeMaxDepthM": 1.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14088,7 +14049,7 @@
     "stormSurgeMaxDepthM": 1.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14101,7 +14062,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14114,7 +14075,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14127,7 +14088,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14140,7 +14101,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14153,7 +14114,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14166,7 +14127,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14179,7 +14140,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14192,7 +14153,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14205,7 +14166,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14218,7 +14179,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14231,7 +14192,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14244,7 +14205,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14257,7 +14218,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14270,7 +14231,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14283,7 +14244,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14296,7 +14257,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14309,7 +14270,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14322,7 +14283,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14335,7 +14296,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14348,7 +14309,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14361,7 +14322,7 @@
     "stormSurgeMaxDepthM": 3.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14374,7 +14335,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14387,7 +14348,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14400,7 +14361,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14413,7 +14374,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14426,7 +14387,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14439,7 +14400,7 @@
     "stormSurgeMaxDepthM": 3.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14452,7 +14413,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14465,7 +14426,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14478,7 +14439,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14491,7 +14452,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14504,7 +14465,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14517,7 +14478,7 @@
     "stormSurgeMaxDepthM": 3.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14530,7 +14491,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14543,7 +14504,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14556,7 +14517,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14569,7 +14530,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14582,7 +14543,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14595,7 +14556,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14608,7 +14569,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -14621,7 +14582,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-22",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -17797,19 +17758,6 @@
     "calculationVersion": "storm-surge-v1"
   },
   {
-    "jisCode": "30000",
-    "prefectureCode": "30",
-    "prefectureName": "和歌山県",
-    "municipalityName": "所属未定地",
-    "stormSurgeRiskCandidate": null,
-    "stormSurgeAreaRatio": null,
-    "stormSurgeMaxDepthM": null,
-    "stormSurgeDataStatus": "not-found",
-    "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
-    "calculationVersion": "storm-surge-v1"
-  },
-  {
     "jisCode": "30201",
     "prefectureCode": "30",
     "prefectureName": "和歌山県",
@@ -17819,7 +17767,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -17832,7 +17780,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -17845,7 +17793,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -17858,7 +17806,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -17871,7 +17819,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -17884,7 +17832,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -17897,7 +17845,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -17910,7 +17858,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -17923,7 +17871,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -17936,7 +17884,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -17949,7 +17897,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -17962,7 +17910,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -17975,7 +17923,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -17988,7 +17936,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -18001,7 +17949,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -18014,7 +17962,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -18027,7 +17975,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -18040,7 +17988,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -18053,7 +18001,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -18066,7 +18014,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -18079,7 +18027,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -18092,7 +18040,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -18105,7 +18053,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -18118,7 +18066,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -18131,7 +18079,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -18144,7 +18092,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -18157,7 +18105,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -18170,7 +18118,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -18183,7 +18131,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -18196,7 +18144,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -20956,19 +20904,6 @@
     "calculationVersion": "storm-surge-v1"
   },
   {
-    "jisCode": "40000",
-    "prefectureCode": "40",
-    "prefectureName": "福岡県",
-    "municipalityName": "所属未定地",
-    "stormSurgeRiskCandidate": 13,
-    "stormSurgeAreaRatio": 0.824627,
-    "stormSurgeMaxDepthM": 10.0,
-    "stormSurgeDataStatus": "scored",
-    "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
-    "calculationVersion": "storm-surge-v1"
-  },
-  {
     "jisCode": "40101",
     "prefectureCode": "40",
     "prefectureName": "福岡県",
@@ -20978,7 +20913,7 @@
     "stormSurgeMaxDepthM": 20.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -20991,7 +20926,7 @@
     "stormSurgeMaxDepthM": 10.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21004,7 +20939,7 @@
     "stormSurgeMaxDepthM": 10.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21017,7 +20952,7 @@
     "stormSurgeMaxDepthM": 10.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21030,7 +20965,7 @@
     "stormSurgeMaxDepthM": 10.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21043,7 +20978,7 @@
     "stormSurgeMaxDepthM": 10.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21056,7 +20991,7 @@
     "stormSurgeMaxDepthM": 10.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21069,7 +21004,7 @@
     "stormSurgeMaxDepthM": 10.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21082,7 +21017,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21095,7 +21030,7 @@
     "stormSurgeMaxDepthM": 10.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21108,7 +21043,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21121,7 +21056,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21134,7 +21069,7 @@
     "stormSurgeMaxDepthM": 3.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21147,7 +21082,7 @@
     "stormSurgeMaxDepthM": 10.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21160,7 +21095,7 @@
     "stormSurgeMaxDepthM": 10.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21173,7 +21108,7 @@
     "stormSurgeMaxDepthM": 10.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21186,7 +21121,7 @@
     "stormSurgeMaxDepthM": 1.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21199,7 +21134,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21212,7 +21147,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21225,7 +21160,7 @@
     "stormSurgeMaxDepthM": 10.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21238,7 +21173,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21251,7 +21186,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21264,7 +21199,7 @@
     "stormSurgeMaxDepthM": 10.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21277,7 +21212,7 @@
     "stormSurgeMaxDepthM": 10.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21290,7 +21225,7 @@
     "stormSurgeMaxDepthM": 10.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21303,7 +21238,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21316,7 +21251,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21329,7 +21264,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21342,7 +21277,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21355,7 +21290,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21368,7 +21303,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21381,7 +21316,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21394,7 +21329,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21407,7 +21342,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21420,7 +21355,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21433,7 +21368,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21446,7 +21381,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21459,7 +21394,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21472,7 +21407,7 @@
     "stormSurgeMaxDepthM": 10.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21485,7 +21420,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21498,7 +21433,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21511,7 +21446,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21524,7 +21459,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21537,7 +21472,7 @@
     "stormSurgeMaxDepthM": 3.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21550,7 +21485,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21563,7 +21498,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21576,7 +21511,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21589,7 +21524,7 @@
     "stormSurgeMaxDepthM": 3.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21602,7 +21537,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21615,7 +21550,7 @@
     "stormSurgeMaxDepthM": 20.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21628,7 +21563,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21641,7 +21576,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21654,7 +21589,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21667,7 +21602,7 @@
     "stormSurgeMaxDepthM": 3.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21680,7 +21615,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21693,7 +21628,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21706,7 +21641,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21719,7 +21654,7 @@
     "stormSurgeMaxDepthM": 3.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21732,7 +21667,7 @@
     "stormSurgeMaxDepthM": 5.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21745,7 +21680,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21758,7 +21693,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21771,7 +21706,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21784,7 +21719,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21797,7 +21732,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21810,7 +21745,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21823,7 +21758,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21836,7 +21771,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "no-storm-surge-data",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21849,7 +21784,7 @@
     "stormSurgeMaxDepthM": 20.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21862,7 +21797,7 @@
     "stormSurgeMaxDepthM": 1.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21875,7 +21810,7 @@
     "stormSurgeMaxDepthM": 10.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21888,7 +21823,7 @@
     "stormSurgeMaxDepthM": 3.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -21901,7 +21836,7 @@
     "stormSurgeMaxDepthM": 10.0,
     "stormSurgeDataStatus": "scored",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ A49-20",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -23647,19 +23582,6 @@
     "calculationVersion": "storm-surge-v1"
   },
   {
-    "jisCode": "46000",
-    "prefectureCode": "46",
-    "prefectureName": "鹿児島県",
-    "municipalityName": "所属未定地",
-    "stormSurgeRiskCandidate": null,
-    "stormSurgeAreaRatio": null,
-    "stormSurgeMaxDepthM": null,
-    "stormSurgeDataStatus": "not-found",
-    "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
-    "calculationVersion": "storm-surge-v1"
-  },
-  {
     "jisCode": "46201",
     "prefectureCode": "46",
     "prefectureName": "鹿児島県",
@@ -23669,7 +23591,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -23682,7 +23604,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -23695,7 +23617,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -23708,7 +23630,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -23721,7 +23643,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -23734,7 +23656,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -23747,7 +23669,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -23760,7 +23682,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -23773,7 +23695,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -23786,7 +23708,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -23799,7 +23721,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -23812,7 +23734,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -23825,7 +23747,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -23838,7 +23760,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -23851,7 +23773,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -23864,7 +23786,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -23877,7 +23799,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -23890,7 +23812,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -23903,7 +23825,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -23916,7 +23838,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -23929,7 +23851,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -23942,7 +23864,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -23955,7 +23877,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -23968,7 +23890,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -23981,7 +23903,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -23994,7 +23916,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24007,7 +23929,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24020,7 +23942,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24033,7 +23955,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24046,7 +23968,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24059,7 +23981,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24072,7 +23994,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24085,7 +24007,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24098,7 +24020,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24111,7 +24033,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24124,7 +24046,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24137,7 +24059,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24150,7 +24072,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24163,7 +24085,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24176,7 +24098,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24189,7 +24111,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24202,7 +24124,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24215,20 +24137,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
-    "calculationVersion": "storm-surge-v1"
-  },
-  {
-    "jisCode": "47000",
-    "prefectureCode": "47",
-    "prefectureName": "沖縄県",
-    "municipalityName": "所属未定地",
-    "stormSurgeRiskCandidate": null,
-    "stormSurgeAreaRatio": null,
-    "stormSurgeMaxDepthM": null,
-    "stormSurgeDataStatus": "not-found",
-    "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24241,7 +24150,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24254,7 +24163,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24267,7 +24176,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24280,7 +24189,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24293,7 +24202,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24306,7 +24215,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24319,7 +24228,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24332,7 +24241,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24345,7 +24254,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24358,7 +24267,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24371,7 +24280,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24384,7 +24293,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24397,7 +24306,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24410,7 +24319,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24423,7 +24332,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24436,7 +24345,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24449,7 +24358,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24462,7 +24371,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24475,7 +24384,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24488,7 +24397,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24501,7 +24410,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24514,7 +24423,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24527,7 +24436,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24540,7 +24449,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24553,7 +24462,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24566,7 +24475,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24579,7 +24488,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24592,7 +24501,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24605,7 +24514,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24618,7 +24527,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24631,7 +24540,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24644,7 +24553,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24657,7 +24566,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24670,7 +24579,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24683,7 +24592,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24696,7 +24605,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24709,7 +24618,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24722,7 +24631,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24735,7 +24644,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24748,7 +24657,7 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
@@ -24761,267 +24670,267 @@
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-found",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
     "jisCode": "01100",
     "prefectureCode": "01",
-    "prefectureName": "",
-    "municipalityName": "",
+    "prefectureName": "北海道",
+    "municipalityName": "札幌市",
     "stormSurgeRiskCandidate": null,
     "stormSurgeAreaRatio": null,
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-processed",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
     "jisCode": "04100",
     "prefectureCode": "04",
-    "prefectureName": "",
-    "municipalityName": "",
+    "prefectureName": "宮城県",
+    "municipalityName": "仙台市",
     "stormSurgeRiskCandidate": null,
     "stormSurgeAreaRatio": null,
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-processed",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
     "jisCode": "11100",
     "prefectureCode": "11",
-    "prefectureName": "",
-    "municipalityName": "",
+    "prefectureName": "埼玉県",
+    "municipalityName": "さいたま市",
     "stormSurgeRiskCandidate": null,
     "stormSurgeAreaRatio": null,
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-processed",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
     "jisCode": "12100",
     "prefectureCode": "12",
-    "prefectureName": "",
-    "municipalityName": "",
+    "prefectureName": "千葉県",
+    "municipalityName": "千葉市",
     "stormSurgeRiskCandidate": null,
     "stormSurgeAreaRatio": null,
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-processed",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
     "jisCode": "14100",
     "prefectureCode": "14",
-    "prefectureName": "",
-    "municipalityName": "",
+    "prefectureName": "神奈川県",
+    "municipalityName": "横浜市",
     "stormSurgeRiskCandidate": null,
     "stormSurgeAreaRatio": null,
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-processed",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
     "jisCode": "14130",
     "prefectureCode": "14",
-    "prefectureName": "",
-    "municipalityName": "",
+    "prefectureName": "神奈川県",
+    "municipalityName": "川崎市",
     "stormSurgeRiskCandidate": null,
     "stormSurgeAreaRatio": null,
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-processed",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
     "jisCode": "14150",
     "prefectureCode": "14",
-    "prefectureName": "",
-    "municipalityName": "",
+    "prefectureName": "神奈川県",
+    "municipalityName": "相模原市",
     "stormSurgeRiskCandidate": null,
     "stormSurgeAreaRatio": null,
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-processed",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
     "jisCode": "15100",
     "prefectureCode": "15",
-    "prefectureName": "",
-    "municipalityName": "",
+    "prefectureName": "新潟県",
+    "municipalityName": "新潟市",
     "stormSurgeRiskCandidate": null,
     "stormSurgeAreaRatio": null,
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-processed",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
     "jisCode": "22100",
     "prefectureCode": "22",
-    "prefectureName": "",
-    "municipalityName": "",
+    "prefectureName": "静岡県",
+    "municipalityName": "静岡市",
     "stormSurgeRiskCandidate": null,
     "stormSurgeAreaRatio": null,
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-processed",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
     "jisCode": "22130",
     "prefectureCode": "22",
-    "prefectureName": "",
-    "municipalityName": "",
+    "prefectureName": "静岡県",
+    "municipalityName": "浜松市",
     "stormSurgeRiskCandidate": null,
     "stormSurgeAreaRatio": null,
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-processed",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
     "jisCode": "23100",
     "prefectureCode": "23",
-    "prefectureName": "",
-    "municipalityName": "",
+    "prefectureName": "愛知県",
+    "municipalityName": "名古屋市",
     "stormSurgeRiskCandidate": null,
     "stormSurgeAreaRatio": null,
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-processed",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
     "jisCode": "26100",
     "prefectureCode": "26",
-    "prefectureName": "",
-    "municipalityName": "",
+    "prefectureName": "京都府",
+    "municipalityName": "京都市",
     "stormSurgeRiskCandidate": null,
     "stormSurgeAreaRatio": null,
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-processed",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
     "jisCode": "27100",
     "prefectureCode": "27",
-    "prefectureName": "",
-    "municipalityName": "",
+    "prefectureName": "大阪府",
+    "municipalityName": "大阪市",
     "stormSurgeRiskCandidate": null,
     "stormSurgeAreaRatio": null,
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-processed",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
     "jisCode": "27140",
     "prefectureCode": "27",
-    "prefectureName": "",
-    "municipalityName": "",
+    "prefectureName": "大阪府",
+    "municipalityName": "堺市",
     "stormSurgeRiskCandidate": null,
     "stormSurgeAreaRatio": null,
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-processed",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
     "jisCode": "28100",
     "prefectureCode": "28",
-    "prefectureName": "",
-    "municipalityName": "",
+    "prefectureName": "兵庫県",
+    "municipalityName": "神戸市",
     "stormSurgeRiskCandidate": null,
     "stormSurgeAreaRatio": null,
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-processed",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
     "jisCode": "33100",
     "prefectureCode": "33",
-    "prefectureName": "",
-    "municipalityName": "",
+    "prefectureName": "岡山県",
+    "municipalityName": "岡山市",
     "stormSurgeRiskCandidate": null,
     "stormSurgeAreaRatio": null,
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-processed",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
     "jisCode": "34100",
     "prefectureCode": "34",
-    "prefectureName": "",
-    "municipalityName": "",
+    "prefectureName": "広島県",
+    "municipalityName": "広島市",
     "stormSurgeRiskCandidate": null,
     "stormSurgeAreaRatio": null,
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-processed",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
     "jisCode": "40100",
     "prefectureCode": "40",
-    "prefectureName": "",
-    "municipalityName": "",
+    "prefectureName": "福岡県",
+    "municipalityName": "北九州市",
     "stormSurgeRiskCandidate": null,
     "stormSurgeAreaRatio": null,
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-processed",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
     "jisCode": "40130",
     "prefectureCode": "40",
-    "prefectureName": "",
-    "municipalityName": "",
+    "prefectureName": "福岡県",
+    "municipalityName": "福岡市",
     "stormSurgeRiskCandidate": null,
     "stormSurgeAreaRatio": null,
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-processed",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   },
   {
     "jisCode": "43100",
     "prefectureCode": "43",
-    "prefectureName": "",
-    "municipalityName": "",
+    "prefectureName": "熊本県",
+    "municipalityName": "熊本市",
     "stormSurgeRiskCandidate": null,
     "stormSurgeAreaRatio": null,
     "stormSurgeMaxDepthM": null,
     "stormSurgeDataStatus": "not-processed",
     "stormSurgeSource": "国土交通省 国土数値情報 高潮浸水想定区域データ",
-    "stormSurgeUpdatedAt": "2026-07-14",
+    "stormSurgeUpdatedAt": "2026-07-16",
     "calculationVersion": "storm-surge-v1"
   }
 ]
