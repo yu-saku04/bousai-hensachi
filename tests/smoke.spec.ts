@@ -7,7 +7,12 @@
  * - スコア整合性: JSONデータ == 詳細ページ == 都道府県ランキング
  */
 import { test, expect, Page } from "@playwright/test";
-import { getExpectedScore, getMunicipality, normalizeScoreText } from "./helpers/municipalities";
+import {
+  getExpectedScore,
+  getMunicipality,
+  getMunicipalityByHazardCoverage,
+  normalizeScoreText,
+} from "./helpers/municipalities";
 
 const ANOMALY_RE = /\bNaN\b|\bInfinity\b|\bundefined\b|Application error|Internal Server Error/;
 
@@ -265,6 +270,35 @@ test.describe("高潮セクション表示", () => {
     await page.goto("/result/07407");
     await expect(page.getByText("高潮リスク", { exact: false }).first()).toBeVisible();
     await expect(page.getByText("高潮データ未整備", { exact: false })).toBeVisible();
+  });
+});
+
+// ---------------------------------------------------------------------------
+// ハザードデータ充足度
+// ---------------------------------------------------------------------------
+
+test.describe("ハザードデータ充足度", () => {
+  test("6/6自治体: 充足度と信頼度が表示され、注意文は出ない", async ({ page }) => {
+    const municipality = getMunicipalityByHazardCoverage(6);
+    await page.goto(`/result/${municipality.jisCode}`);
+    const coverageCard = page.locator("section").filter({ hasText: "ハザードデータの充足度" }).first();
+
+    await expect(coverageCard).toBeVisible();
+    await expect(coverageCard.getByText("6 / 6", { exact: false })).toBeVisible();
+    await expect(coverageCard.getByText("信頼度")).toBeVisible();
+    await expect(coverageCard.getByText("高", { exact: true })).toBeVisible();
+    await expect(coverageCard.getByText("一部のハザードデータが未提供", { exact: false })).toHaveCount(0);
+  });
+
+  test("4/6自治体: 充足度・標準ラベル・比較注意が表示される", async ({ page }) => {
+    const municipality = getMunicipalityByHazardCoverage(4);
+    await page.goto(`/result/${municipality.jisCode}`);
+    const coverageCard = page.locator("section").filter({ hasText: "ハザードデータの充足度" }).first();
+
+    await expect(coverageCard).toBeVisible();
+    await expect(coverageCard.getByText("4 / 6", { exact: false })).toBeVisible();
+    await expect(coverageCard.getByText("標準", { exact: true })).toBeVisible();
+    await expect(coverageCard.getByText("一部のハザードデータが未提供", { exact: false })).toBeVisible();
   });
 });
 

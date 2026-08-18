@@ -7,6 +7,8 @@ interface MunicipalityRecord {
   prefecture: string;
   overallScore: number;
   overallScoreV2?: number | null;
+  hazardCoverageCount?: number;
+  scoreConfidence?: "high" | "medium-high" | "medium" | "low";
 }
 
 const dataPath = path.resolve(__dirname, "../../src/data/municipalities.json");
@@ -21,6 +23,12 @@ export function clampScore(n: number): number {
 export function getMunicipality(jisCode: string): MunicipalityRecord {
   const m = byJisCode.get(jisCode);
   if (!m) throw new Error(`municipalities.json に jisCode=${jisCode} が存在しません`);
+  return m;
+}
+
+export function getMunicipalityByHazardCoverage(count: number): MunicipalityRecord {
+  const m = rawData.find((entry) => entry.hazardCoverageCount === count);
+  if (!m) throw new Error(`hazardCoverageCount=${count} の自治体が存在しません`);
   return m;
 }
 
