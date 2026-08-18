@@ -130,6 +130,44 @@ export default function MethodologyPage() {
           </div>
         </section>
 
+        {/* データカバレッジ */}
+        <section className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm space-y-3">
+          <h2 className="font-bold text-gray-900 text-sm">ハザードデータのカバレッジ</h2>
+          <div className="space-y-2 text-xs text-gray-600 leading-relaxed">
+            <p>
+              防災偏差値のハザード評価は、地震・洪水・土砂災害・津波・高潮・液状化の6指標を対象にしています。
+              自治体によっては、国や都道府県からデータが提供されていない指標があります。
+            </p>
+            <p>
+              数値データが存在しない指標は0点として扱わず、平均計算から除外します。
+              各自治体ページでは、6指標のうち何指標を使って計算したかを「ハザードデータの充足度」として表示しています。
+            </p>
+          </div>
+          <div className="grid grid-cols-2 gap-2 text-xs">
+            {[
+              ["6/6", "高"],
+              ["5/6", "やや高い"],
+              ["4/6", "標準"],
+              ["3/6以下", "低い"],
+            ].map(([coverage, label]) => (
+              <div key={coverage} className="rounded-xl bg-gray-50 border border-gray-100 px-3 py-2">
+                <p className="font-semibold text-gray-800">{coverage}</p>
+                <p className="text-gray-500">信頼度: {label}</p>
+              </div>
+            ))}
+          </div>
+          <p className="text-xs text-gray-600 leading-relaxed">
+            この信頼度は「自治体が安全かどうか」の信頼度ではなく、
+            「利用できたハザードデータ数」の目安です。
+          </p>
+          <p className="text-xs text-gray-500 leading-relaxed bg-gray-50 border border-gray-100 rounded-xl px-3 py-2">
+            津波や高潮など一部の指標では、リスク区域の対象外、リスクなし、データなし、
+            データ未提供、欠損といった状態があります。現行スコアリングでは、一部の対象外・リスクなし・
+            データなし状態が100点として格納されています。100点は必ずしも「実測により完全に安全」という意味ではなく、
+            「現行データ上、評価対象となるリスクが確認されていない」状態を含みます。
+          </p>
+        </section>
+
         {/* スコアの読み方 */}
         <section className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm space-y-3">
           <h2 className="font-bold text-gray-900">スコアの読み方</h2>

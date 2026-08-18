@@ -279,12 +279,57 @@ type OverallRanking = {
   prefectureTotal: number;
 };
 
+const HAZARD_COVERAGE_TOTAL = 6;
 const DISASTER_RADAR_CENTER = 90;
 const DISASTER_RADAR_RADIUS = 58;
 const DISASTER_RADAR_LABEL_RADIUS = 78;
 
 function getOptionalScore(value: number | null | undefined): number | null {
   return typeof value === "number" && Number.isFinite(value) ? clampScore(value) : null;
+}
+
+function getHazardCoverageCount(data: Municipality): number {
+  if (
+    typeof data.hazardCoverageCount === "number" &&
+    Number.isInteger(data.hazardCoverageCount) &&
+    data.hazardCoverageCount >= 0 &&
+    data.hazardCoverageCount <= HAZARD_COVERAGE_TOTAL
+  ) {
+    return data.hazardCoverageCount;
+  }
+
+  return [
+    data.earthquakeRisk,
+    data.floodRiskCandidate,
+    data.landslideRiskCandidate,
+    data.tsunamiRiskCandidate,
+    data.stormSurgeRiskCandidate,
+    data.liquefactionRiskCandidate,
+  ].filter((value) => typeof value === "number" && Number.isFinite(value)).length;
+}
+
+function getScoreConfidenceLabel(confidence: Municipality["scoreConfidence"], count: number): string {
+  const derived =
+    confidence ??
+    (count >= 6
+      ? "high"
+      : count === 5
+        ? "medium-high"
+        : count === 4
+          ? "medium"
+          : "low");
+
+  switch (derived) {
+    case "high":
+      return "高";
+    case "medium-high":
+      return "やや高い";
+    case "medium":
+      return "標準";
+    case "low":
+    default:
+      return "低い";
+  }
 }
 
 function getOverallRankingScore(municipality: Municipality): number | null {
@@ -350,6 +395,12 @@ export default async function ResultPage({ params }: PageProps) {
   const stormSurgeStatusLabel   = getStormSurgeStatusLabel(data.stormSurgeDataStatus);
   const liquefactionStatusLabel = getLiquefactionStatusLabel(data.liquefactionDataStatus);
   const overallRanking = calculateRank(data, getAllMunicipalities());
+  const hazardCoverageCount = getHazardCoverageCount(data);
+  const hazardCoverageRate =
+    typeof data.hazardCoverageRate === "number" && Number.isFinite(data.hazardCoverageRate)
+      ? data.hazardCoverageRate
+      : hazardCoverageCount / HAZARD_COVERAGE_TOTAL;
+  const scoreConfidenceLabel = getScoreConfidenceLabel(data.scoreConfidence, hazardCoverageCount);
   const shelterRadarScore =
     typeof data.shelterScore === "number"
       ? data.shelterScore
@@ -473,6 +524,46 @@ export default async function ResultPage({ params }: PageProps) {
           <p className="text-xs text-gray-400 leading-relaxed">
             同点の自治体は同順位です。順位は総合防災偏差値 {scoreVersionLabel} を基準に算出しています。
           </p>
+        </section>
+
+        <section className="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm space-y-3">
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <h2 className="font-bold text-gray-800 text-sm">ハザードデータの充足度</h2>
+              <p className="text-xs text-gray-500 mt-1">
+                利用可能なハザードデータのみを使って算出しています。
+              </p>
+            </div>
+            <div className="text-right shrink-0">
+              <p className="text-xl font-bold text-gray-900 tabular-nums">
+                {hazardCoverageCount}
+                <span className="text-sm font-medium text-gray-500"> / {HAZARD_COVERAGE_TOTAL}</span>
+              </p>
+              <p className="text-xs text-gray-500">指標</p>
+            </div>
+          </div>
+          <div
+            className="h-2 rounded-full bg-gray-100 overflow-hidden"
+            role="meter"
+            aria-label={`ハザードデータの充足度 ${hazardCoverageCount} / ${HAZARD_COVERAGE_TOTAL} 指標`}
+            aria-valuemin={0}
+            aria-valuemax={HAZARD_COVERAGE_TOTAL}
+            aria-valuenow={hazardCoverageCount}
+          >
+            <div
+              className="h-full rounded-full bg-blue-500"
+              style={{ width: `${Math.max(0, Math.min(1, hazardCoverageRate)) * 100}%` }}
+            />
+          </div>
+          <div className="flex items-center justify-between gap-2 text-xs">
+            <span className="text-gray-500">信頼度</span>
+            <span className="font-semibold text-gray-800">{scoreConfidenceLabel}</span>
+          </div>
+          {hazardCoverageCount <= 4 && (
+            <p className="text-xs leading-relaxed text-amber-700 bg-amber-50 border border-amber-100 rounded-xl px-3 py-2">
+              一部のハザードデータが未提供のため、他自治体との比較には注意が必要です。
+            </p>
+          )}
         </section>
 
         {/* 防災スコアレーダー */}
