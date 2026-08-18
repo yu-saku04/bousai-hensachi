@@ -33,6 +33,18 @@ import path from "node:path";
 
 const CALCULATION_VERSION = "v2.5" as const;
 
+export const HAZARD_SCORE_KEYS = [
+  "earthquakeRisk",
+  "floodRiskCandidate",
+  "landslideRiskCandidate",
+  "tsunamiRiskCandidate",
+  "stormSurgeRiskCandidate",
+  "liquefactionRiskCandidate",
+] as const;
+
+export type HazardScoreKey = (typeof HAZARD_SCORE_KEYS)[number];
+export type ScoreConfidence = "high" | "medium-high" | "medium" | "low";
+
 const CATEGORY_WEIGHTS = {
   hazard:        0.40,
   infra:         0.30,
@@ -54,6 +66,9 @@ interface MunicipalityRow {
   tsunamiRiskCandidate?: number | null;
   stormSurgeRiskCandidate?: number | null;
   liquefactionRiskCandidate?: number | null;
+  hazardCoverageCount?: number;
+  hazardCoverageRate?: number;
+  scoreConfidence?: ScoreConfidence;
   shelterScore?: number | null;
   shelterCapacity?: number;
   agingRisk?: number;
@@ -107,6 +122,30 @@ function nullSafeMean(values: (number | null | undefined)[]): number | null {
   return Math.round(valid.reduce((a, b) => a + b, 0) / valid.length);
 }
 
+function isFiniteNumber(value: unknown): value is number {
+  return typeof value === "number" && Number.isFinite(value);
+}
+
+export function getScoreConfidence(hazardCoverageCount: number): ScoreConfidence {
+  if (hazardCoverageCount >= 6) return "high";
+  if (hazardCoverageCount === 5) return "medium-high";
+  if (hazardCoverageCount === 4) return "medium";
+  return "low";
+}
+
+export function getHazardCoverage(m: MunicipalityRow): {
+  hazardCoverageCount: number;
+  hazardCoverageRate: number;
+  scoreConfidence: ScoreConfidence;
+} {
+  const hazardCoverageCount = HAZARD_SCORE_KEYS.filter((key) => isFiniteNumber(m[key])).length;
+  return {
+    hazardCoverageCount,
+    hazardCoverageRate: hazardCoverageCount / HAZARD_SCORE_KEYS.length,
+    scoreConfidence: getScoreConfidence(hazardCoverageCount),
+  };
+}
+
 // ---------------------------------------------------------------------------
 // Core computation
 // ---------------------------------------------------------------------------
@@ -117,14 +156,7 @@ export function computeOverallScoreV2(m: MunicipalityRow): {
 } {
   // Hazard: 6指標均等平均（null は除外して残り指標で再正規化）
   // 地震と液状化は別指標として扱う（液状化は微地形由来の地表面条件指標）
-  const hazardScore = nullSafeMean([
-    m.earthquakeRisk,
-    m.floodRiskCandidate,
-    m.landslideRiskCandidate,
-    m.tsunamiRiskCandidate,
-    m.stormSurgeRiskCandidate,
-    m.liquefactionRiskCandidate,
-  ]);
+  const hazardScore = nullSafeMean(HAZARD_SCORE_KEYS.map((key) => m[key]));
 
   // Infrastructure: shelterScore (shelter-sufficiency-v1) → shelterCapacity (fallback)
   const rawInfra =
@@ -186,6 +218,12 @@ function main(): void {
   let shelterCapacityUsed = 0;
   let socialBothUsed     = 0;
   let socialPartialUsed  = 0;
+  const hazardCoverageCounts: Record<ScoreConfidence, number> = {
+    high: 0,
+    "medium-high": 0,
+    medium: 0,
+    low: 0,
+  };
   const v2Scores: number[] = [];
 
   const updated = data.map((m) => {
@@ -212,8 +250,13 @@ function main(): void {
 
     // overallScore は変更しない
     const result: MunicipalityRow = { ...m };
+    const coverage = getHazardCoverage(m);
     result.overallScoreV2        = score;
     result.overallScoreV2Version = CALCULATION_VERSION;
+    result.hazardCoverageCount   = coverage.hazardCoverageCount;
+    result.hazardCoverageRate    = coverage.hazardCoverageRate;
+    result.scoreConfidence       = coverage.scoreConfidence;
+    hazardCoverageCounts[coverage.scoreConfidence]++;
 
     // unused breakdown warning suppression (breakdown is used in stats only)
     void breakdown;
@@ -255,6 +298,12 @@ function main(): void {
     ` / stormSurgeRiskCandidate=${stormSurgeCount}件` +
     ` / liquefactionRiskCandidate=${liquefactionCount}件` +
     ` / 全6揃い=${hazardAllCount}件`,
+  );
+  console.log(
+    `  Hazard coverage  : 6/6=${hazardCoverageCounts.high}件` +
+    ` / 5/6=${hazardCoverageCounts["medium-high"]}件` +
+    ` / 4/6=${hazardCoverageCounts.medium}件` +
+    ` / 3/6以下=${hazardCoverageCounts.low}件`,
   );
   console.log(`  Infrastructure   : shelterScore=${shelterScoreUsed}件 / shelterCapacity(fallback)=${shelterCapacityUsed}件`);
   console.log(`  Social           : both(aging+household)=${socialBothUsed}件 / partial=${socialPartialUsed}件`);

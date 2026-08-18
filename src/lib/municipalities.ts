@@ -69,7 +69,12 @@ export function getPrefectureRanking(prefecture: string): Municipality[] {
 
 export function getShelterRanking(): Municipality[] {
   return [...data]
-    .filter((m) => m.scoreConfidence === "high" && typeof m.shelterScore === "number")
+    .filter(
+      (m) =>
+        m.dataCompleteness?.hasPopulation === true &&
+        m.dataCompleteness?.hasShelterData === true &&
+        typeof m.shelterScore === "number",
+    )
     .sort((a, b) => {
       const scoreDiff = (b.shelterScore ?? 0) - (a.shelterScore ?? 0);
       if (scoreDiff !== 0) return scoreDiff;

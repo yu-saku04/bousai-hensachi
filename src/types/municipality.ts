@@ -55,7 +55,6 @@ export interface Municipality {
   nationalRank?: number | null;
   prefectureRank?: number | null;
   dataCompleteness?: { hasPopulation: boolean; hasShelterData: boolean };
-  scoreConfidence?: "high" | "no-shelter-data" | "no-data";
   scoreVersion?: "shelter-sufficiency-v1";
   calculationNotes?: string;
   // earthquake-v1
@@ -111,6 +110,9 @@ export interface Municipality {
   // overallScoreV2 (v2.5 = earthquake + flood + landslide + tsunami + storm surge + liquefaction)
   overallScoreV2?: number | null;
   overallScoreV2Version?: string;
+  hazardCoverageCount: number;
+  hazardCoverageRate: number;
+  scoreConfidence: "high" | "medium-high" | "medium" | "low";
 }
 
 export interface RiskItem {

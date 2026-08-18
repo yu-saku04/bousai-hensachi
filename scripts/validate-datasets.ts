@@ -23,7 +23,7 @@
  *  12. shelter-sufficiency-v1 フィールド検証（scoreVersion が存在する場合のみ実施）
  *  16. household-v1 フィールド検証（householdRisk / 世帯フィールド / isolationRisk 非破壊 / overallScore 非反映）
  *      - フィールドスキーマ検証
- *      - scoreConfidence 別の整合性チェック
+ *      - dataCompleteness 別の整合性チェック
  *      - nationalRank / prefectureRank の dense rank 再計算照合
  *  17. earthquake-v1 フィールド検証（earthquakeRisk / 地震確率 / dataStatus 別整合性）
  *      - earthquakeRisk 10〜90 整数（全自治体必須）
@@ -417,7 +417,6 @@ function validateShelterSufficiencyV1(
 
   stats["v1フィールド件数"] = v1Entries.length;
 
-  const VALID_CONFIDENCE = new Set(["high", "no-shelter-data", "no-data"]);
   let highCount = 0;
   let noShelterCount = 0;
   let noDataCount = 0;
@@ -491,59 +490,67 @@ function validateShelterSufficiencyV1(
       }
     }
 
-    const conf = m["scoreConfidence"];
-    if (typeof conf !== "string" || !VALID_CONFIDENCE.has(conf)) {
-      errors.push(`[${id}] scoreConfidence が無効 (high/no-shelter-data/no-data のいずれか): ${conf}`);
+    // --- 整合性チェック ---
+
+    const shelterStatus =
+      hasPopulation === false
+        ? "no-data"
+        : hasPopulation === true && hasShelterData === true
+          ? "high"
+          : hasPopulation === true && hasShelterData === false
+            ? "no-shelter-data"
+            : "invalid";
+
+    if (shelterStatus === "invalid") {
+      errors.push(`[${id}] dataCompleteness から shelter-v1 状態を判定できません`);
       continue;
     }
 
-    // --- 整合性チェック ---
-
-    if (conf === "high") {
+    if (shelterStatus === "high") {
       highCount++;
       if (hasPopulation !== true)
-        errors.push(`[${id}] scoreConfidence=high だが dataCompleteness.hasPopulation が true でありません`);
+        errors.push(`[${id}] shelter-v1 high だが dataCompleteness.hasPopulation が true でありません`);
       if (hasShelterData !== true)
-        errors.push(`[${id}] scoreConfidence=high だが dataCompleteness.hasShelterData が true でありません`);
+        errors.push(`[${id}] shelter-v1 high だが dataCompleteness.hasShelterData が true でありません`);
       if (shelterCount === null)
-        errors.push(`[${id}] scoreConfidence=high だが shelterCount が null`);
+        errors.push(`[${id}] shelter-v1 high だが shelterCount が null`);
       if (per10k === null)
-        errors.push(`[${id}] scoreConfidence=high だが shelterCountPer10k が null`);
+        errors.push(`[${id}] shelter-v1 high だが shelterCountPer10k が null`);
       if (shelterScore === null)
-        errors.push(`[${id}] scoreConfidence=high だが shelterScore が null`);
+        errors.push(`[${id}] shelter-v1 high だが shelterScore が null`);
       if (nationalRank === null)
-        errors.push(`[${id}] scoreConfidence=high だが nationalRank が null`);
+        errors.push(`[${id}] shelter-v1 high だが nationalRank が null`);
       if (prefectureRank === null)
-        errors.push(`[${id}] scoreConfidence=high だが prefectureRank が null`);
-    } else if (conf === "no-shelter-data") {
+        errors.push(`[${id}] shelter-v1 high だが prefectureRank が null`);
+    } else if (shelterStatus === "no-shelter-data") {
       noShelterCount++;
       if (hasPopulation !== true)
-        errors.push(`[${id}] scoreConfidence=no-shelter-data だが dataCompleteness.hasPopulation が true でありません`);
+        errors.push(`[${id}] shelter-v1 no-shelter-data だが dataCompleteness.hasPopulation が true でありません`);
       if (hasShelterData !== false)
-        errors.push(`[${id}] scoreConfidence=no-shelter-data だが dataCompleteness.hasShelterData が false でありません`);
+        errors.push(`[${id}] shelter-v1 no-shelter-data だが dataCompleteness.hasShelterData が false でありません`);
       if (shelterCount !== null)
-        errors.push(`[${id}] scoreConfidence=no-shelter-data だが shelterCount が null でありません (${shelterCount})`);
+        errors.push(`[${id}] shelter-v1 no-shelter-data だが shelterCount が null でありません (${shelterCount})`);
       if (per10k !== null)
-        errors.push(`[${id}] scoreConfidence=no-shelter-data だが shelterCountPer10k が null でありません`);
+        errors.push(`[${id}] shelter-v1 no-shelter-data だが shelterCountPer10k が null でありません`);
       if (shelterScore !== null)
-        errors.push(`[${id}] scoreConfidence=no-shelter-data だが shelterScore が null でありません`);
+        errors.push(`[${id}] shelter-v1 no-shelter-data だが shelterScore が null でありません`);
       if (nationalRank !== null)
-        errors.push(`[${id}] scoreConfidence=no-shelter-data だが nationalRank が null でありません`);
+        errors.push(`[${id}] shelter-v1 no-shelter-data だが nationalRank が null でありません`);
       if (prefectureRank !== null)
-        errors.push(`[${id}] scoreConfidence=no-shelter-data だが prefectureRank が null でありません`);
+        errors.push(`[${id}] shelter-v1 no-shelter-data だが prefectureRank が null でありません`);
     } else {
       // no-data
       noDataCount++;
       if (hasPopulation !== false)
-        errors.push(`[${id}] scoreConfidence=no-data だが dataCompleteness.hasPopulation が false でありません`);
+        errors.push(`[${id}] shelter-v1 no-data だが dataCompleteness.hasPopulation が false でありません`);
       if (per10k !== null)
-        errors.push(`[${id}] scoreConfidence=no-data だが shelterCountPer10k が null でありません`);
+        errors.push(`[${id}] shelter-v1 no-data だが shelterCountPer10k が null でありません`);
       if (shelterScore !== null)
-        errors.push(`[${id}] scoreConfidence=no-data だが shelterScore が null でありません`);
+        errors.push(`[${id}] shelter-v1 no-data だが shelterScore が null でありません`);
       if (nationalRank !== null)
-        errors.push(`[${id}] scoreConfidence=no-data だが nationalRank が null でありません`);
+        errors.push(`[${id}] shelter-v1 no-data だが nationalRank が null でありません`);
       if (prefectureRank !== null)
-        errors.push(`[${id}] scoreConfidence=no-data だが prefectureRank が null でありません`);
+        errors.push(`[${id}] shelter-v1 no-data だが prefectureRank が null でありません`);
     }
   }
 
@@ -557,16 +564,17 @@ function validateShelterSufficiencyV1(
   const rankedByNational = v1Entries.filter((m) => m["nationalRank"] !== null);
   if (rankedByNational.length !== highCount) {
     errors.push(
-      `nationalRank 設定件数 (${rankedByNational.length}) が scoreConfidence=high 件数 (${highCount}) と不一致`,
+      `nationalRank 設定件数 (${rankedByNational.length}) が shelter-v1 high 件数 (${highCount}) と不一致`,
     );
   }
 
   // no-shelter-data / no-data がランキングに混入していないか
-  const leakedRanks = v1Entries.filter(
-    (m) =>
-      m["nationalRank"] !== null &&
-      (m["scoreConfidence"] === "no-shelter-data" || m["scoreConfidence"] === "no-data"),
-  );
+  const leakedRanks = v1Entries.filter((m) => {
+    const dc = m["dataCompleteness"] as Record<string, unknown> | undefined;
+    const hasPopulation = dc?.["hasPopulation"];
+    const hasShelterData = dc?.["hasShelterData"];
+    return m["nationalRank"] !== null && (hasPopulation === false || hasShelterData === false);
+  });
   if (leakedRanks.length > 0) {
     errors.push(
       `no-shelter-data / no-data エントリに nationalRank が設定されています (${leakedRanks.length}件)`,
@@ -2406,7 +2414,11 @@ function validateStormSurgeV1(
 // overallScoreV2 検証（dry-run）
 // -------------------------------------------------------
 
-import { computeOverallScoreV2 } from "./scoring/score-overall-v2";
+import {
+  HAZARD_SCORE_KEYS,
+  computeOverallScoreV2,
+  getHazardCoverage,
+} from "./scoring/score-overall-v2";
 
 function validateOverallScoreV2(
   data: Municipality[],
@@ -2485,6 +2497,81 @@ function validateOverallScoreV2(
     stats["overallScoreV2平均"] = Math.round(
       v2Vals.reduce((a, b) => a + b, 0) / v2Vals.length,
     );
+  }
+
+  return { errors, warnings, stats };
+}
+
+// -------------------------------------------------------
+// hazard coverage / scoreConfidence 検証（overallScoreV2 v2.5 metadata）
+// -------------------------------------------------------
+
+const EXPECTED_HAZARD_COVERAGE_COUNTS = {
+  le3: 0,
+  4: 383,
+  5: 703,
+  6: 832,
+} as const;
+
+const VALID_SCORE_CONFIDENCE = new Set(["high", "medium-high", "medium", "low"]);
+
+function validateHazardCoverage(
+  data: Municipality[],
+): { errors: string[]; warnings: string[]; stats: Record<string, number | string> } {
+  const errors: string[] = [];
+  const warnings: string[] = [];
+  const stats: Record<string, number | string> = {};
+  const coverageCounts = { le3: 0, 4: 0, 5: 0, 6: 0 };
+
+  for (const m of data) {
+    const id = String(m["jisCode"] ?? m["id"] ?? "unknown");
+    const expected = getHazardCoverage(m as Parameters<typeof getHazardCoverage>[0]);
+    const count = m["hazardCoverageCount"];
+    const rate = m["hazardCoverageRate"];
+    const confidence = m["scoreConfidence"];
+
+    if (!Number.isInteger(count) || typeof count !== "number" || count < 0 || count > HAZARD_SCORE_KEYS.length) {
+      errors.push(`[${id}] hazardCoverageCount が無効 (0〜6整数必須): ${count}`);
+    } else if (count !== expected.hazardCoverageCount) {
+      errors.push(
+        `[${id}] hazardCoverageCount が実データと不一致: stored=${count}, expected=${expected.hazardCoverageCount}`,
+      );
+    }
+
+    if (typeof rate !== "number" || !Number.isFinite(rate) || rate < 0 || rate > 1) {
+      errors.push(`[${id}] hazardCoverageRate が無効 (0〜1数値必須): ${rate}`);
+    } else if (Math.abs(rate - expected.hazardCoverageRate) > Number.EPSILON) {
+      errors.push(
+        `[${id}] hazardCoverageRate が実データと不一致: stored=${rate}, expected=${expected.hazardCoverageRate}`,
+      );
+    }
+
+    if (typeof confidence !== "string" || !VALID_SCORE_CONFIDENCE.has(confidence)) {
+      errors.push(`[${id}] scoreConfidence が無効 (high|medium-high|medium|low 必須): ${confidence}`);
+    } else if (confidence !== expected.scoreConfidence) {
+      errors.push(
+        `[${id}] scoreConfidence が hazardCoverageCount と不一致: stored=${confidence}, expected=${expected.scoreConfidence}`,
+      );
+    }
+
+    if (expected.hazardCoverageCount <= 3) coverageCounts.le3++;
+    else if (expected.hazardCoverageCount === 4) coverageCounts[4]++;
+    else if (expected.hazardCoverageCount === 5) coverageCounts[5]++;
+    else if (expected.hazardCoverageCount === 6) coverageCounts[6]++;
+  }
+
+  stats["hazardCoverage.3件以下"] = coverageCounts.le3;
+  stats["hazardCoverage.4件"] = coverageCounts[4];
+  stats["hazardCoverage.5件"] = coverageCounts[5];
+  stats["hazardCoverage.6件"] = coverageCounts[6];
+
+  for (const [key, expected] of Object.entries(EXPECTED_HAZARD_COVERAGE_COUNTS)) {
+    const actual = coverageCounts[key as keyof typeof coverageCounts];
+    if (actual !== expected) {
+      errors.push(
+        `hazardCoverage ${key === "le3" ? "3件以下" : `${key}件`} が期待値と異なります: ${actual}件 (期待: ${expected}件)`,
+      );
+    }
   }
 
   return { errors, warnings, stats };
@@ -2894,6 +2981,12 @@ function validateDatasets(inputPath: string, strictMode = false, sheltersPath?: 
   errors.push(...v2Validation.errors);
   warnings.push(...v2Validation.warnings);
   Object.assign(stats, v2Validation.stats);
+
+  // 20. hazard coverage / scoreConfidence 検証
+  const hazardCoverageValidation = validateHazardCoverage(data);
+  errors.push(...hazardCoverageValidation.errors);
+  warnings.push(...hazardCoverageValidation.warnings);
+  Object.assign(stats, hazardCoverageValidation.stats);
 
   return { errors, warnings, stats };
 }

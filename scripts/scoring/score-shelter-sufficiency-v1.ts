@@ -380,7 +380,6 @@ function main() {
     merged["nationalRank"] = v1.nationalRank;
     merged["prefectureRank"] = v1.prefectureRank;
     merged["dataCompleteness"] = v1.dataCompleteness;
-    merged["scoreConfidence"] = v1.scoreConfidence;
     merged["scoreVersion"] = v1.scoreVersion;
     if (v1.calculationNotes) {
       merged["calculationNotes"] = v1.calculationNotes;
